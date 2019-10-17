@@ -22,6 +22,15 @@
 [Includes]
   Include
 
+[LibraryClasses]
+  ## @libraryclass  Provides services to send IPMI commands.
+  #
+  IpmiCommandLib|Include/Library/IpmiCommandLib.inf
+
+  ## @libraryclass  Provides an API for platform-specific IPMI hooks.
+  #
+  IpmiCommandLib|Include/Library/IpmiPlatformHookLib.h
+
 [Guids]
   gIpmiFeaturePkgTokenSpaceGuid  =  {0xc05283f6, 0xd6a8, 0x48f3, {0x9b, 0x59, 0xfb, 0xca, 0x71, 0x32, 0x0f, 0x12}}
 

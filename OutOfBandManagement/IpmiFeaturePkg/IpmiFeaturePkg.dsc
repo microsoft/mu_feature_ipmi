@@ -22,3 +22,8 @@
   SUPPORTED_ARCHITECTURES        = IA32|X64
   BUILD_TARGETS                  = DEBUG|RELEASE|NOOPT
   SKUID_IDENTIFIER               = DEFAULT
+
+#
+# This package always builds the feature.
+#
+!include Include/IpmiFeature.dsc
