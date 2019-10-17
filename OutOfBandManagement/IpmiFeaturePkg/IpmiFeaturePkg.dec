@@ -1,0 +1,29 @@
+## @file
+# This package provides advanced feature functionality to enable the
+# Intelligent Platform Management Interface (IPMI).
+# This package should only depend on EDK II Core packages, IntelSiliconPkg, and MinPlatformPkg.
+#
+# The DEC files are used by the utilities that parse DSC and
+# INF files to generate AutoGen.c and AutoGen.h files
+# for the build infrastructure.
+#
+# Copyright (c) 2019, Intel Corporation. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  DEC_SPECIFICATION = 0x00010017
+  PACKAGE_NAME      = IpmiFeaturePkg
+  PACKAGE_GUID      = AE091910-F6C9-4AB5-B8B4-995E2F0D5166
+  PACKAGE_VERSION   = 0.1
+
+[Includes]
+  Include
+
+[Guids]
+  gIpmiFeaturePkgTokenSpaceGuid  =  {0xc05283f6, 0xd6a8, 0x48f3, {0x9b, 0x59, 0xfb, 0xca, 0x71, 0x32, 0x0f, 0x12}}
+
+[PcdsFeatureFlag]
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiFeatureEnable|FALSE|BOOLEAN|0xA0000001
