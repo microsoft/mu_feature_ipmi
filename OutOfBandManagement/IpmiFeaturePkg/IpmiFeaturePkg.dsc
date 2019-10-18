@@ -22,6 +22,8 @@
   SUPPORTED_ARCHITECTURES        = IA32|X64
   BUILD_TARGETS                  = DEBUG|RELEASE|NOOPT
   SKUID_IDENTIFIER               = DEFAULT
+  PEI_ARCH                       = IA32
+  DXE_ARCH                       = X64
 
 #
 # This package always builds the feature.

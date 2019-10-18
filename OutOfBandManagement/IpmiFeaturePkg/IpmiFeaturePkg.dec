@@ -36,3 +36,11 @@
 
 [PcdsFeatureFlag]
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiFeatureEnable|FALSE|BOOLEAN|0xA0000001
+
+[PcdsFixedAtBuild]
+  gIpmiFeaturePkgTokenSpaceGuid.PcdMaxSOLChannels|3|UINT8|0xF0000001
+
+[PcdsDynamic, PcdsDynamicEx]
+  gIpmiFeaturePkgTokenSpaceGuid.PcdFRB2EnabledFlag|TRUE|BOOLEAN|0xD0000001
+  gIpmiFeaturePkgTokenSpaceGuid.PcdFRBTimeoutValue|360|UINT16|0xD0000002
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress|0xCA2|UINT16|0xD0000003
