@@ -82,6 +82,14 @@ functional on their board.
 *_TODO_*
 An ordered list of required activities to achieve desired functionality for the feature.
 
+## Performance Impact
+A general expectation for the impact on overall boot performance due to using this feature.
+
+This section is expected to provide guidance on:
+* How to estimate performance impact due to the feature
+* How to measure performance impact of the feature
+* How to manage performance impact of the feature
+
 ## Common Optimizations
 *_TODO_*
 Common size or performance tuning options for this feature.
