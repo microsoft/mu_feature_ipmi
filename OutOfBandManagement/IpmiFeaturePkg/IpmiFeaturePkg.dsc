@@ -29,3 +29,8 @@
 # This package always builds the feature.
 #
 !include Include/IpmiFeature.dsc
+
+# MU_CHANGE [BEGIN] - [TCBZ3037] Add several components that are missing in DSCs
+[Components]
+    IpmiFeaturePkg/Library/IpmiCommandLib/IpmiCommandLib.inf
+# MU_CHANGE [END] - [TCBZ3037] Add several components that are missing in DSCs
