@@ -102,7 +102,10 @@
 
   OutOfBandManagement/IpmiFeaturePkg/Library/IpmiPlatformHookLibNull/IpmiPlatformHookLibNull.inf
 
+  #
   # Add components here that should be included in the package build.
+  #
+  OutOfBandManagement/IpmiFeaturePkg/GenericIpmi/Pei/PeiGenericIpmi.inf
   OutOfBandManagement/IpmiFeaturePkg/Frb/FrbPei.inf
   OutOfBandManagement/IpmiFeaturePkg/IpmiInit/PeiIpmiInit.inf
 
@@ -122,7 +125,11 @@
 
   OutOfBandManagement/IpmiFeaturePkg/Library/IpmiPlatformHookLibNull/IpmiPlatformHookLibNull.inf
 
+  #
   # Add components here that should be included in the package build.
+  #
+  OutOfBandManagement/IpmiFeaturePkg/GenericIpmi/Dxe/GenericIpmi.inf
+  OutOfBandManagement/IpmiFeaturePkg/Library/SmmIpmiBaseLib/SmmIpmiBaseLib.inf
   OutOfBandManagement/IpmiFeaturePkg/BmcAcpi/BmcAcpi.inf
   OutOfBandManagement/IpmiFeaturePkg/BmcElog/BmcElog.inf
   OutOfBandManagement/IpmiFeaturePkg/Frb/FrbDxe.inf
