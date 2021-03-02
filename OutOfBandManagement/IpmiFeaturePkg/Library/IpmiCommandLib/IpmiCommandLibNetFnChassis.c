@@ -1,15 +1,14 @@
 /** @file
   IPMI Command - NetFnChassis.
 
-Copyright (c) 2018, Intel Corporation. All rights reserved.<BR>
-SPDX-License-Identifier: BSD-2-Clause-Patent
-
+  Copyright (c) 2018 - 2021, Intel Corporation. All rights reserved.<BR>
+  SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
 #include <PiPei.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
-#include <Library/IpmiLib.h>
+#include <Library/IpmiBaseLib.h>
 
 #include <IndustryStandard/Ipmi.h>
 
@@ -95,6 +94,50 @@ IpmiSetPowerRestorePolicy (
              (VOID *)ChassisControlRequest,
              sizeof(*ChassisControlRequest),
              (VOID *)ChassisControlResponse,
+             &DataSize
+             );
+  return Status;
+}
+
+EFI_STATUS
+EFIAPI
+IpmiSetSystemBootOptions (
+  IN  IPMI_SET_BOOT_OPTIONS_REQUEST   *BootOptionsRequest,
+  OUT IPMI_SET_BOOT_OPTIONS_RESPONSE  *BootOptionsResponse
+  )
+{
+  EFI_STATUS                   Status;
+  UINT32                       DataSize;
+
+  DataSize = sizeof(*BootOptionsResponse);
+  Status = IpmiSubmitCommand (
+             IPMI_NETFN_CHASSIS,
+             IPMI_CHASSIS_SET_SYSTEM_BOOT_OPTIONS,
+             (VOID *)BootOptionsRequest,
+             sizeof(*BootOptionsRequest),
+             (VOID *)BootOptionsResponse,
+             &DataSize
+             );
+  return Status;
+}
+
+EFI_STATUS
+EFIAPI
+IpmiGetSystemBootOptions (
+  IN  IPMI_GET_BOOT_OPTIONS_REQUEST  *BootOptionsRequest,
+  OUT IPMI_GET_BOOT_OPTIONS_RESPONSE *BootOptionsResponse
+  )
+{
+  EFI_STATUS                   Status;
+  UINT32                       DataSize;
+
+  DataSize = sizeof(*BootOptionsResponse);
+  Status = IpmiSubmitCommand (
+             IPMI_NETFN_CHASSIS,
+             IPMI_CHASSIS_GET_SYSTEM_BOOT_OPTIONS,
+             (VOID *)BootOptionsRequest,
+             sizeof(*BootOptionsRequest),
+             (VOID *)BootOptionsResponse,
              &DataSize
              );
   return Status;

@@ -1,15 +1,14 @@
 /** @file
   IPMI Command - NetFnStorage.
 
-Copyright (c) 2018, Intel Corporation. All rights reserved.<BR>
-SPDX-License-Identifier: BSD-2-Clause-Patent
-
+  Copyright (c) 2018 - 2021, Intel Corporation. All rights reserved.<BR>
+  SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
 #include <PiPei.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
-#include <Library/IpmiLib.h>
+#include <Library/IpmiBaseLib.h>
 
 #include <IndustryStandard/Ipmi.h>
 
