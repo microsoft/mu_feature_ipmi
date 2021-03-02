@@ -1,7 +1,7 @@
 ### @file
 # Component description file for IPMI initialization in PEI.
 #
-# Copyright (c) 2018 - 2019, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2018 - 2021, Intel Corporation. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -29,4 +29,4 @@
   IpmiCommandLib
 
 [Depex]
-  TRUE
+  gPeiIpmiTransportPpiGuid

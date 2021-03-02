@@ -1,7 +1,7 @@
 /** @file
     IPMI stack initialization.
 
-Copyright (c) 2018 - 2019, Intel Corporation. All rights reserved.<BR>
+Copyright (c) 2018 - 2021, Intel Corporation. All rights reserved.<BR>
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -79,7 +79,7 @@ Returns:
 
   //
   // Set up a loop to retry for up to 30 seconds. Calculate retries not timeout
-  // so that in case KCS is not enabled and EfiIpmiSendCommand() returns
+  // so that in case KCS is not enabled and IpmiSendCommand() returns
   // immediately we will not wait all the 30 seconds.
   //
   Retries = BMC_TIMEOUT / BMC_KCS_TIMEOUT + 1;
