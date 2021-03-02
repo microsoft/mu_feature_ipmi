@@ -1,7 +1,7 @@
 /** @file
   This library abstract how to send/receive IPMI command.
 
-Copyright (c) 2018, Intel Corporation. All rights reserved.<BR>
+Copyright (c) 2018-2021, Intel Corporation. All rights reserved.<BR>
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -141,6 +141,23 @@ EFIAPI
 IpmiSetPowerRestorePolicy (
   IN  IPMI_SET_POWER_RESTORE_POLICY_REQUEST  *ChassisControlRequest,
   OUT IPMI_SET_POWER_RESTORE_POLICY_RESPONSE *ChassisControlResponse
+  );
+
+//
+// NetFnStorage
+//
+EFI_STATUS
+EFIAPI
+IpmiSetSystemBootOptions (
+  IN  IPMI_SET_BOOT_OPTIONS_REQUEST  *BootOptionsRequest,
+  OUT IPMI_SET_BOOT_OPTIONS_RESPONSE *BootOptionsResponse
+  );
+
+EFI_STATUS
+EFIAPI
+IpmiGetSystemBootOptions (
+  IN  IPMI_GET_BOOT_OPTIONS_REQUEST  *BootOptionsRequest,
+  OUT IPMI_GET_BOOT_OPTIONS_RESPONSE *BootOptionsResponse
   );
 
 //
