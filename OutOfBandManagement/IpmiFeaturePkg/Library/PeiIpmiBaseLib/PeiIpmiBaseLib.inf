@@ -28,3 +28,6 @@
 
 [Ppis]
   gPeiIpmiTransportPpiGuid
+
+[Depex]
+  gPeiIpmiTransportPpiGuid

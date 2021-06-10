@@ -41,8 +41,9 @@
   MemoryAllocationLib
   DebugLib
   IoLib
-  TimerLib
   ReportStatusCodeLib
+  TimerLib
+  IpmiPlatformHookLib
 
 [Guids]
 

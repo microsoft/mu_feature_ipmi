@@ -26,3 +26,6 @@
 
 [Protocols]
   gIpmiTransportProtocolGuid
+
+[Depex]
+  gIpmiTransportProtocolGuid

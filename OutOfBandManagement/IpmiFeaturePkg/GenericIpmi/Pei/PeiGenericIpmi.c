@@ -9,7 +9,7 @@
 #include <IndustryStandard/Ipmi.h>
 #include "PeiGenericIpmi.h"
 #include <Library/ReportStatusCodeLib.h>
-
+#include <Library/IpmiPlatformHookLib.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 // Function Implementations
@@ -48,6 +48,11 @@ PeiInitializeIpmiKcsPhysicalLayer (
   // Enable OEM specific southbridge SIO KCS I/O address range 0xCA0 to 0xCAF at here
   // if the the I/O address range has not been enabled.
   //
+  Status = PlatformIpmiIoRangeSet (PcdGet16 (PcdIpmiIoBaseAddress));
+  DEBUG ((DEBUG_INFO, "IPMI Peim:PlatformIpmiIoRangeSet - %r!\n", Status));
+  if (EFI_ERROR(Status)) {
+    return Status;
+  }
 
   mIpmiInstance = AllocateZeroPool (sizeof (PEI_IPMI_BMC_INSTANCE_DATA));
   if (mIpmiInstance == NULL) {
