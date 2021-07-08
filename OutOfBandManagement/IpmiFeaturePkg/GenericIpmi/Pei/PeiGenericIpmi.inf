@@ -42,6 +42,7 @@
   DebugLib
   IoLib
   TimerLib
+  ReportStatusCodeLib
 
 [Guids]
 
