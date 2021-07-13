@@ -150,15 +150,6 @@ typedef enum {
 #define UPPER_NON_RECOVER_GOING_HI    0x800
 
 //
-// Definitions for Get BMC Execution Context
-//
-#define EFI_FIRMWARE_GET_BMC_EXECUTION_CONTEXT  0x23
-//
-// Current Execution Context responses
-//
-#define EFI_FIRMWARE_BMC_IN_FORCED_UPDATE_MODE  0x11
-
-//
 // Server Management COM Addressing types
 //
 typedef enum {
@@ -326,14 +317,6 @@ typedef struct {
 typedef struct {
   UINT16  IoBasePort;
 } IPMI_HOB_DATA;
-
-//
-//  Constants and Structure definitions for "Get Device ID" command to follow here
-//
-typedef struct {
-  UINT8   CurrentExecutionContext;
-  UINT8   PartitionPointer;
-} EFI_IPMI_MSG_GET_BMC_EXEC_RSP;
 
 //
 // COM Layer Callback

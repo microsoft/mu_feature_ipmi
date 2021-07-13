@@ -242,7 +242,7 @@ Returns:
   EFI_STATUS                      Status;
   UINT32                          DataSize;
   SM_CTRL_INFO                    *pBmcInfo;
-  EFI_IPMI_MSG_GET_BMC_EXEC_RSP   *pBmcExecContext;
+  IPMI_MSG_GET_BMC_EXEC_RSP       *pBmcExecContext;
   UINT32                          Retries;
 #ifdef FAST_VIDEO_SUPPORT
   EFI_VIDEOPRINT_PROTOCOL         *VideoPrintProtocol;
@@ -301,14 +301,14 @@ Returns:
     Status = IpmiSendCommand (
                &IpmiInstance->IpmiTransport,
                IPMI_NETFN_FIRMWARE, 0,
-               EFI_FIRMWARE_GET_BMC_EXECUTION_CONTEXT,
+               IPMI_GET_BMC_EXECUTION_CONTEXT,
                NULL, 0,
                IpmiInstance->TempData, &DataSize
                );
 
-    pBmcExecContext = (EFI_IPMI_MSG_GET_BMC_EXEC_RSP*)&IpmiInstance->TempData[0];
+    pBmcExecContext = (IPMI_MSG_GET_BMC_EXEC_RSP*)&IpmiInstance->TempData[0];
     DEBUG ((DEBUG_INFO, "[IPMI] Operational status of BMC: 0x%x\n", pBmcExecContext->CurrentExecutionContext));
-    if ((pBmcExecContext->CurrentExecutionContext == EFI_FIRMWARE_BMC_IN_FORCED_UPDATE_MODE) &&
+    if ((pBmcExecContext->CurrentExecutionContext == IPMI_BMC_IN_FORCED_UPDATE_MODE) &&
         !EFI_ERROR (Status)) {
       DEBUG ((DEBUG_ERROR, "[IPMI] BMC in Forced Update mode, skip waiting for BMC_READY.\n"));
       IpmiInstance->BmcStatus = BMC_UPDATE_IN_PROGRESS;
