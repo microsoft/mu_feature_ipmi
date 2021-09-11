@@ -34,6 +34,7 @@
   #
 # MU_CHANGE [BEGIN] - [TCBZ3038] IpmiFeaturePkg.dec has incorrect LibraryClasses
   IpmiCommandLib|Include/Library/IpmiCommandLib.h
+  IpmiBaseLib|Include/Library/IpmiBaseLib.h
 
   ## @libraryclass  Provides an API for platform-specific IPMI hooks.
   #

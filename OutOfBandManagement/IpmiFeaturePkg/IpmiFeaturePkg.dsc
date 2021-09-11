@@ -33,4 +33,8 @@
 # MU_CHANGE [BEGIN] - [TCBZ3037] Add several components that are missing in DSCs
 [Components]
     IpmiFeaturePkg/Library/IpmiCommandLib/IpmiCommandLib.inf
+    IpmiFeaturePkg/Library/IpmiBaseLib/IpmiBaseLib.inf
+    IpmiFeaturePkg/Library/IpmiBaseLibNull/IpmiBaseLibNull.inf
+    IpmiFeaturePkg/Library/PeiIpmiBaseLib/PeiIpmiBaseLib.inf
+    IpmiFeaturePkg/GenericIpmi/Smm/SmmGenericIpmi.inf
 # MU_CHANGE [END] - [TCBZ3037] Add several components that are missing in DSCs
