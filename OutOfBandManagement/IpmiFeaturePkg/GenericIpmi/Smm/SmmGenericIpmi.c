@@ -198,6 +198,7 @@ Returns:
 }
 
 EFI_STATUS
+EFIAPI
 InitializeSmmGenericIpmi (
   IN EFI_HANDLE             ImageHandle,
   IN EFI_SYSTEM_TABLE       *SystemTable

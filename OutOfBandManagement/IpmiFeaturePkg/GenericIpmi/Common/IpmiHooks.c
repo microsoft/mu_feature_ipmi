@@ -9,6 +9,7 @@
 #include "IpmiHooks.h"
 
 EFI_STATUS
+EFIAPI
 IpmiSendCommand (
   IN      IPMI_TRANSPORT               *This,
   IN      UINT8                        NetFunction,
@@ -64,6 +65,7 @@ Returns:
 } // IpmiSendCommand()
 
 EFI_STATUS
+EFIAPI
 IpmiGetBmcStatus (
   IN IPMI_TRANSPORT                *This,
   OUT BMC_STATUS                   *BmcStatus,

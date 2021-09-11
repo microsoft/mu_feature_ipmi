@@ -36,7 +36,7 @@ Returns:
   EFI_STATUS      Status;
   UINT8           KcsData;
   KCS_STATUS      KcsStatus;
-  UINT8           BmcStatus;
+  // UINT8           BmcStatus;   // MU_CHANGE
   UINT8           RetryCount;
   UINT64          TimeOut;
 
@@ -101,7 +101,8 @@ Returns:
         TimeOut++;
       } while (!KcsStatus.Status.Obf);
 
-      BmcStatus = IoRead8 (KcsPort);
+      // BmcStatus = IoRead8 (KcsPort);   // MU_CHANGE
+      IoRead8 (KcsPort);                  // MU_CHANGE
 
       KcsData = KCS_READ;
       IoWrite8 (KcsPort, KcsData);
@@ -184,7 +185,7 @@ Returns:
 {
   EFI_STATUS      Status;
   KCS_STATUS      KcsStatus;
-  UINT8           KcsData;
+  // UINT8           KcsData;  // MU_CHANGE - Unused.
   UINT64          TimeOut;
 
   if (Idle == NULL) {
@@ -205,7 +206,8 @@ Returns:
   } while (KcsStatus.Status.Ibf);
 
   if (KcsState == KcsWriteState) {
-    KcsData = IoRead8 (KcsPort);
+    // KcsData = IoRead8 (KcsPort);   // MU_CHANGE
+    IoRead8 (KcsPort);                // MU_CHANGE
   }
 
   if (KcsStatus.Status.State != KcsState) {
@@ -231,7 +233,8 @@ Returns:
   }
 
   if (KcsState == KcsWriteState || (*Idle == TRUE)) {
-    KcsData = IoRead8 (KcsPort);
+    // KcsData = IoRead8 (KcsPort);   // MU_CHANGE
+    IoRead8 (KcsPort);                // MU_CHANGE
   }
 
   return EFI_SUCCESS;

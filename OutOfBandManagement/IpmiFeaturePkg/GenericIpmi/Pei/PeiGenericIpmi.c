@@ -165,13 +165,14 @@ PeimIpmiInterfaceInit (
   IN CONST EFI_PEI_SERVICES     **PeiServices
   )
 {
-  EFI_STATUS  Status;
+  // EFI_STATUS  Status;    // MU_CHANGE - Unused.
 
 
   //
   // Performing Ipmi KCS physical layer initialization
   //
-  Status = PeiInitializeIpmiKcsPhysicalLayer (PeiServices);
+  // Status = PeiInitializeIpmiKcsPhysicalLayer (PeiServices);    // MU_CHANGE
+  PeiInitializeIpmiKcsPhysicalLayer (PeiServices);                // MU_CHANGE
 
   return EFI_SUCCESS;
 } // PeimIpmiInterfaceInit()

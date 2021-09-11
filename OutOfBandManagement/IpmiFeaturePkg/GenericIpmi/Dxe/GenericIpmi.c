@@ -28,6 +28,7 @@
  @retval EFI_UNSUPPORTED  IPMI is not available.
 **/
 EFI_STATUS
+EFIAPI
 LocateIpmiInterface (
   IN EFI_HANDLE             ImageHandle,
   IN EFI_SYSTEM_TABLE       *SystemTable

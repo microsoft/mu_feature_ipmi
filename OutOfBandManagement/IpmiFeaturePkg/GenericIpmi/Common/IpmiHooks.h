@@ -15,6 +15,7 @@
 // Internal(hook) function list
 //
 EFI_STATUS
+EFIAPI
 IpmiSendCommand (
   IN      IPMI_TRANSPORT               *This,
   IN      UINT8                        NetFunction,
@@ -54,6 +55,7 @@ Returns:
 ;
 
 EFI_STATUS
+EFIAPI
 IpmiGetBmcStatus (
   IN IPMI_TRANSPORT                                    *This,
   OUT BMC_STATUS                                       *BmcStatus,
