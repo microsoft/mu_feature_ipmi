@@ -11,9 +11,9 @@
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/DebugLib.h>
 
-STATIC IPMI_TRANSPORT     *mIpmiTransport = NULL;
-VOID                      *mEfiIpmiProtocolNotifyReg;
-EFI_EVENT                 mEfiIpmiProtocolEvent;
+STATIC IPMI_TRANSPORT  *mIpmiTransport = NULL;
+VOID                   *mEfiIpmiProtocolNotifyReg;
+EFI_EVENT              mEfiIpmiProtocolEvent;
 
 /**
   Callback function for locating the IpmiTransport protocol.
@@ -26,8 +26,8 @@ EFI_EVENT                 mEfiIpmiProtocolEvent;
 **/
 EFI_STATUS
 NotifyIpmiTransportCallback (
-  IN EFI_EVENT Event,
-  IN VOID      *Context
+  IN EFI_EVENT  Event,
+  IN VOID       *Context
   )
 {
   EFI_STATUS  Status;
@@ -37,7 +37,7 @@ NotifyIpmiTransportCallback (
     Status = gBS->LocateProtocol (
                     &gIpmiTransportProtocolGuid,
                     NULL,
-                    (VOID **) &mIpmiTransport
+                    (VOID **)&mIpmiTransport
                     );
   }
 
@@ -58,7 +58,7 @@ InitializeIpmiBase (
   EFI_STATUS  Status;
 
   if (mIpmiTransport == NULL) {
-    Status = gBS->CreateEvent (EVT_NOTIFY_SIGNAL, TPL_CALLBACK, (EFI_EVENT_NOTIFY) NotifyIpmiTransportCallback, NULL, &mEfiIpmiProtocolEvent);
+    Status = gBS->CreateEvent (EVT_NOTIFY_SIGNAL, TPL_CALLBACK, (EFI_EVENT_NOTIFY)NotifyIpmiTransportCallback, NULL, &mEfiIpmiProtocolEvent);
     ASSERT_EFI_ERROR (Status);
     if (Status != EFI_SUCCESS) {
       return Status;
@@ -92,17 +92,17 @@ InitializeIpmiBase (
 **/
 EFI_STATUS
 IpmiSubmitCommand (
-  IN UINT8        NetFunction,
-  IN UINT8        Command,
-  IN UINT8        *CommandData,
-  IN UINT32       CommandDataSize,
-  OUT UINT8       *ResponseData,
-  IN OUT UINT32   *ResponseDataSize
+  IN UINT8       NetFunction,
+  IN UINT8       Command,
+  IN UINT8       *CommandData,
+  IN UINT32      CommandDataSize,
+  OUT UINT8      *ResponseData,
+  IN OUT UINT32  *ResponseDataSize
   )
 {
   EFI_STATUS  Status;
 
-  Status = gBS->LocateProtocol (&gIpmiTransportProtocolGuid, NULL, (VOID **) &mIpmiTransport);
+  Status = gBS->LocateProtocol (&gIpmiTransportProtocolGuid, NULL, (VOID **)&mIpmiTransport);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -133,13 +133,13 @@ IpmiSubmitCommand (
 **/
 EFI_STATUS
 IpmiGetBmcStatus (
-  OUT BMC_STATUS                         *BmcStatus,
-  OUT SM_COM_ADDRESS                     *ComAddress
+  OUT BMC_STATUS      *BmcStatus,
+  OUT SM_COM_ADDRESS  *ComAddress
   )
 {
   EFI_STATUS  Status;
 
-  Status = gBS->LocateProtocol (&gIpmiTransportProtocolGuid, NULL, (VOID **) &mIpmiTransport);
+  Status = gBS->LocateProtocol (&gIpmiTransportProtocolGuid, NULL, (VOID **)&mIpmiTransport);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -152,4 +152,3 @@ IpmiGetBmcStatus (
                              );
   return Status;
 }
-

@@ -15,9 +15,8 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 
 EFI_STATUS
 EFIAPI
-PlatformIpmiIoRangeSet(
-  UINT16 IpmiIoBase
+PlatformIpmiIoRangeSet (
+  UINT16  IpmiIoBase
   );
 
 #endif
-

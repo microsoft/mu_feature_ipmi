@@ -12,13 +12,14 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Library/TimerLib.h>
 #include <Library/IpmiCommandLib.h>
 
-#define BMC_TIMEOUT          30  // [s] How long shall BIOS wait for BMC
-#define BMC_KCS_TIMEOUT      5   // [s] Single KSC request timeout
+#define BMC_TIMEOUT      30      // [s] How long shall BIOS wait for BMC
+#define BMC_KCS_TIMEOUT  5       // [s] Single KSC request timeout
 
 EFI_STATUS
 GetSelfTest (
   VOID
   )
+
 /*++
 
 Routine Description:
@@ -39,27 +40,28 @@ Returns:
 
 --*/
 {
-  EFI_STATUS                       Status;
-  IPMI_SELF_TEST_RESULT_RESPONSE   TestResult;
+  EFI_STATUS                      Status;
+  IPMI_SELF_TEST_RESULT_RESPONSE  TestResult;
 
   //
   // Get the SELF TEST Results.
   //
   Status = IpmiGetSelfTestResult (&TestResult);
-  if (EFI_ERROR(Status)) {
-    DEBUG((DEBUG_ERROR, "\n[IPMI] BMC does not respond (status: %r)!\n\n", Status));
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "\n[IPMI] BMC does not respond (status: %r)!\n\n", Status));
     return Status;
   }
 
-  DEBUG((DEBUG_INFO, "[IPMI] BMC self-test result: %02X-%02X\n", TestResult.Result, TestResult.Param));
+  DEBUG ((DEBUG_INFO, "[IPMI] BMC self-test result: %02X-%02X\n", TestResult.Result, TestResult.Param));
 
   return EFI_SUCCESS;
 }
 
 EFI_STATUS
 GetDeviceId (
-  OUT BOOLEAN *UpdateMode
+  OUT BOOLEAN  *UpdateMode
   )
+
 /*++
 
 Routine Description:
@@ -88,17 +90,18 @@ Returns:
   //
   do {
     Status = IpmiGetDeviceId (&BmcInfo);
-    if (!EFI_ERROR(Status)) {
+    if (!EFI_ERROR (Status)) {
       break;
     }
+
     DEBUG ((DEBUG_ERROR, "[IPMI] BMC does not respond (status: %r), %d retries left\n", Status, Retries));
-    MicroSecondDelay(50 * 1000);
+    MicroSecondDelay (50 * 1000);
     if (Retries-- == 0) {
       return Status;
     }
   } while (TRUE);
 
-  DEBUG((
+  DEBUG ((
     DEBUG_INFO,
     "[IPMI] BMC Device ID: 0x%02X, firmware version: %d.%02X\n",
     BmcInfo.DeviceId,
@@ -121,14 +124,14 @@ Returns:
 EFI_STATUS
 EFIAPI
 IpmiInterfaceInit (
-  IN EFI_HANDLE             ImageHandle,
-  IN EFI_SYSTEM_TABLE       *SystemTable
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
-  BOOLEAN      UpdateMode;
-  EFI_STATUS   Status;
+  BOOLEAN     UpdateMode;
+  EFI_STATUS  Status;
 
-  DEBUG((DEBUG_ERROR,"IPMI Dxe:Get BMC Device Id\n"));
+  DEBUG ((DEBUG_ERROR, "IPMI Dxe:Get BMC Device Id\n"));
 
   //
   // Get the Device ID and check if the system is in Force Update mode.
@@ -137,7 +140,7 @@ IpmiInterfaceInit (
   //
   // Do not continue initialization if the BMC is in Force Update Mode.
   //
-  if (!EFI_ERROR(Status) && !UpdateMode) {
+  if (!EFI_ERROR (Status) && !UpdateMode) {
     //
     // Get the SELF TEST Results.
     //
@@ -146,5 +149,3 @@ IpmiInterfaceInit (
 
   return EFI_SUCCESS;
 }
-
-

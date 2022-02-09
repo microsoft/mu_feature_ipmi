@@ -44,12 +44,12 @@ InitializeIpmiBase (
 **/
 EFI_STATUS
 IpmiSubmitCommand (
-  IN UINT8     NetFunction,
-  IN UINT8     Command,
-  IN UINT8     *CommandData,
-  IN UINT32    CommandDataSize,
-  OUT UINT8    *ResponseData,
-  OUT UINT32   *ResponseDataSize
+  IN UINT8    NetFunction,
+  IN UINT8    Command,
+  IN UINT8    *CommandData,
+  IN UINT32   CommandDataSize,
+  OUT UINT8   *ResponseData,
+  OUT UINT32  *ResponseDataSize
   )
 {
   return EFI_SUCCESS;
@@ -67,10 +67,9 @@ IpmiSubmitCommand (
 **/
 EFI_STATUS
 GetBmcStatus (
-  OUT BMC_STATUS                         *BmcStatus,
-  OUT SM_COM_ADDRESS                     *ComAddress
+  OUT BMC_STATUS      *BmcStatus,
+  OUT SM_COM_ADDRESS  *ComAddress
   )
 {
   return EFI_SUCCESS;
 }
-

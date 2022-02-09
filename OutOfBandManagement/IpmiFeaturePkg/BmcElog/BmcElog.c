@@ -36,8 +36,9 @@ CheckIfSelIsFull (
 --*/
 EFI_STATUS
 WaitTillErased (
-  UINT8                                 *ResvId
+  UINT8  *ResvId
   )
+
 /*++
 
 Routine Description:
@@ -58,17 +59,17 @@ Returns:
   IPMI_CLEAR_SEL_REQUEST   ClearSel;
   IPMI_CLEAR_SEL_RESPONSE  ClearSelResponse;
 
-  Counter   = 0x200;
-  ZeroMem (&ClearSelResponse, sizeof(ClearSelResponse));
+  Counter = 0x200;
+  ZeroMem (&ClearSelResponse, sizeof (ClearSelResponse));
 
   while (TRUE) {
-    ZeroMem (&ClearSel, sizeof(ClearSel));
-    ClearSel.Reserve[0]  = ResvId[0];
-    ClearSel.Reserve[1]  = ResvId[1];
-    ClearSel.AscC        = 0x43;
-    ClearSel.AscL        = 0x4C;
-    ClearSel.AscR        = 0x52;
-    ClearSel.Erase       = 0x00;
+    ZeroMem (&ClearSel, sizeof (ClearSel));
+    ClearSel.Reserve[0] = ResvId[0];
+    ClearSel.Reserve[1] = ResvId[1];
+    ClearSel.AscC       = 0x43;
+    ClearSel.AscL       = 0x4C;
+    ClearSel.AscR       = 0x52;
+    ClearSel.Erase      = 0x00;
 
     IpmiClearSel (
       &ClearSel,
@@ -78,6 +79,7 @@ Returns:
     if ((ClearSelResponse.ErasureProgress & 0xf) == 1) {
       return EFI_SUCCESS;
     }
+
     //
     //  If there is not a response from the BMC controller we need to return and not hang.
     //
@@ -90,9 +92,10 @@ Returns:
 
 EFI_STATUS
 EfiActivateBmcElog (
-  IN BOOLEAN                            *EnableElog,
-  OUT BOOLEAN                           *ElogStatus
+  IN BOOLEAN   *EnableElog,
+  OUT BOOLEAN  *ElogStatus
   )
+
 /*++
 
 Routine Description:
@@ -110,17 +113,17 @@ Returns:
 
 --*/
 {
-  EFI_STATUS                           Status;
-  UINT8                                ElogStat;
-  IPMI_SET_BMC_GLOBAL_ENABLES_REQUEST  SetBmcGlobalEnables;
-  IPMI_GET_BMC_GLOBAL_ENABLES_RESPONSE GetBmcGlobalEnables;
-  UINT8                                CompletionCode;
+  EFI_STATUS                            Status;
+  UINT8                                 ElogStat;
+  IPMI_SET_BMC_GLOBAL_ENABLES_REQUEST   SetBmcGlobalEnables;
+  IPMI_GET_BMC_GLOBAL_ENABLES_RESPONSE  GetBmcGlobalEnables;
+  UINT8                                 CompletionCode;
 
-  Status              = EFI_SUCCESS;
-  ElogStat            = 0;
+  Status   = EFI_SUCCESS;
+  ElogStat = 0;
 
   Status = IpmiGetBmcGlobalEnables (&GetBmcGlobalEnables);
-  if (EFI_ERROR(Status)) {
+  if (EFI_ERROR (Status)) {
     return Status;
   }
 
@@ -132,7 +135,7 @@ Returns:
         ElogStat = 1;
       }
 
-      CopyMem (&SetBmcGlobalEnables, (UINT8 *)&GetBmcGlobalEnables + 1, sizeof(UINT8));
+      CopyMem (&SetBmcGlobalEnables, (UINT8 *)&GetBmcGlobalEnables + 1, sizeof (UINT8));
       SetBmcGlobalEnables.SetEnables.Bits.SystemEventLogging = ElogStat;
 
       Status = IpmiSetBmcGlobalEnables (&SetBmcGlobalEnables, &CompletionCode);
@@ -146,6 +149,7 @@ EFI_STATUS
 SetElogRedirInstall (
   VOID
   )
+
 /*++
 
 Routine Description:
@@ -160,8 +164,8 @@ Returns:
 
 --*/
 {
-  BOOLEAN     EnableElog;
-  BOOLEAN     ElogStatus;
+  BOOLEAN  EnableElog;
+  BOOLEAN  ElogStatus;
 
   //
   // Activate the Event Log (This should depend upon Setup).
@@ -173,9 +177,10 @@ Returns:
 EFI_STATUS
 EFIAPI
 InitializeBmcElogLayer (
-  IN EFI_HANDLE             ImageHandle,
-  IN EFI_SYSTEM_TABLE       *SystemTable
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
   )
+
 /*++
 
 Routine Description:
@@ -203,6 +208,7 @@ EFIAPI
 CheckIfSelIsFull (
   VOID
   )
+
 /*++
 
   Routine Description:

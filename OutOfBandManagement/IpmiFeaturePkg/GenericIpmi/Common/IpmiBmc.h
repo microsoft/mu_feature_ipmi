@@ -25,13 +25,12 @@
 #include "IpmiBmcCommon.h"
 #include "KcsBmc.h"
 
-
 #define BMC_KCS_TIMEOUT  5   // [s] Single KSC request timeout
 
 //
 // IPMI Instance signature
 //
-#define SM_IPMI_BMC_SIGNATURE SIGNATURE_32 ('i', 'p', 'm', 'i')
+#define SM_IPMI_BMC_SIGNATURE        SIGNATURE_32 ('i', 'p', 'm', 'i')
 #define IPMI_SEND_COMMAND_MAX_RETRY  3   // Number of retries
 #define INSTANCE_FROM_SM_IPMI_BMC_THIS(a) \
   CR ( \

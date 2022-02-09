@@ -12,6 +12,7 @@
 //
 // Prototype definitions for IPMI Library
 //
+
 /**
   Initialize the global varible with the pointer of IpmiTransport Protocol.
 
@@ -38,13 +39,12 @@ InitializeIpmiBase (
 **/
 EFI_STATUS
 IpmiSubmitCommand (
-  IN UINT8     NetFunction,
-  IN UINT8     Command,
-  IN UINT8     *CommandData,
-  IN UINT32    CommandDataSize,
-  OUT UINT8    *ResponseData,
-  OUT UINT32   *ResponseDataSize
+  IN UINT8    NetFunction,
+  IN UINT8    Command,
+  IN UINT8    *CommandData,
+  IN UINT32   CommandDataSize,
+  OUT UINT8   *ResponseData,
+  OUT UINT32  *ResponseDataSize
   );
 
 #endif
-

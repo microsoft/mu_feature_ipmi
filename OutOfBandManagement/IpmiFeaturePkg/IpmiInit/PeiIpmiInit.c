@@ -12,13 +12,14 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Library/TimerLib.h>
 #include <Library/IpmiCommandLib.h>
 
-#define BMC_TIMEOUT_PEI      50  // [s] How long shall BIOS wait for BMC
-#define BMC_KCS_TIMEOUT      5   // [s] Single KSC request timeout
+#define BMC_TIMEOUT_PEI  50      // [s] How long shall BIOS wait for BMC
+#define BMC_KCS_TIMEOUT  5       // [s] Single KSC request timeout
 
 EFI_STATUS
 GetDeviceId (
-  OUT BOOLEAN *UpdateMode
+  OUT BOOLEAN  *UpdateMode
   )
+
 /*++
 
 Routine Description:
@@ -47,16 +48,17 @@ Returns:
   //
   do {
     Status = IpmiGetDeviceId (&BmcInfo);
-    if (!EFI_ERROR(Status)) {
+    if (!EFI_ERROR (Status)) {
       break;
     }
+
     DEBUG ((DEBUG_ERROR, "[IPMI] BMC does not respond (status: %r), %d retries left\n", Status, Retries));
     if (Retries-- == 0) {
       return Status;
     }
   } while (TRUE);
 
-  DEBUG((
+  DEBUG ((
     DEBUG_INFO,
     "[IPMI] BMC Device ID: 0x%02X, firmware version: %d.%02X\n",
     BmcInfo.DeviceId,
@@ -83,8 +85,8 @@ PeimIpmiInterfaceInit (
   IN CONST EFI_PEI_SERVICES     **PeiServices
   )
 {
-  BOOLEAN      UpdateMode;
-  EFI_STATUS   Status;
+  BOOLEAN     UpdateMode;
+  EFI_STATUS  Status;
 
   DEBUG ((DEBUG_INFO, "IPMI Peim:Get BMC Device Id\n"));
 

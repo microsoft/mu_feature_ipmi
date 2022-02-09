@@ -25,7 +25,7 @@
 //
 // IPMI Instance signature
 //
-#define SM_IPMI_BMC_SIGNATURE SIGNATURE_32 ('i', 'p', 'm', 'i')
+#define SM_IPMI_BMC_SIGNATURE  SIGNATURE_32 ('i', 'p', 'm', 'i')
 
 #define INSTANCE_FROM_PEI_SM_IPMI_BMC_THIS(a) \
   CR ( \

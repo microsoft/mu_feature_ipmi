@@ -21,21 +21,20 @@ typedef struct _PEI_IPMI_TRANSPORT_PPI PEI_IPMI_TRANSPORT_PPI;
 //
 // Common Defines
 //
-typedef UINT32  BMC_STATUS;
+typedef UINT32 BMC_STATUS;
 
-#define BMC_OK        0
-#define BMC_SOFTFAIL  1
-#define BMC_HARDFAIL  2
+#define BMC_OK                  0
+#define BMC_SOFTFAIL            1
+#define BMC_HARDFAIL            2
 #define BMC_UPDATE_IN_PROGRESS  3
-#define BMC_NOTREADY  4
-
+#define BMC_NOTREADY            4
 
 //
 //  IPMI Function Prototypes
 //
 typedef
 EFI_STATUS
-(EFIAPI *PEI_IPMI_SEND_COMMAND) (
+(EFIAPI *PEI_IPMI_SEND_COMMAND)(
   IN PEI_IPMI_TRANSPORT_PPI            *This,
   IN UINT8                             NetFunction,
   IN UINT8                             Lun,
@@ -48,7 +47,7 @@ EFI_STATUS
 
 typedef
 EFI_STATUS
-(EFIAPI *PEI_IPMI_GET_CHANNEL_STATUS) (
+(EFIAPI *PEI_IPMI_GET_CHANNEL_STATUS)(
   IN PEI_IPMI_TRANSPORT_PPI       *This,
   OUT BMC_STATUS                  *BmcStatus,
   OUT SM_COM_ADDRESS              *ComAddress
@@ -58,11 +57,11 @@ EFI_STATUS
 // IPMI TRANSPORT PPI
 //
 struct _PEI_IPMI_TRANSPORT_PPI {
-  UINT64                      Revision;
-  PEI_IPMI_SEND_COMMAND       IpmiSubmitCommand;
-  PEI_IPMI_GET_CHANNEL_STATUS GetBmcStatus;
+  UINT64                         Revision;
+  PEI_IPMI_SEND_COMMAND          IpmiSubmitCommand;
+  PEI_IPMI_GET_CHANNEL_STATUS    GetBmcStatus;
 };
 
-extern EFI_GUID gPeiIpmiTransportPpiGuid;
+extern EFI_GUID  gPeiIpmiTransportPpiGuid;
 
 #endif

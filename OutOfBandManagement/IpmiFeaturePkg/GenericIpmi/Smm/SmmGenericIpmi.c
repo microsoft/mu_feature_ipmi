@@ -25,16 +25,16 @@
 #include "IpmiBmc.h"
 #include <Library/TimerLib.h>
 
-IPMI_BMC_INSTANCE_DATA             *mIpmiInstance;
-EFI_HANDLE                         mImageHandle;
-
+IPMI_BMC_INSTANCE_DATA  *mIpmiInstance;
+EFI_HANDLE              mImageHandle;
 
 EFI_STATUS
 GetDeviceId (
-  IN      IPMI_BMC_INSTANCE_DATA       *IpmiInstance,
-  IN      EFI_STATUS_CODE_VALUE        StatusCodeValue[ ],
-  IN OUT  UINT8                        *ErrorCount
+  IN      IPMI_BMC_INSTANCE_DATA  *IpmiInstance,
+  IN      EFI_STATUS_CODE_VALUE   StatusCodeValue[],
+  IN OUT  UINT8                   *ErrorCount
   )
+
 /*++
 
 Routine Description:
@@ -51,11 +51,11 @@ Returns:
 
 --*/
 {
-  EFI_STATUS               Status;
-  UINT32                   DataSize;
-  SM_CTRL_INFO             *ControllerInfo;
-  UINT8                    TimeOut;
-  UINT8                    Retries;
+  EFI_STATUS    Status;
+  UINT32        DataSize;
+  SM_CTRL_INFO  *ControllerInfo;
+  UINT8         TimeOut;
+  UINT8         Retries;
 
   TimeOut = 0;
   Retries = PcdGet8 (PcdIpmiBmcReadyDelayTimer);
@@ -65,16 +65,16 @@ Returns:
     // Get the device ID information for the BMC.
     //
     DataSize = MAX_TEMP_DATA;
-    Status = IpmiSendCommand (
-               &IpmiInstance->IpmiTransport,
-               IPMI_NETFN_APP,
-               0,
-               IPMI_APP_GET_DEVICE_ID,
-               NULL,
-               0,
-               IpmiInstance->TempData,
-               &DataSize
-               );
+    Status   = IpmiSendCommand (
+                 &IpmiInstance->IpmiTransport,
+                 IPMI_NETFN_APP,
+                 0,
+                 IPMI_APP_GET_DEVICE_ID,
+                 NULL,
+                 0,
+                 IpmiInstance->TempData,
+                 &DataSize
+                 );
     if (Status == EFI_SUCCESS) {
       DEBUG ((EFI_D_INFO, "IPMI: SendCommand success!\n"));
       break;
@@ -96,7 +96,7 @@ Returns:
   // If there is no error then proceed to check the data returned by the BMC
   //
   if (!EFI_ERROR (Status)) {
-    ControllerInfo = (SM_CTRL_INFO *) IpmiInstance->TempData;
+    ControllerInfo = (SM_CTRL_INFO *)IpmiInstance->TempData;
     //
     // If the controller is in Update Mode and the maximum number of errors has not been exceeded, then
     // save the error code to the StatusCode array and increment the counter.  Set the BMC Status to indicate
@@ -116,9 +116,10 @@ Returns:
 
 EFI_STATUS
 SmmInitializeIpmiKcsPhysicalLayer (
-  IN EFI_HANDLE             ImageHandle,
-  IN EFI_SYSTEM_TABLE       *SystemTable
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
   )
+
 /*++
 
 Routine Description:
@@ -137,13 +138,13 @@ Returns:
 
 --*/
 {
-  EFI_STATUS                       Status;
-  UINT8                            ErrorCount;
-  EFI_HANDLE                       Handle;
-  EFI_STATUS_CODE_VALUE            StatusCodeValue[MAX_SOFT_COUNT];
+  EFI_STATUS             Status;
+  UINT8                  ErrorCount;
+  EFI_HANDLE             Handle;
+  EFI_STATUS_CODE_VALUE  StatusCodeValue[MAX_SOFT_COUNT];
 
-  DEBUG ((DEBUG_INFO,"SmmInitializeIpmiKcsPhysicalLayer entry \n"));
-  ErrorCount = 0;
+  DEBUG ((DEBUG_INFO, "SmmInitializeIpmiKcsPhysicalLayer entry \n"));
+  ErrorCount   = 0;
   mImageHandle = ImageHandle;
 
   mIpmiInstance = AllocateZeroPool (sizeof (IPMI_BMC_INSTANCE_DATA));
@@ -153,7 +154,6 @@ Returns:
     ASSERT_EFI_ERROR (EFI_OUT_OF_RESOURCES);
     return EFI_OUT_OF_RESOURCES;
   } else {
-
     //
     // Initialize the KCS transaction timeout. Assume delay unit is 1000 us.
     //
@@ -162,14 +162,14 @@ Returns:
     //
     // Initialize IPMI IO Base, we still use SMS IO base to get device ID and Seltest result since SMM IF may have different cmds supported
     //
-    mIpmiInstance->IpmiIoBase                       = PcdGet16 (PcdIpmiSmmIoBaseAddress);
-    mIpmiInstance->Signature                        = SM_IPMI_BMC_SIGNATURE;
-    mIpmiInstance->SlaveAddress                     = BMC_SLAVE_ADDRESS;
-    mIpmiInstance->BmcStatus                        = BMC_NOTREADY;
-    mIpmiInstance->IpmiTransport.IpmiSubmitCommand  = IpmiSendCommand;
-    mIpmiInstance->IpmiTransport.GetBmcStatus       = IpmiGetBmcStatus;
+    mIpmiInstance->IpmiIoBase                      = PcdGet16 (PcdIpmiSmmIoBaseAddress);
+    mIpmiInstance->Signature                       = SM_IPMI_BMC_SIGNATURE;
+    mIpmiInstance->SlaveAddress                    = BMC_SLAVE_ADDRESS;
+    mIpmiInstance->BmcStatus                       = BMC_NOTREADY;
+    mIpmiInstance->IpmiTransport.IpmiSubmitCommand = IpmiSendCommand;
+    mIpmiInstance->IpmiTransport.GetBmcStatus      = IpmiGetBmcStatus;
 
-    DEBUG ((DEBUG_INFO,"IPMI: Waiting for Getting BMC DID in SMM \n"));
+    DEBUG ((DEBUG_INFO, "IPMI: Waiting for Getting BMC DID in SMM \n"));
     //
     // Get the Device ID and check if the system is in Force Update mode.
     //
@@ -191,7 +191,7 @@ Returns:
                       );
     ASSERT_EFI_ERROR (Status);
 
-    DEBUG ((DEBUG_INFO,"SmmInitializeIpmiKcsPhysicalLayer exit \n"));
+    DEBUG ((DEBUG_INFO, "SmmInitializeIpmiKcsPhysicalLayer exit \n"));
 
     return EFI_SUCCESS;
   }
@@ -200,8 +200,8 @@ Returns:
 EFI_STATUS
 EFIAPI
 InitializeSmmGenericIpmi (
-  IN EFI_HANDLE             ImageHandle,
-  IN EFI_SYSTEM_TABLE       *SystemTable
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
   SmmInitializeIpmiKcsPhysicalLayer (ImageHandle, SystemTable);

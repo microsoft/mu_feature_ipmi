@@ -17,9 +17,10 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 EFI_STATUS
 EFIAPI
 InitializeFru (
-  IN EFI_HANDLE             ImageHandle,
-  IN EFI_SYSTEM_TABLE       *SystemTable
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
   )
+
 /*++
 
 Routine Description:
@@ -47,20 +48,21 @@ Returns:
   //
   Status = IpmiGetDeviceId (&ControllerInfo);
   if (EFI_ERROR (Status)) {
-    DEBUG((DEBUG_ERROR, "!!! IpmiFru  IpmiGetDeviceId Status=%x\n", Status));
+    DEBUG ((DEBUG_ERROR, "!!! IpmiFru  IpmiGetDeviceId Status=%x\n", Status));
     return Status;
   }
 
-  DEBUG((DEBUG_ERROR, "!!! IpmiFru  FruInventorySupport %x\n", ControllerInfo.DeviceSupport.Bits.FruInventorySupport));
+  DEBUG ((DEBUG_ERROR, "!!! IpmiFru  FruInventorySupport %x\n", ControllerInfo.DeviceSupport.Bits.FruInventorySupport));
 
   if (ControllerInfo.DeviceSupport.Bits.FruInventorySupport) {
     GetFruInventoryAreaInfoRequest.DeviceId = 0;
-    Status = IpmiGetFruInventoryAreaInfo (&GetFruInventoryAreaInfoRequest, &GetFruInventoryAreaInfoResponse);
+    Status                                  = IpmiGetFruInventoryAreaInfo (&GetFruInventoryAreaInfoRequest, &GetFruInventoryAreaInfoResponse);
     if (EFI_ERROR (Status)) {
-      DEBUG((DEBUG_ERROR, "!!! IpmiFru  IpmiGetFruInventoryAreaInfo Status=%x\n", Status));
+      DEBUG ((DEBUG_ERROR, "!!! IpmiFru  IpmiGetFruInventoryAreaInfo Status=%x\n", Status));
       return Status;
     }
-    DEBUG((DEBUG_ERROR, "!!! IpmiFru  InventoryAreaSize=%x\n", GetFruInventoryAreaInfoResponse.InventoryAreaSize));
+
+    DEBUG ((DEBUG_ERROR, "!!! IpmiFru  InventoryAreaSize=%x\n", GetFruInventoryAreaInfoResponse.InventoryAreaSize));
   }
 
   return EFI_SUCCESS;

@@ -26,7 +26,7 @@ typedef struct _IPMI_TRANSPORT IPMI_TRANSPORT;
 //
 // Common Defines
 //
-typedef UINT32  BMC_STATUS;
+typedef UINT32 BMC_STATUS;
 
 #define BMC_OK                  0
 #define BMC_SOFTFAIL            1
@@ -39,7 +39,7 @@ typedef UINT32  BMC_STATUS;
 //
 typedef
 EFI_STATUS
-(EFIAPI *IPMI_SEND_COMMAND) (
+(EFIAPI *IPMI_SEND_COMMAND)(
   IN IPMI_TRANSPORT                    *This,
   IN UINT8                             NetFunction,
   IN UINT8                             Lun,
@@ -52,7 +52,7 @@ EFI_STATUS
 
 typedef
 EFI_STATUS
-(EFIAPI *IPMI_GET_CHANNEL_STATUS) (
+(EFIAPI *IPMI_GET_CHANNEL_STATUS)(
   IN IPMI_TRANSPORT                   *This,
   OUT BMC_STATUS                      *BmcStatus,
   OUT SM_COM_ADDRESS                  *ComAddress
@@ -62,14 +62,14 @@ EFI_STATUS
 // IPMI TRANSPORT PROTOCOL
 //
 struct _IPMI_TRANSPORT {
-  UINT64                      Revision;
-  IPMI_SEND_COMMAND           IpmiSubmitCommand;
-  IPMI_GET_CHANNEL_STATUS     GetBmcStatus;
-  EFI_HANDLE                  IpmiHandle;
-  UINT8                       CompletionCode;
+  UINT64                     Revision;
+  IPMI_SEND_COMMAND          IpmiSubmitCommand;
+  IPMI_GET_CHANNEL_STATUS    GetBmcStatus;
+  EFI_HANDLE                 IpmiHandle;
+  UINT8                      CompletionCode;
 };
 
-extern EFI_GUID gIpmiTransportProtocolGuid;
-extern EFI_GUID gSmmIpmiTransportProtocolGuid;
+extern EFI_GUID  gIpmiTransportProtocolGuid;
+extern EFI_GUID  gSmmIpmiTransportProtocolGuid;
 
 #endif

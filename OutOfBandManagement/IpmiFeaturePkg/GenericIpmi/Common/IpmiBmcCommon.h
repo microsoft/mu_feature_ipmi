@@ -9,10 +9,10 @@
 #ifndef _IPMI_COMMON_BMC_H_
 #define _IPMI_COMMON_BMC_H_
 
-#define MAX_TEMP_DATA     255 // 160 Modified to increase number of bytes transfered per command
-#define BMC_SLAVE_ADDRESS 0x20
-#define MAX_SOFT_COUNT    10
-#define COMP_CODE_NORMAL  0x00
+#define MAX_TEMP_DATA      255// 160 Modified to increase number of bytes transfered per command
+#define BMC_SLAVE_ADDRESS  0x20
+#define MAX_SOFT_COUNT     10
+#define COMP_CODE_NORMAL   0x00
 
 //
 // IPMI command completion codes to check for in the UpdateErrorStatus routine.
@@ -33,8 +33,8 @@
 // D4h C Insufficient privilege, in KCS channel this indicates KCS Policy Control Mode is Deny All.
 // In authenticated channels this indicates invalid authentication/privilege.
 //
-#define COMP_INSUFFICIENT_PRIVILEGE       0xD4
-#define COMP_CODE_UNSPECIFIED             0xFF
+#define COMP_INSUFFICIENT_PRIVILEGE  0xD4
+#define COMP_CODE_UNSPECIFIED        0xFF
 
 #define COMPLETION_CODES \
   { \
@@ -47,16 +47,16 @@
 // Dxe Ipmi instance data
 //
 typedef struct {
-  UINTN               Signature;
-  UINT64              KcsTimeoutPeriod;
-  UINT8               SlaveAddress;
-  UINT8               TempData[MAX_TEMP_DATA];
-  BMC_STATUS          BmcStatus;
-  UINT64              ErrorStatus;
-  UINT8               SoftErrorCount;
-  UINT16              IpmiIoBase;
-  IPMI_TRANSPORT      IpmiTransport;
-  EFI_HANDLE          IpmiSmmHandle;
+  UINTN             Signature;
+  UINT64            KcsTimeoutPeriod;
+  UINT8             SlaveAddress;
+  UINT8             TempData[MAX_TEMP_DATA];
+  BMC_STATUS        BmcStatus;
+  UINT64            ErrorStatus;
+  UINT8             SoftErrorCount;
+  UINT16            IpmiIoBase;
+  IPMI_TRANSPORT    IpmiTransport;
+  EFI_HANDLE        IpmiSmmHandle;
 } IPMI_BMC_INSTANCE_DATA;
 
 //
@@ -65,38 +65,39 @@ typedef struct {
 #define IPMI_COMMAND_HEADER_SIZE  2
 
 typedef struct {
-  UINT8 Lun : 2;
-  UINT8 NetFunction : 6;
-  UINT8 Command;
-  UINT8 CommandData[MAX_TEMP_DATA - IPMI_COMMAND_HEADER_SIZE];
+  UINT8    Lun         : 2;
+  UINT8    NetFunction : 6;
+  UINT8    Command;
+  UINT8    CommandData[MAX_TEMP_DATA - IPMI_COMMAND_HEADER_SIZE];
 } IPMI_COMMAND;
 
 //
 // Structure of IPMI Command response buffer
 //
-#define IPMI_RESPONSE_HEADER_SIZE 3
+#define IPMI_RESPONSE_HEADER_SIZE  3
 
 typedef struct {
-  UINT8 Lun : 2;
-  UINT8 NetFunction : 6;
-  UINT8 Command;
-  UINT8 CompletionCode;
-  UINT8 ResponseData[MAX_TEMP_DATA - IPMI_RESPONSE_HEADER_SIZE];
+  UINT8    Lun         : 2;
+  UINT8    NetFunction : 6;
+  UINT8    Command;
+  UINT8    CompletionCode;
+  UINT8    ResponseData[MAX_TEMP_DATA - IPMI_RESPONSE_HEADER_SIZE];
 } IPMI_RESPONSE;
 
 EFI_STATUS
 EFIAPI
 IpmiSendCommandToBmc (
-  IN      IPMI_TRANSPORT                *This,
-  IN      UINT8                         NetFunction,
-  IN      UINT8                         Lun,
-  IN      UINT8                         Command,
-  IN      UINT8                         *CommandData,
-  IN      UINT8                         CommandDataSize,
-  IN OUT  UINT8                         *ResponseData,
-  IN OUT  UINT8                         *ResponseDataSize,
-  IN      VOID                          *Context
+  IN      IPMI_TRANSPORT  *This,
+  IN      UINT8           NetFunction,
+  IN      UINT8           Lun,
+  IN      UINT8           Command,
+  IN      UINT8           *CommandData,
+  IN      UINT8           CommandDataSize,
+  IN OUT  UINT8           *ResponseData,
+  IN OUT  UINT8           *ResponseDataSize,
+  IN      VOID            *Context
   )
+
 /*++
 
 Routine Description:
@@ -125,15 +126,15 @@ Returns:
 --*/
 ;
 
-
 EFI_STATUS
 EFIAPI
 IpmiBmcStatus (
-  IN  IPMI_TRANSPORT              *This,
-  OUT BMC_STATUS                  *BmcStatus,
-  OUT SM_COM_ADDRESS              *ComAddress,
-  IN  VOID                        *Context
+  IN  IPMI_TRANSPORT  *This,
+  OUT BMC_STATUS      *BmcStatus,
+  OUT SM_COM_ADDRESS  *ComAddress,
+  IN  VOID            *Context
   )
+
 /*++
 
 Routine Description:
@@ -158,6 +159,7 @@ VOID
 GetDeviceSpecificTestResults (
   IN      IPMI_BMC_INSTANCE_DATA  *IpmiInstance
   )
+
 /*++
 
 Routine Description:

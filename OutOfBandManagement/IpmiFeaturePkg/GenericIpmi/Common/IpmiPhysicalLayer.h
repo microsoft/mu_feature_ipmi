@@ -14,16 +14,14 @@
 //
 EFI_STATUS
 InitializeIpmiKcsPhysicalLayer (
-  IN EFI_HANDLE ImageHandle,
-  IN EFI_SYSTEM_TABLE *SystemTable
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
   );
-
 
 EFI_STATUS
 SmmInitializeIpmiKcsPhysicalLayer (
-  IN EFI_HANDLE ImageHandle,
-  IN EFI_SYSTEM_TABLE *SystemTable
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
   );
 
 #endif
-

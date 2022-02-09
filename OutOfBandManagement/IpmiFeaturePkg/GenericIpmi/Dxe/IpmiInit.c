@@ -18,20 +18,20 @@
 #endif
 #include <Library/UefiRuntimeServicesTableLib.h>
 
-
 /******************************************************************************
  * Local variables
  */
-IPMI_BMC_INSTANCE_DATA       *mIpmiInstance = NULL;
-EFI_HANDLE                    mImageHandle;
+IPMI_BMC_INSTANCE_DATA  *mIpmiInstance = NULL;
+EFI_HANDLE              mImageHandle;
 
 //
 // Specific test interface
 //
 VOID
 GetDeviceSpecificTestResults (
-  IN      IPMI_BMC_INSTANCE_DATA *IpmiInstance
+  IN      IPMI_BMC_INSTANCE_DATA  *IpmiInstance
   )
+
 /*++
 
 Routine Description:
@@ -54,10 +54,11 @@ Returns:
 
 EFI_STATUS
 GetSelfTest (
-  IN      IPMI_BMC_INSTANCE_DATA     *IpmiInstance,
-  IN      EFI_STATUS_CODE_VALUE       StatusCodeValue[],
-  IN OUT  UINT8                       *ErrorCount
+  IN      IPMI_BMC_INSTANCE_DATA  *IpmiInstance,
+  IN      EFI_STATUS_CODE_VALUE   StatusCodeValue[],
+  IN OUT  UINT8                   *ErrorCount
   )
+
 /*++
 
 Routine Description:
@@ -89,7 +90,7 @@ Returns:
   // Get the SELF TEST Results.
   //
   //
-  //Note: If BMC PcdIpmiBmcReadyDelayTimer < BMC_KCS_TIMEOUT, it need set Retries as 1. Otherwise it will make SELT failure, caused by below condition (EFI_ERROR(Status) || Retries == 0)
+  // Note: If BMC PcdIpmiBmcReadyDelayTimer < BMC_KCS_TIMEOUT, it need set Retries as 1. Otherwise it will make SELT failure, caused by below condition (EFI_ERROR(Status) || Retries == 0)
   //
   if (PcdGet8 (PcdIpmiBmcReadyDelayTimer) < BMC_KCS_TIMEOUT) {
     Retries = 1;
@@ -123,7 +124,7 @@ Returns:
 
         default:
           break;
-      } //switch
+      } // switch
 
       if (bResultFlag) {
         break;
@@ -136,7 +137,7 @@ Returns:
   //
   // If Status indicates a Device error, then the BMC is not responding, so send an error.
   //
-  if (EFI_ERROR (Status) || Retries == 0) {
+  if (EFI_ERROR (Status) || (Retries == 0)) {
     DEBUG ((EFI_D_ERROR, "\n[IPMI]  BMC self-test does not respond (status: %r)!\n\n", Status));
     if (*ErrorCount < MAX_SOFT_COUNT) {
       StatusCodeValue[*ErrorCount] = EFI_COMPUTING_UNIT_FIRMWARE_PROCESSOR | EFI_CU_FP_EC_COMM_ERROR;
@@ -151,12 +152,14 @@ Returns:
     // Copy the Self test results to Error Status.  Data will be copied as long as it
     // does not exceed the size of the ErrorStatus variable.
     //
-    for (Index = 0, TempPtr = (UINT8 *) &IpmiInstance->ErrorStatus;
+    for (Index = 0, TempPtr = (UINT8 *)&IpmiInstance->ErrorStatus;
          (Index < DataSize) && (Index < sizeof (IpmiInstance->ErrorStatus));
          Index++, TempPtr++
-         ) {
+         )
+    {
       *TempPtr = IpmiInstance->TempData[Index];
     }
+
     //
     // Check the IPMI defined self test results.
     // Additional Cases are device specific test results.
@@ -178,6 +181,7 @@ Returns:
         } else {
           IpmiInstance->BmcStatus = BMC_SOFTFAIL;
         }
+
         //
         // Check if SDR repository is empty and report it if it is.
         //
@@ -187,6 +191,7 @@ Returns:
             (*ErrorCount)++;
           }
         }
+
         break;
 
       case IPMI_APP_SELFTEST_FATAL_HW_ERROR:
@@ -216,13 +221,13 @@ Returns:
   return EFI_SUCCESS;
 } // GetSelfTest()
 
-
 EFI_STATUS
 GetDeviceId (
-  IN      IPMI_BMC_INSTANCE_DATA       *IpmiInstance,
-  IN      EFI_STATUS_CODE_VALUE        StatusCodeValue[ ],
-  IN OUT  UINT8                        *ErrorCount
+  IN      IPMI_BMC_INSTANCE_DATA  *IpmiInstance,
+  IN      EFI_STATUS_CODE_VALUE   StatusCodeValue[],
+  IN OUT  UINT8                   *ErrorCount
   )
+
 /*++
 
 Routine Description:
@@ -239,23 +244,24 @@ Returns:
 
 --*/
 {
-  EFI_STATUS                      Status;
-  UINT32                          DataSize;
-  SM_CTRL_INFO                    *pBmcInfo;
-  IPMI_MSG_GET_BMC_EXEC_RSP       *pBmcExecContext;
-  UINT32                          Retries;
-#ifdef FAST_VIDEO_SUPPORT
-  EFI_VIDEOPRINT_PROTOCOL         *VideoPrintProtocol;
-  EFI_STATUS                      VideoPrintStatus;
-#endif
+  EFI_STATUS                 Status;
+  UINT32                     DataSize;
+  SM_CTRL_INFO               *pBmcInfo;
+  IPMI_MSG_GET_BMC_EXEC_RSP  *pBmcExecContext;
+  UINT32                     Retries;
 
-#ifdef FAST_VIDEO_SUPPORT
+ #ifdef FAST_VIDEO_SUPPORT
+  EFI_VIDEOPRINT_PROTOCOL  *VideoPrintProtocol;
+  EFI_STATUS               VideoPrintStatus;
+ #endif
+
+ #ifdef FAST_VIDEO_SUPPORT
   VideoPrintStatus = gBS->LocateProtocol (
                             &gEfiVideoPrintProtocolGuid,
                             NULL,
                             &VideoPrintProtocol
                             );
-#endif
+ #endif
 
   //
   // Set up a loop to retry for up to PcdIpmiBmcReadyDelayTimer seconds. Calculate retries not timeout
@@ -267,28 +273,41 @@ Returns:
   // Get the device ID information for the BMC.
   //
   DataSize = sizeof (IpmiInstance->TempData);
-  while (EFI_ERROR (Status = IpmiSendCommand (
-                               &IpmiInstance->IpmiTransport,
-                               IPMI_NETFN_APP, 0,
-                               IPMI_APP_GET_DEVICE_ID,
-                               NULL, 0,
-                               IpmiInstance->TempData, &DataSize))
-         ) {
-    DEBUG ((DEBUG_ERROR, "[IPMI] BMC does not respond by Get BMC DID (status: %r), %d retries left, ResponseData: 0x%lx\n",
-            Status, Retries, IpmiInstance->TempData));
+  while (EFI_ERROR (
+           Status = IpmiSendCommand (
+                      &IpmiInstance->IpmiTransport,
+                      IPMI_NETFN_APP,
+                      0,
+                      IPMI_APP_GET_DEVICE_ID,
+                      NULL,
+                      0,
+                      IpmiInstance->TempData,
+                      &DataSize
+                      )
+           )
+         )
+  {
+    DEBUG ((
+      DEBUG_ERROR,
+      "[IPMI] BMC does not respond by Get BMC DID (status: %r), %d retries left, ResponseData: 0x%lx\n",
+      Status,
+      Retries,
+      IpmiInstance->TempData
+      ));
 
     if (Retries-- == 0) {
       IpmiInstance->BmcStatus = BMC_HARDFAIL;
       return Status;
     }
+
     //
-    //Handle the case that BMC FW still not enable KCS channel after AC cycle. just stall 1 second
+    // Handle the case that BMC FW still not enable KCS channel after AC cycle. just stall 1 second
     //
     MicroSecondDelay (1*1000*1000);
   }
 
-  pBmcInfo = (SM_CTRL_INFO*)&IpmiInstance->TempData[0];
-  DEBUG ((EFI_D_ERROR, "[IPMI] BMC Device ID: 0x%02X, firmware version: %d.%02X UpdateMode:%x\n", pBmcInfo->DeviceId, pBmcInfo->MajorFirmwareRev, pBmcInfo->MinorFirmwareRev,pBmcInfo->UpdateMode));
+  pBmcInfo = (SM_CTRL_INFO *)&IpmiInstance->TempData[0];
+  DEBUG ((EFI_D_ERROR, "[IPMI] BMC Device ID: 0x%02X, firmware version: %d.%02X UpdateMode:%x\n", pBmcInfo->DeviceId, pBmcInfo->MajorFirmwareRev, pBmcInfo->MinorFirmwareRev, pBmcInfo->UpdateMode));
   //
   // In OpenBMC, UpdateMode: the bit 7 of byte 4 in get device id command is used for the BMC status:
   // 0 means BMC is ready, 1 means BMC is not ready.
@@ -300,16 +319,20 @@ Returns:
   } else {
     Status = IpmiSendCommand (
                &IpmiInstance->IpmiTransport,
-               IPMI_NETFN_FIRMWARE, 0,
+               IPMI_NETFN_FIRMWARE,
+               0,
                IPMI_GET_BMC_EXECUTION_CONTEXT,
-               NULL, 0,
-               IpmiInstance->TempData, &DataSize
+               NULL,
+               0,
+               IpmiInstance->TempData,
+               &DataSize
                );
 
-    pBmcExecContext = (IPMI_MSG_GET_BMC_EXEC_RSP*)&IpmiInstance->TempData[0];
+    pBmcExecContext = (IPMI_MSG_GET_BMC_EXEC_RSP *)&IpmiInstance->TempData[0];
     DEBUG ((DEBUG_INFO, "[IPMI] Operational status of BMC: 0x%x\n", pBmcExecContext->CurrentExecutionContext));
     if ((pBmcExecContext->CurrentExecutionContext == IPMI_BMC_IN_FORCED_UPDATE_MODE) &&
-        !EFI_ERROR (Status)) {
+        !EFI_ERROR (Status))
+    {
       DEBUG ((DEBUG_ERROR, "[IPMI] BMC in Forced Update mode, skip waiting for BMC_READY.\n"));
       IpmiInstance->BmcStatus = BMC_UPDATE_IN_PROGRESS;
     } else {
@@ -317,31 +340,35 @@ Returns:
       // Updatemode = 1 mean BMC is not ready, continue waiting.
       //
       while (Retries-- != 0) {
-        MicroSecondDelay(1*1000*1000); //delay 1 seconds
-        DEBUG ((EFI_D_ERROR, "[IPMI] UpdateMode Retries: %d \n",Retries));
+        MicroSecondDelay (1*1000*1000); // delay 1 seconds
+        DEBUG ((EFI_D_ERROR, "[IPMI] UpdateMode Retries: %d \n", Retries));
         Status = IpmiSendCommand (
                    &IpmiInstance->IpmiTransport,
-                   IPMI_NETFN_APP, 0,
+                   IPMI_NETFN_APP,
+                   0,
                    IPMI_APP_GET_DEVICE_ID,
-                   NULL, 0,
-                   IpmiInstance->TempData, &DataSize
+                   NULL,
+                   0,
+                   IpmiInstance->TempData,
+                   &DataSize
                    );
 
         if (!EFI_ERROR (Status)) {
-          pBmcInfo = (SM_CTRL_INFO*)&IpmiInstance->TempData[0];
-          DEBUG ((EFI_D_ERROR, "[IPMI] UpdateMode Retries: %d   pBmcInfo->UpdateMode:%x, Status: %r, Response Data: 0x%lx\n",Retries, pBmcInfo->UpdateMode, Status, IpmiInstance->TempData));
+          pBmcInfo = (SM_CTRL_INFO *)&IpmiInstance->TempData[0];
+          DEBUG ((EFI_D_ERROR, "[IPMI] UpdateMode Retries: %d   pBmcInfo->UpdateMode:%x, Status: %r, Response Data: 0x%lx\n", Retries, pBmcInfo->UpdateMode, Status, IpmiInstance->TempData));
           if (pBmcInfo->UpdateMode == BMC_READY) {
             mIpmiInstance->BmcStatus = BMC_OK;
             return EFI_SUCCESS;
           }
         }
       }
+
       mIpmiInstance->BmcStatus = BMC_HARDFAIL;
     }
   }
+
   return Status;
 } // GetDeviceId()
-
 
 /**
   This function initializes KCS interface to BMC.
@@ -359,8 +386,8 @@ Returns:
  **/
 EFI_STATUS
 InitializeIpmiKcsPhysicalLayer (
-  IN EFI_HANDLE             ImageHandle,
-  IN EFI_SYSTEM_TABLE       *SystemTable
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
   EFI_STATUS             Status;
@@ -369,7 +396,7 @@ InitializeIpmiKcsPhysicalLayer (
   UINT8                  Index;
   EFI_STATUS_CODE_VALUE  StatusCodeValue[MAX_SOFT_COUNT];
 
-  ErrorCount = 0;
+  ErrorCount   = 0;
   mImageHandle = ImageHandle;
 
   mIpmiInstance = AllocateZeroPool (sizeof (*mIpmiInstance));
@@ -387,17 +414,17 @@ InitializeIpmiKcsPhysicalLayer (
     // Initialize the KCS transaction timeout.
     //
     mIpmiInstance->KcsTimeoutPeriod = (BMC_KCS_TIMEOUT * 1000*1000) / KCS_DELAY_UNIT;
-    DEBUG ((EFI_D_ERROR, "[IPMI] mIpmiInstance->KcsTimeoutPeriod: 0x%lx\n",mIpmiInstance->KcsTimeoutPeriod));
+    DEBUG ((EFI_D_ERROR, "[IPMI] mIpmiInstance->KcsTimeoutPeriod: 0x%lx\n", mIpmiInstance->KcsTimeoutPeriod));
 
     //
     // Initialize IPMI IO Base.
     //
-    mIpmiInstance->IpmiIoBase                       = PcdGet16 (PcdIpmiIoBaseAddress);
-    mIpmiInstance->Signature                        = SM_IPMI_BMC_SIGNATURE;
-    mIpmiInstance->SlaveAddress                     = BMC_SLAVE_ADDRESS;
-    mIpmiInstance->BmcStatus                        = BMC_NOTREADY;
-    mIpmiInstance->IpmiTransport.IpmiSubmitCommand  = IpmiSendCommand;
-    mIpmiInstance->IpmiTransport.GetBmcStatus       = IpmiGetBmcStatus;
+    mIpmiInstance->IpmiIoBase                      = PcdGet16 (PcdIpmiIoBaseAddress);
+    mIpmiInstance->Signature                       = SM_IPMI_BMC_SIGNATURE;
+    mIpmiInstance->SlaveAddress                    = BMC_SLAVE_ADDRESS;
+    mIpmiInstance->BmcStatus                       = BMC_NOTREADY;
+    mIpmiInstance->IpmiTransport.IpmiSubmitCommand = IpmiSendCommand;
+    mIpmiInstance->IpmiTransport.GetBmcStatus      = IpmiGetBmcStatus;
 
     //
     // Get the Device ID and check if the system is in Force Update mode.
@@ -411,7 +438,8 @@ InitializeIpmiKcsPhysicalLayer (
     // Do not continue initialization if the BMC is in Force Update Mode.
     //
     if ((mIpmiInstance->BmcStatus != BMC_UPDATE_IN_PROGRESS) &&
-        (mIpmiInstance->BmcStatus != BMC_HARDFAIL)) {
+        (mIpmiInstance->BmcStatus != BMC_HARDFAIL))
+    {
       //
       // Get the SELF TEST Results.
       //
@@ -449,4 +477,3 @@ InitializeIpmiKcsPhysicalLayer (
     return EFI_SUCCESS;
   }
 } // InitializeIpmiKcsPhysicalLayer()
-

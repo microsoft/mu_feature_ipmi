@@ -22,17 +22,17 @@
 //
 // Net Function Defines.
 //
-#define SM_CHASSIS      0x0
-#define SM_BRIDGE       0x2
-#define SM_SENSOR_EVENT 0x4
-#define SM_APPLICATION  0x6
-#define SM_FIRMWARE     0x8
-#define SM_STORAGE      0xA
-#define SM_TRANSPORT    0xC
-#define SM_GROUP_EXT    0x2C
-#define SM_OEM_GROUP    0x2E
-#define SM_INTEL_OEM    0x30
-#define SM_SOL_OEM      0x34
+#define SM_CHASSIS       0x0
+#define SM_BRIDGE        0x2
+#define SM_SENSOR_EVENT  0x4
+#define SM_APPLICATION   0x6
+#define SM_FIRMWARE      0x8
+#define SM_STORAGE       0xA
+#define SM_TRANSPORT     0xC
+#define SM_GROUP_EXT     0x2C
+#define SM_OEM_GROUP     0x2E
+#define SM_INTEL_OEM     0x30
+#define SM_SOL_OEM       0x34
 
 //
 // IPMI Command Definations.
@@ -46,22 +46,22 @@
 #define IPMI_GET_ACPI_POWER_STATE   7
 #define IPMI_GET_DEVICE_GUID        8
 
-#define IPMI_GET_MESSAGE_FLAGS      0x31
-#define IPMI_GET_MESSAGE            0x33
-#define IPMI_SEND_MESSAGE           0x34
+#define IPMI_GET_MESSAGE_FLAGS  0x31
+#define IPMI_GET_MESSAGE        0x33
+#define IPMI_SEND_MESSAGE       0x34
 
-#define RESERVE_SEL_ENTRY               0x42
-#define ADD_SEL_ENTRY                   0x44
-#define GET_SEL_ENTRY                   0x43
-#define DELETE_SEL_ENTRY                0x46
-#define CLEAR_SEL_ENTRY                 0x47
-#define SET_BMC_GLOBALS                 0x2E
-#define GET_BMC_GLOBALS                 0x2F
-#define SET_SEL_TIME                    0x49
+#define RESERVE_SEL_ENTRY  0x42
+#define ADD_SEL_ENTRY      0x44
+#define GET_SEL_ENTRY      0x43
+#define DELETE_SEL_ENTRY   0x46
+#define CLEAR_SEL_ENTRY    0x47
+#define SET_BMC_GLOBALS    0x2E
+#define GET_BMC_GLOBALS    0x2F
+#define SET_SEL_TIME       0x49
 
-#define GET_SELF_TEST_RESULTS           0x4
+#define GET_SELF_TEST_RESULTS  0x4
 
-#define NMI_ENABLE_DISABLE              0xF7
+#define NMI_ENABLE_DISABLE  0xF7
 
 //
 // Controller Attributes
@@ -130,8 +130,8 @@ typedef enum {
 //
 // Sensor Event Type Code
 //
-#define SENSOR_THRESHOLD_EVENT_TYPE 1
-#define SENSOR_SPECIFIC_EVENT_TYPE  0x6F
+#define SENSOR_THRESHOLD_EVENT_TYPE  1
+#define SENSOR_SPECIFIC_EVENT_TYPE   0x6F
 
 //
 // THRESHOLD SENSOR TYPE BIT MASK
@@ -181,31 +181,31 @@ typedef enum {
 } SM_DATA_TYPE;
 
 typedef struct {
-  BOOLEAN IpAddressType;
-  UINT16  IpPort;
-  UINT8   IpAddress[16];
+  BOOLEAN    IpAddressType;
+  UINT16     IpPort;
+  UINT8      IpAddress[16];
 } SM_IP_ADDRESS;
 
 typedef struct {
-  UINT8 SlaveAddress;
-  UINT8 LunAddress;
-  UINT8 NetFunction;
-  UINT8 ChannelAddress;
+  UINT8    SlaveAddress;
+  UINT8    LunAddress;
+  UINT8    NetFunction;
+  UINT8    ChannelAddress;
 } SM_IPMI_ADDRESS;
 
 typedef struct {
-  UINT8 SerialPortNumber;
+  UINT8    SerialPortNumber;
 } SM_SERIAL_ADDRESS;
 
 typedef union {
-  SM_IP_ADDRESS     IpAddress;
-  SM_IPMI_ADDRESS   BmcAddress;
-  SM_SERIAL_ADDRESS SerialAddress;
+  SM_IP_ADDRESS        IpAddress;
+  SM_IPMI_ADDRESS      BmcAddress;
+  SM_SERIAL_ADDRESS    SerialAddress;
 } SM_COM_ADDRESS_TYPE;
 
 typedef struct {
-  SM_CHANNEL_MEDIA_TYPE ChannelType;
-  SM_COM_ADDRESS_TYPE   Address;
+  SM_CHANNEL_MEDIA_TYPE    ChannelType;
+  SM_COM_ADDRESS_TYPE      Address;
 } SM_COM_ADDRESS;
 
 #pragma pack(1)
@@ -228,57 +228,57 @@ typedef enum {
 } LINERIZATION_TYPE;
 
 typedef union {
-  UINT8   SensorUint8Data[2];
-  UINT16  SensorUint16Data;
+  UINT8     SensorUint8Data[2];
+  UINT16    SensorUint16Data;
 } SENSOR_SPLIT_DATA;
 
 typedef struct {
-  LINERIZATION_TYPE Linearization;              // L
-  UINT8             Tolerance;                  // Tolerance
-  UINT8             AdditiveOffsetExp;          // k1
-  UINT8             AccuracyExp;                // Accuracy Exponential
-  UINT8             ResultExponent;             // k2
-  SENSOR_SPLIT_DATA IntegerConstantMultiplier;  // M
-  SENSOR_SPLIT_DATA AdditiveOffset;             // B
-  SENSOR_SPLIT_DATA Accuracy;                   // Accuracy
+  LINERIZATION_TYPE    Linearization;             // L
+  UINT8                Tolerance;                 // Tolerance
+  UINT8                AdditiveOffsetExp;         // k1
+  UINT8                AccuracyExp;               // Accuracy Exponential
+  UINT8                ResultExponent;            // k2
+  SENSOR_SPLIT_DATA    IntegerConstantMultiplier; // M
+  SENSOR_SPLIT_DATA    AdditiveOffset;            // B
+  SENSOR_SPLIT_DATA    Accuracy;                  // Accuracy
 } SENSOR_CONVERSION_DATA;
 
 //
 // Server Management Controller Information
 //
 typedef struct {
-  UINT8   CompletionCode;
-  UINT8   DeviceId;
-  UINT8   DeviceRevision : 4;
-  UINT8   Reserved : 3;
-  UINT8   DeviceSdr : 1;
-  UINT8   MajorFirmwareRev : 7;
-  UINT8   UpdateMode : 1;
-  UINT8   MinorFirmwareRev;
-  UINT8   SpecificationVersion;
-  UINT8   SensorDeviceSupport : 1;
-  UINT8   SdrRepositorySupport : 1;
-  UINT8   SelDeviceSupport : 1;
-  UINT8   FruInventorySupport : 1;
-  UINT8   IPMBMessageReceiver : 1;
-  UINT8   IPMBMessageGenerator : 1;
-  UINT8   BridgeSupport : 1;
-  UINT8   ChassisSupport : 1;
-  UINT8   ManufacturerId[3];
-  UINT16  ProductId;
-  UINT32  AuxFirmwareRevInfo;
+  UINT8     CompletionCode;
+  UINT8     DeviceId;
+  UINT8     DeviceRevision       : 4;
+  UINT8     Reserved             : 3;
+  UINT8     DeviceSdr            : 1;
+  UINT8     MajorFirmwareRev     : 7;
+  UINT8     UpdateMode           : 1;
+  UINT8     MinorFirmwareRev;
+  UINT8     SpecificationVersion;
+  UINT8     SensorDeviceSupport  : 1;
+  UINT8     SdrRepositorySupport : 1;
+  UINT8     SelDeviceSupport     : 1;
+  UINT8     FruInventorySupport  : 1;
+  UINT8     IPMBMessageReceiver  : 1;
+  UINT8     IPMBMessageGenerator : 1;
+  UINT8     BridgeSupport        : 1;
+  UINT8     ChassisSupport       : 1;
+  UINT8     ManufacturerId[3];
+  UINT16    ProductId;
+  UINT32    AuxFirmwareRevInfo;
 } SM_CTRL_INFO;
 
 typedef struct {
-  UINT8 Reserved1 : 1;
-  UINT8 ControllerSlaveAddress : 7;
-  UINT8 FruDeviceId;
-  UINT8 BusId : 3;
-  UINT8 Lun : 2;
-  UINT8 Reserved : 2;
-  UINT8 LogicalFruDevice : 1;
-  UINT8 Reserved3 : 4;
-  UINT8 ChannelNumber : 4;
+  UINT8    Reserved1              : 1;
+  UINT8    ControllerSlaveAddress : 7;
+  UINT8    FruDeviceId;
+  UINT8    BusId                  : 3;
+  UINT8    Lun                    : 2;
+  UINT8    Reserved               : 2;
+  UINT8    LogicalFruDevice       : 1;
+  UINT8    Reserved3              : 4;
+  UINT8    ChannelNumber          : 4;
 } FRU_DATA_INFO;
 #pragma pack()
 
@@ -293,29 +293,29 @@ typedef enum {
 // SENSOR Structures
 //
 typedef struct {
-  BOOLEAN                     Valid;              // Data is Valid
-  SENSOR_CONVERSION_DATA      ConversionParam;    // Conversion Parameters
-  UINT8                       UpperNonRec;        // Upper Non Recoverable
-  UINT8                       UpperCritical;      // Upper Critical
-  UINT8                       UpperNonCritical;   // Upper Non Critical
-  UINT8                       LowerNonRec;        // Lower Non Recoverable
-  UINT8                       LowerCritical;      // Lower Critical
-  UINT8                       LowerNonCritical;   // Lower Non Critical
+  BOOLEAN                   Valid;                // Data is Valid
+  SENSOR_CONVERSION_DATA    ConversionParam;      // Conversion Parameters
+  UINT8                     UpperNonRec;          // Upper Non Recoverable
+  UINT8                     UpperCritical;        // Upper Critical
+  UINT8                     UpperNonCritical;     // Upper Non Critical
+  UINT8                     LowerNonRec;          // Lower Non Recoverable
+  UINT8                     LowerCritical;        // Lower Critical
+  UINT8                     LowerNonCritical;     // Lower Non Critical
 } SENSOR_THRESHOLD_STRUCT;
 
 typedef struct {
-  BOOLEAN                     Valid;              // Structure Valid
-  SENSOR_CONVERSION_DATA      ConversionParam;    // Conversion Parameters
-  SENSOR_ID_STRING_TYPE       SensorIdStringType; // Sensor ID String type
-  UINT8                       NominalReading;     // Nominal Reading of the Sensor
-  UINT8                       SensorId[16];       // Sensor Description
+  BOOLEAN                   Valid;                // Structure Valid
+  SENSOR_CONVERSION_DATA    ConversionParam;      // Conversion Parameters
+  SENSOR_ID_STRING_TYPE     SensorIdStringType;   // Sensor ID String type
+  UINT8                     NominalReading;       // Nominal Reading of the Sensor
+  UINT8                     SensorId[16];         // Sensor Description
 } SENSOR_READING_STRUCT;
 
 //
 //  IPMI HOB
 //
 typedef struct {
-  UINT16  IoBasePort;
+  UINT16    IoBasePort;
 } IPMI_HOB_DATA;
 
 //
@@ -323,15 +323,14 @@ typedef struct {
 //
 typedef
 EFI_STATUS
-(EFIAPI *SM_CALLBACK_PROC) (
+(EFIAPI *SM_CALLBACK_PROC)(
   OUT  EFI_STATUS                          Status,
   IN  VOID                                 *UserContext
   );
 
 typedef struct {
-  SM_CALLBACK_PROC      SmCallback;
-  VOID                  *UserContext;
+  SM_CALLBACK_PROC    SmCallback;
+  VOID                *UserContext;
 } SM_CALLBACK;
 
-#endif  // _SERVER_MANAGEMENT_H_
-
+#endif // _SERVER_MANAGEMENT_H_

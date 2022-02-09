@@ -10,10 +10,11 @@
 
 EFI_STATUS
 KcsErrorExit (
-  UINT64                            KcsTimeoutPeriod,
-  UINT16                            KcsPort,
-  VOID                              *Context
+  UINT64  KcsTimeoutPeriod,
+  UINT16  KcsPort,
+  VOID    *Context
   )
+
 /*++
 
 Routine Description:
@@ -33,25 +34,25 @@ Returns:
 
 --*/
 {
-  EFI_STATUS      Status;
-  UINT8           KcsData;
-  KCS_STATUS      KcsStatus;
+  EFI_STATUS  Status;
+  UINT8       KcsData;
+  KCS_STATUS  KcsStatus;
   // UINT8           BmcStatus;   // MU_CHANGE
-  UINT8           RetryCount;
-  UINT64          TimeOut;
+  UINT8   RetryCount;
+  UINT64  TimeOut;
 
-  TimeOut     = 0;
-  RetryCount  = 0;
+  TimeOut    = 0;
+  RetryCount = 0;
   while (RetryCount < KCS_ABORT_RETRY_COUNT) {
-
     TimeOut = 0;
     do {
       MicroSecondDelay (KCS_DELAY_UNIT);
       KcsStatus.RawData = IoRead8 (KcsPort + 1);
-      if (KcsStatus.RawData == 0xFF || (TimeOut >= KcsTimeoutPeriod)) {
+      if ((KcsStatus.RawData == 0xFF) || (TimeOut >= KcsTimeoutPeriod)) {
         RetryCount = KCS_ABORT_RETRY_COUNT;
         break;
       }
+
       TimeOut++;
     } while (KcsStatus.Status.Ibf);
 
@@ -66,10 +67,11 @@ Returns:
     do {
       MicroSecondDelay (KCS_DELAY_UNIT);
       KcsStatus.RawData = IoRead8 (KcsPort + 1);
-      if (KcsStatus.RawData == 0xFF || (TimeOut >= KcsTimeoutPeriod)) {
+      if ((KcsStatus.RawData == 0xFF) || (TimeOut >= KcsTimeoutPeriod)) {
         Status = EFI_DEVICE_ERROR;
         goto LabelError;
       }
+
       TimeOut++;
     } while (KcsStatus.Status.Ibf);
 
@@ -82,10 +84,11 @@ Returns:
     do {
       MicroSecondDelay (KCS_DELAY_UNIT);
       KcsStatus.RawData = IoRead8 (KcsPort + 1);
-      if (KcsStatus.RawData == 0xFF || (TimeOut >= KcsTimeoutPeriod)) {
+      if ((KcsStatus.RawData == 0xFF) || (TimeOut >= KcsTimeoutPeriod)) {
         Status = EFI_DEVICE_ERROR;
         goto LabelError;
       }
+
       TimeOut++;
     } while (KcsStatus.Status.Ibf);
 
@@ -94,10 +97,11 @@ Returns:
       do {
         MicroSecondDelay (KCS_DELAY_UNIT);
         KcsStatus.RawData = IoRead8 (KcsPort + 1);
-        if (KcsStatus.RawData == 0xFF || (TimeOut >= KcsTimeoutPeriod)) {
+        if ((KcsStatus.RawData == 0xFF) || (TimeOut >= KcsTimeoutPeriod)) {
           Status = EFI_DEVICE_ERROR;
           goto LabelError;
         }
+
         TimeOut++;
       } while (!KcsStatus.Status.Obf);
 
@@ -111,10 +115,11 @@ Returns:
       do {
         MicroSecondDelay (KCS_DELAY_UNIT);
         KcsStatus.RawData = IoRead8 (KcsPort + 1);
-        if (KcsStatus.RawData == 0xFF || (TimeOut >= KcsTimeoutPeriod)) {
+        if ((KcsStatus.RawData == 0xFF) || (TimeOut >= KcsTimeoutPeriod)) {
           Status = EFI_DEVICE_ERROR;
           goto LabelError;
         }
+
         TimeOut++;
       } while (KcsStatus.Status.Ibf);
 
@@ -123,21 +128,20 @@ Returns:
         do {
           MicroSecondDelay (KCS_DELAY_UNIT);
           KcsStatus.RawData = IoRead8 (KcsPort + 1);
-          if (KcsStatus.RawData == 0xFF || (TimeOut >= KcsTimeoutPeriod)) {
+          if ((KcsStatus.RawData == 0xFF) || (TimeOut >= KcsTimeoutPeriod)) {
             Status = EFI_DEVICE_ERROR;
             goto LabelError;
           }
+
           TimeOut++;
         } while (!KcsStatus.Status.Obf);
 
         KcsData = IoRead8 (KcsPort);
         break;
-
       } else {
         RetryCount++;
         continue;
       }
-
     } else {
       RetryCount++;
       continue;
@@ -157,12 +161,13 @@ LabelError:
 
 EFI_STATUS
 KcsCheckStatus (
-  UINT64                            KcsTimeoutPeriod,
-  UINT16                            KcsPort,
-  KCS_STATE                         KcsState,
-  BOOLEAN                           *Idle,
-  VOID                              *Context
+  UINT64     KcsTimeoutPeriod,
+  UINT16     KcsPort,
+  KCS_STATE  KcsState,
+  BOOLEAN    *Idle,
+  VOID       *Context
   )
+
 /*++
 
 Routine Description:
@@ -183,10 +188,10 @@ Returns:
 
 --*/
 {
-  EFI_STATUS      Status;
-  KCS_STATUS      KcsStatus;
+  EFI_STATUS  Status;
+  KCS_STATUS  KcsStatus;
   // UINT8           KcsData;  // MU_CHANGE - Unused.
-  UINT64          TimeOut;
+  UINT64  TimeOut;
 
   if (Idle == NULL) {
     return EFI_INVALID_PARAMETER;
@@ -198,10 +203,11 @@ Returns:
   do {
     MicroSecondDelay (KCS_DELAY_UNIT);
     KcsStatus.RawData = IoRead8 (KcsPort + 1);
-    if (KcsStatus.RawData == 0xFF || (TimeOut >= KcsTimeoutPeriod)) {
+    if ((KcsStatus.RawData == 0xFF) || (TimeOut >= KcsTimeoutPeriod)) {
       Status = EFI_DEVICE_ERROR;
       goto LabelError;
     }
+
     TimeOut++;
   } while (KcsStatus.Status.Ibf);
 
@@ -224,15 +230,16 @@ Returns:
     do {
       MicroSecondDelay (KCS_DELAY_UNIT);
       KcsStatus.RawData = IoRead8 (KcsPort + 1);
-      if (KcsStatus.RawData == 0xFF || (TimeOut >= KcsTimeoutPeriod)) {
+      if ((KcsStatus.RawData == 0xFF) || (TimeOut >= KcsTimeoutPeriod)) {
         Status = EFI_DEVICE_ERROR;
         goto LabelError;
       }
+
       TimeOut++;
     } while (!KcsStatus.Status.Obf);
   }
 
-  if (KcsState == KcsWriteState || (*Idle == TRUE)) {
+  if ((KcsState == KcsWriteState) || (*Idle == TRUE)) {
     // KcsData = IoRead8 (KcsPort);   // MU_CHANGE
     IoRead8 (KcsPort);                // MU_CHANGE
   }
@@ -245,12 +252,13 @@ LabelError:
 
 EFI_STATUS
 SendDataToBmc (
-  UINT64                          KcsTimeoutPeriod,
-  UINT16                          KcsPort,
-  VOID                            *Context,
-  UINT8                           *Data,
-  UINT8                           DataSize
+  UINT64  KcsTimeoutPeriod,
+  UINT16  KcsPort,
+  VOID    *Context,
+  UINT8   *Data,
+  UINT8   DataSize
   )
+
 /*++
 
 Routine Description:
@@ -270,13 +278,13 @@ Returns:
 
 --*/
 {
-  KCS_STATUS      KcsStatus;
-  UINT8           KcsData;
-  UINT16          KcsIoBase;
-  EFI_STATUS      Status;
-  UINT8           i;
-  BOOLEAN         Idle;
-  UINT64          TimeOut;
+  KCS_STATUS  KcsStatus;
+  UINT8       KcsData;
+  UINT16      KcsIoBase;
+  EFI_STATUS  Status;
+  UINT8       i;
+  BOOLEAN     Idle;
+  UINT64      TimeOut;
 
   KcsIoBase = KcsPort;
 
@@ -290,6 +298,7 @@ Returns:
         return Status;
       }
     }
+
     TimeOut++;
   } while (KcsStatus.Status.Ibf);
 
@@ -322,12 +331,13 @@ Returns:
 
 EFI_STATUS
 ReceiveBmcData (
-  UINT64                          KcsTimeoutPeriod,
-  UINT16                          KcsPort,
-  VOID                            *Context,
-  UINT8                           *Data,
-  UINT8                           *DataSize
+  UINT64  KcsTimeoutPeriod,
+  UINT16  KcsPort,
+  VOID    *Context,
+  UINT8   *Data,
+  UINT8   *DataSize
   )
+
 /*++
 
 Routine Description:
@@ -359,7 +369,6 @@ Returns:
   KcsIoBase = KcsPort;
 
   while (TRUE) {
-
     if ((Status = KcsCheckStatus (KcsTimeoutPeriod, KcsIoBase, KcsReadState, &Idle, Context)) != EFI_SUCCESS) {
       return Status;
     }
@@ -370,7 +379,7 @@ Returns:
     }
 
     //
-    //Need to check Data Size -1 to account for array access
+    // Need to check Data Size -1 to account for array access
     //
     if (Count >= *DataSize) {
       return EFI_DEVICE_ERROR;
@@ -389,12 +398,13 @@ Returns:
 
 EFI_STATUS
 ReceiveBmcDataFromPort (
-  UINT64                          KcsTimeoutPeriod,
-  UINT16                          KcsPort,
-  VOID                            *Context,
-  UINT8                           *Data,
-  UINT8                           *DataSize
+  UINT64  KcsTimeoutPeriod,
+  UINT16  KcsPort,
+  VOID    *Context,
+  UINT8   *Data,
+  UINT8   *DataSize
   )
+
 /*++
 
 Routine Description:
@@ -419,8 +429,8 @@ Returns:
   UINT8       i;
   UINT8       MyDataSize;
 
-  MyDataSize  = *DataSize;
-  KcsIoBase   = KcsPort;
+  MyDataSize = *DataSize;
+  KcsIoBase  = KcsPort;
 
   for (i = 0; i < KCS_ABORT_RETRY_COUNT; i++) {
     Status = ReceiveBmcData (KcsTimeoutPeriod, KcsIoBase, Context, Data, DataSize);
@@ -440,12 +450,13 @@ Returns:
 
 EFI_STATUS
 SendDataToBmcPort (
-  UINT64                          KcsTimeoutPeriod,
-  UINT16                          KcsPort,
-  VOID                            *Context,
-  UINT8                           *Data,
-  UINT8                           DataSize
+  UINT64  KcsTimeoutPeriod,
+  UINT16  KcsPort,
+  VOID    *Context,
+  UINT8   *Data,
+  UINT8   DataSize
   )
+
 /*++
 
 Routine Description:

@@ -11,15 +11,16 @@
 EFI_STATUS
 EFIAPI
 IpmiSendCommand (
-  IN      IPMI_TRANSPORT               *This,
-  IN      UINT8                        NetFunction,
-  IN      UINT8                        Lun,
-  IN      UINT8                        Command,
-  IN      UINT8                        *CommandData,
-  IN      UINT32                       CommandDataSize,
-  IN OUT  UINT8                        *ResponseData,
-  IN OUT  UINT32                       *ResponseDataSize
+  IN      IPMI_TRANSPORT  *This,
+  IN      UINT8           NetFunction,
+  IN      UINT8           Lun,
+  IN      UINT8           Command,
+  IN      UINT8           *CommandData,
+  IN      UINT32          CommandDataSize,
+  IN OUT  UINT8           *ResponseData,
+  IN OUT  UINT32          *ResponseDataSize
   )
+
 /*++
 
 Routine Description:
@@ -57,9 +58,9 @@ Returns:
            Lun,
            Command,
            CommandData,
-           (UINT8) CommandDataSize,
+           (UINT8)CommandDataSize,
            ResponseData,
-           (UINT8*) ResponseDataSize,
+           (UINT8 *)ResponseDataSize,
            NULL
            );
 } // IpmiSendCommand()
@@ -67,10 +68,11 @@ Returns:
 EFI_STATUS
 EFIAPI
 IpmiGetBmcStatus (
-  IN IPMI_TRANSPORT                *This,
-  OUT BMC_STATUS                   *BmcStatus,
-  OUT SM_COM_ADDRESS               *ComAddress
+  IN IPMI_TRANSPORT   *This,
+  OUT BMC_STATUS      *BmcStatus,
+  OUT SM_COM_ADDRESS  *ComAddress
   )
+
 /*++
 
 Routine Description:

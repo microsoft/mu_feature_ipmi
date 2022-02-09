@@ -30,42 +30,44 @@
 //
 // Prototypes
 //
-#define MBXDAT_B                          0x0B
-#define BMC_KCS_TIMEOUT_PEI               5     // [s] Single KSC request timeout
-#define KCS_DELAY_UNIT_PEI                1000  // [s] Each KSC IO delay
-#define IPMI_DEFAULT_IO_BASE              0xCA2
+#define MBXDAT_B              0x0B
+#define BMC_KCS_TIMEOUT_PEI   5                 // [s] Single KSC request timeout
+#define KCS_DELAY_UNIT_PEI    1000              // [s] Each KSC IO delay
+#define IPMI_DEFAULT_IO_BASE  0xCA2
 
 //
 // Internal(hook) function list
 //
 EFI_STATUS
 SendPreBootSignaltoBmc (
-  IN CONST EFI_PEI_SERVICES             **PeiServices
+  IN CONST EFI_PEI_SERVICES  **PeiServices
   )
-  /*++
+
+/*++
 
 Routine Description:
-  Send Pre-Boot signal to BMC
+Send Pre-Boot signal to BMC
 
 Arguments:
-  PeiServices           - General purpose services available to every PEIM.
+PeiServices           - General purpose services available to every PEIM.
 
 Returns:
-  EFI_SUCCESS           - Success
+EFI_SUCCESS           - Success
 --*/
 ;
 
 EFI_STATUS
 PeiIpmiSendCommand (
-  IN      PEI_IPMI_TRANSPORT_PPI       *This,
-  IN      UINT8                        NetFunction,
-  IN      UINT8                        Lun,
-  IN      UINT8                        Command,
-  IN      UINT8                        *CommandData,
-  IN      UINT32                       CommandDataSize,
-  IN OUT  UINT8                        *ResponseData,
-  IN OUT  UINT32                       *ResponseDataSize
+  IN      PEI_IPMI_TRANSPORT_PPI  *This,
+  IN      UINT8                   NetFunction,
+  IN      UINT8                   Lun,
+  IN      UINT8                   Command,
+  IN      UINT8                   *CommandData,
+  IN      UINT32                  CommandDataSize,
+  IN OUT  UINT8                   *ResponseData,
+  IN OUT  UINT32                  *ResponseDataSize
   )
+
 /*++
 
 Routine Description:
@@ -92,10 +94,11 @@ Returns:
 
 EFI_STATUS
 PeiGetIpmiBmcStatus (
-  IN  PEI_IPMI_TRANSPORT_PPI                           *This,
-  OUT BMC_STATUS                                       *BmcStatus,
-  OUT SM_COM_ADDRESS                                   *ComAddress
+  IN  PEI_IPMI_TRANSPORT_PPI  *This,
+  OUT BMC_STATUS              *BmcStatus,
+  OUT SM_COM_ADDRESS          *ComAddress
   )
+
 /*++
 
 Routine Description:
@@ -116,8 +119,9 @@ Returns:
 //
 EFI_STATUS
 GetDeviceId (
-  IN      PEI_IPMI_BMC_INSTANCE_DATA   *mIpmiInstance
+  IN      PEI_IPMI_BMC_INSTANCE_DATA  *mIpmiInstance
   )
+
 /*++
 
 Routine Description:
@@ -134,5 +138,5 @@ Returns:
 
 --*/
 ;
-#endif //_PEI_IPMI_INIT_H_
 
+#endif //_PEI_IPMI_INIT_H_

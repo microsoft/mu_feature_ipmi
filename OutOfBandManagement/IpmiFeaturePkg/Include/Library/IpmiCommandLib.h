@@ -24,13 +24,13 @@ IpmiGetDeviceId (
 EFI_STATUS
 EFIAPI
 IpmiGetSelfTestResult (
-  OUT IPMI_SELF_TEST_RESULT_RESPONSE   *SelfTestResult
+  OUT IPMI_SELF_TEST_RESULT_RESPONSE  *SelfTestResult
   );
 
 EFI_STATUS
 EFIAPI
 IpmiResetWatchdogTimer (
-  OUT UINT8                            *CompletionCode
+  OUT UINT8  *CompletionCode
   );
 
 EFI_STATUS
@@ -43,7 +43,7 @@ IpmiSetWatchdogTimer (
 EFI_STATUS
 EFIAPI
 IpmiGetWatchdogTimer (
-  OUT IPMI_GET_WATCHDOG_TIMER_RESPONSE *GetWatchdogTimer
+  OUT IPMI_GET_WATCHDOG_TIMER_RESPONSE  *GetWatchdogTimer
   );
 
 EFI_STATUS
@@ -56,7 +56,7 @@ IpmiSetBmcGlobalEnables (
 EFI_STATUS
 EFIAPI
 IpmiGetBmcGlobalEnables (
-  OUT IPMI_GET_BMC_GLOBAL_ENABLES_RESPONSE *GetBmcGlobalEnables
+  OUT IPMI_GET_BMC_GLOBAL_ENABLES_RESPONSE  *GetBmcGlobalEnables
   );
 
 EFI_STATUS
@@ -69,23 +69,23 @@ IpmiClearMessageFlags (
 EFI_STATUS
 EFIAPI
 IpmiGetMessageFlags (
-  OUT IPMI_GET_MESSAGE_FLAGS_RESPONSE *GetMessageFlagsResponse
+  OUT IPMI_GET_MESSAGE_FLAGS_RESPONSE  *GetMessageFlagsResponse
   );
 
 EFI_STATUS
 EFIAPI
 IpmiGetMessage (
-  OUT IPMI_GET_MESSAGE_RESPONSE *GetMessageResponse,
-  IN OUT UINT32                 *GetMessageResponseSize
+  OUT IPMI_GET_MESSAGE_RESPONSE  *GetMessageResponse,
+  IN OUT UINT32                  *GetMessageResponseSize
   );
 
 EFI_STATUS
 EFIAPI
 IpmiSendMessage (
-  IN  IPMI_SEND_MESSAGE_REQUEST  *SendMessageRequest,
-  IN  UINT32                     SendMessageRequestSize,
-  OUT IPMI_SEND_MESSAGE_RESPONSE *SendMessageResponse,
-  IN OUT UINT32                  *SendMessageResponseSize
+  IN  IPMI_SEND_MESSAGE_REQUEST   *SendMessageRequest,
+  IN  UINT32                      SendMessageRequestSize,
+  OUT IPMI_SEND_MESSAGE_RESPONSE  *SendMessageResponse,
+  IN OUT UINT32                   *SendMessageResponseSize
   );
 
 //
@@ -109,9 +109,9 @@ IpmiSetSolConfigurationParameters (
 EFI_STATUS
 EFIAPI
 IpmiGetSolConfigurationParameters (
-  IN  IPMI_GET_SOL_CONFIGURATION_PARAMETERS_REQUEST  *GetConfigurationParametersRequest,
-  OUT IPMI_GET_SOL_CONFIGURATION_PARAMETERS_RESPONSE *GetConfigurationParametersResponse,
-  IN OUT UINT32                                      *GetConfigurationParametersResponseSize
+  IN  IPMI_GET_SOL_CONFIGURATION_PARAMETERS_REQUEST   *GetConfigurationParametersRequest,
+  OUT IPMI_GET_SOL_CONFIGURATION_PARAMETERS_RESPONSE  *GetConfigurationParametersResponse,
+  IN OUT UINT32                                       *GetConfigurationParametersResponseSize
   );
 
 //
@@ -139,8 +139,8 @@ IpmiChassisControl (
 EFI_STATUS
 EFIAPI
 IpmiSetPowerRestorePolicy (
-  IN  IPMI_SET_POWER_RESTORE_POLICY_REQUEST  *ChassisControlRequest,
-  OUT IPMI_SET_POWER_RESTORE_POLICY_RESPONSE *ChassisControlResponse
+  IN  IPMI_SET_POWER_RESTORE_POLICY_REQUEST   *ChassisControlRequest,
+  OUT IPMI_SET_POWER_RESTORE_POLICY_RESPONSE  *ChassisControlResponse
   );
 
 //
@@ -149,15 +149,15 @@ IpmiSetPowerRestorePolicy (
 EFI_STATUS
 EFIAPI
 IpmiSetSystemBootOptions (
-  IN  IPMI_SET_BOOT_OPTIONS_REQUEST  *BootOptionsRequest,
-  OUT IPMI_SET_BOOT_OPTIONS_RESPONSE *BootOptionsResponse
+  IN  IPMI_SET_BOOT_OPTIONS_REQUEST   *BootOptionsRequest,
+  OUT IPMI_SET_BOOT_OPTIONS_RESPONSE  *BootOptionsResponse
   );
 
 EFI_STATUS
 EFIAPI
 IpmiGetSystemBootOptions (
-  IN  IPMI_GET_BOOT_OPTIONS_REQUEST  *BootOptionsRequest,
-  OUT IPMI_GET_BOOT_OPTIONS_RESPONSE *BootOptionsResponse
+  IN  IPMI_GET_BOOT_OPTIONS_REQUEST   *BootOptionsRequest,
+  OUT IPMI_GET_BOOT_OPTIONS_RESPONSE  *BootOptionsResponse
   );
 
 //
@@ -173,17 +173,17 @@ IpmiGetFruInventoryAreaInfo (
 EFI_STATUS
 EFIAPI
 IpmiReadFruData (
-  IN  IPMI_READ_FRU_DATA_REQUEST        *ReadFruDataRequest,
-  OUT IPMI_READ_FRU_DATA_RESPONSE       *ReadFruDataResponse,
-  IN OUT UINT32                         *ReadFruDataResponseSize
+  IN  IPMI_READ_FRU_DATA_REQUEST   *ReadFruDataRequest,
+  OUT IPMI_READ_FRU_DATA_RESPONSE  *ReadFruDataResponse,
+  IN OUT UINT32                    *ReadFruDataResponseSize
   );
 
 EFI_STATUS
 EFIAPI
 IpmiWriteFruData (
-  IN  IPMI_WRITE_FRU_DATA_REQUEST       *WriteFruDataRequest,
-  IN  UINT32                            WriteFruDataRequestSize,
-  OUT IPMI_WRITE_FRU_DATA_RESPONSE      *WriteFruDataResponse
+  IN  IPMI_WRITE_FRU_DATA_REQUEST   *WriteFruDataRequest,
+  IN  UINT32                        WriteFruDataRequestSize,
+  OUT IPMI_WRITE_FRU_DATA_RESPONSE  *WriteFruDataResponse
   );
 
 EFI_STATUS
@@ -218,14 +218,14 @@ IpmiPartialAddSelEntry (
 EFI_STATUS
 EFIAPI
 IpmiClearSel (
-  IN IPMI_CLEAR_SEL_REQUEST   *ClearSelRequest,
-  OUT IPMI_CLEAR_SEL_RESPONSE *ClearSelResponse
+  IN IPMI_CLEAR_SEL_REQUEST    *ClearSelRequest,
+  OUT IPMI_CLEAR_SEL_RESPONSE  *ClearSelResponse
   );
 
 EFI_STATUS
 EFIAPI
 IpmiGetSelTime (
-  OUT IPMI_GET_SEL_TIME_RESPONSE *GetSelTimeResponse
+  OUT IPMI_GET_SEL_TIME_RESPONSE  *GetSelTimeResponse
   );
 
 EFI_STATUS
@@ -244,9 +244,9 @@ IpmiGetSdrRepositoryInfo (
 EFI_STATUS
 EFIAPI
 IpmiGetSdr (
-  IN  IPMI_GET_SDR_REQUEST          *GetSdrRequest,
-  OUT IPMI_GET_SDR_RESPONSE         *GetSdrResponse,
-  IN OUT UINT32                     *GetSdrResponseSize
+  IN  IPMI_GET_SDR_REQUEST   *GetSdrRequest,
+  OUT IPMI_GET_SDR_RESPONSE  *GetSdrResponse,
+  IN OUT UINT32              *GetSdrResponseSize
   );
 
 #endif

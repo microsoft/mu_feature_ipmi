@@ -11,10 +11,10 @@
 
 #include <Ppi/IpmiTransportPpi.h>
 
-#define MAX_TEMP_DATA     160
-#define BMC_SLAVE_ADDRESS 0x20
-#define MAX_SOFT_COUNT    10
-#define COMP_CODE_NORMAL  0x00
+#define MAX_TEMP_DATA      160
+#define BMC_SLAVE_ADDRESS  0x20
+#define MAX_SOFT_COUNT     10
+#define COMP_CODE_NORMAL   0x00
 
 //
 // IPMI command completion codes to check for in the UpdateErrorStatus routine.
@@ -46,16 +46,16 @@
 // Pei Ipmi instance data
 //
 typedef struct {
-  UINTN                  Signature;
-  UINT64                 KcsTimeoutPeriod;
-  UINT8                  SlaveAddress;
-  UINT8                  TempData[MAX_TEMP_DATA];
-  BMC_STATUS             BmcStatus;
-  UINT64                 ErrorStatus;
-  UINT8                  SoftErrorCount;
-  UINT16                 IpmiIoBase;
-  PEI_IPMI_TRANSPORT_PPI IpmiTransportPpi;
-  EFI_PEI_PPI_DESCRIPTOR PeiIpmiBmcDataDesc;
+  UINTN                     Signature;
+  UINT64                    KcsTimeoutPeriod;
+  UINT8                     SlaveAddress;
+  UINT8                     TempData[MAX_TEMP_DATA];
+  BMC_STATUS                BmcStatus;
+  UINT64                    ErrorStatus;
+  UINT8                     SoftErrorCount;
+  UINT16                    IpmiIoBase;
+  PEI_IPMI_TRANSPORT_PPI    IpmiTransportPpi;
+  EFI_PEI_PPI_DESCRIPTOR    PeiIpmiBmcDataDesc;
 } PEI_IPMI_BMC_INSTANCE_DATA;
 
 //
@@ -64,38 +64,39 @@ typedef struct {
 #define IPMI_COMMAND_HEADER_SIZE  2
 
 typedef struct {
-  UINT8 Lun : 2;
-  UINT8 NetFunction : 6;
-  UINT8 Command;
-  UINT8 CommandData[MAX_TEMP_DATA - IPMI_COMMAND_HEADER_SIZE];
+  UINT8    Lun         : 2;
+  UINT8    NetFunction : 6;
+  UINT8    Command;
+  UINT8    CommandData[MAX_TEMP_DATA - IPMI_COMMAND_HEADER_SIZE];
 } IPMI_COMMAND;
 
 //
 // Structure of IPMI Command response buffer
 //
-#define IPMI_RESPONSE_HEADER_SIZE 3
+#define IPMI_RESPONSE_HEADER_SIZE  3
 
 typedef struct {
-  UINT8 Lun : 2;
-  UINT8 NetFunction : 6;
-  UINT8 Command;
-  UINT8 CompletionCode;
-  UINT8 ResponseData[MAX_TEMP_DATA - IPMI_RESPONSE_HEADER_SIZE];
+  UINT8    Lun         : 2;
+  UINT8    NetFunction : 6;
+  UINT8    Command;
+  UINT8    CompletionCode;
+  UINT8    ResponseData[MAX_TEMP_DATA - IPMI_RESPONSE_HEADER_SIZE];
 } IPMI_RESPONSE;
 #pragma pack()
 
 EFI_STATUS
 PeiIpmiSendCommandToBmc (
-  IN      PEI_IPMI_TRANSPORT_PPI        *This,
-  IN      UINT8                         NetFunction,
-  IN      UINT8                         Lun,
-  IN      UINT8                         Command,
-  IN      UINT8                         *CommandData,
-  IN      UINT8                         CommandDataSize,
-  IN OUT  UINT8                         *ResponseData,
-  IN OUT  UINT8                         *ResponseDataSize,
-  IN      VOID                          *Context
+  IN      PEI_IPMI_TRANSPORT_PPI  *This,
+  IN      UINT8                   NetFunction,
+  IN      UINT8                   Lun,
+  IN      UINT8                   Command,
+  IN      UINT8                   *CommandData,
+  IN      UINT8                   CommandDataSize,
+  IN OUT  UINT8                   *ResponseData,
+  IN OUT  UINT8                   *ResponseDataSize,
+  IN      VOID                    *Context
   )
+
 /*++
 
 Routine Description:
@@ -124,14 +125,14 @@ Returns:
 --*/
 ;
 
-
 EFI_STATUS
 PeiIpmiBmcStatus (
-  IN      PEI_IPMI_TRANSPORT_PPI       *This,
-  OUT BMC_STATUS                       *BmcStatus,
-  OUT SM_COM_ADDRESS                   *ComAddress,
-  IN  VOID                             *Context
+  IN      PEI_IPMI_TRANSPORT_PPI  *This,
+  OUT BMC_STATUS                  *BmcStatus,
+  OUT SM_COM_ADDRESS              *ComAddress,
+  IN  VOID                        *Context
   )
+
 /*++
 
 Routine Description:
@@ -151,6 +152,5 @@ Returns:
 
 --*/
 ;
-
 
 #endif //_PEI_IPMI_COMMON_BMC_H_

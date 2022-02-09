@@ -12,7 +12,6 @@
 #include <Library/DebugLib.h>
 #include <Ppi/IpmiTransportPpi.h>
 
-
 /**
   Initialize the global varible with the pointer of IpmiTransport Protocol.
 
@@ -24,13 +23,14 @@ InitializeIpmiBase (
   VOID
   )
 {
-  EFI_STATUS                                Status;
-  PEI_IPMI_TRANSPORT_PPI                    *IpmiTransport;
+  EFI_STATUS              Status;
+  PEI_IPMI_TRANSPORT_PPI  *IpmiTransport;
 
-  Status = PeiServicesLocatePpi (&gPeiIpmiTransportPpiGuid, 0, NULL, (VOID **) &IpmiTransport);
+  Status = PeiServicesLocatePpi (&gPeiIpmiTransportPpiGuid, 0, NULL, (VOID **)&IpmiTransport);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
   }
+
   return Status;
 }
 
@@ -49,22 +49,23 @@ InitializeIpmiBase (
 **/
 EFI_STATUS
 IpmiSubmitCommand (
-  IN UINT8        NetFunction,
-  IN UINT8        Command,
-  IN UINT8        *CommandData,
-  IN UINT32       CommandDataSize,
-  OUT UINT8       *ResponseData,
-  IN OUT UINT32   *ResponseDataSize
+  IN UINT8       NetFunction,
+  IN UINT8       Command,
+  IN UINT8       *CommandData,
+  IN UINT32      CommandDataSize,
+  OUT UINT8      *ResponseData,
+  IN OUT UINT32  *ResponseDataSize
   )
 {
-  EFI_STATUS                                Status;
-  PEI_IPMI_TRANSPORT_PPI                    *IpmiTransport;
+  EFI_STATUS              Status;
+  PEI_IPMI_TRANSPORT_PPI  *IpmiTransport;
 
-  Status = PeiServicesLocatePpi (&gPeiIpmiTransportPpiGuid, 0, NULL, (VOID **) &IpmiTransport);
+  Status = PeiServicesLocatePpi (&gPeiIpmiTransportPpiGuid, 0, NULL, (VOID **)&IpmiTransport);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
   }
+
   Status = IpmiTransport->IpmiSubmitCommand (
                             IpmiTransport,
                             NetFunction,
@@ -89,18 +90,19 @@ IpmiSubmitCommand (
 **/
 EFI_STATUS
 GetBmcStatus (
-  OUT BMC_STATUS                       *BmcStatus,
-  OUT SM_COM_ADDRESS                   *ComAddress
+  OUT BMC_STATUS      *BmcStatus,
+  OUT SM_COM_ADDRESS  *ComAddress
   )
 {
-  EFI_STATUS                                Status;
-  PEI_IPMI_TRANSPORT_PPI                    *IpmiTransport;
+  EFI_STATUS              Status;
+  PEI_IPMI_TRANSPORT_PPI  *IpmiTransport;
 
-  Status = PeiServicesLocatePpi (&gPeiIpmiTransportPpiGuid, 0, NULL, (VOID **) &IpmiTransport);
+  Status = PeiServicesLocatePpi (&gPeiIpmiTransportPpiGuid, 0, NULL, (VOID **)&IpmiTransport);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
   }
+
   Status = IpmiTransport->GetBmcStatus (
                             IpmiTransport,
                             BmcStatus,
@@ -108,4 +110,3 @@ GetBmcStatus (
                             );
   return Status;
 }
-

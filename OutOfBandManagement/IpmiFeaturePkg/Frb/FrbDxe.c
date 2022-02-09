@@ -20,6 +20,7 @@ EFI_STATUS
 EfiDisableFrb (
   VOID
   )
+
 /*++
 
   Routine Description:
@@ -36,10 +37,10 @@ EfiDisableFrb (
 
 --*/
 {
-  EFI_STATUS                       Status;
-  IPMI_SET_WATCHDOG_TIMER_REQUEST  SetWatchdogTimer;
-  UINT8                            CompletionCode;
-  IPMI_GET_WATCHDOG_TIMER_RESPONSE GetWatchdogTimer;
+  EFI_STATUS                        Status;
+  IPMI_SET_WATCHDOG_TIMER_REQUEST   SetWatchdogTimer;
+  UINT8                             CompletionCode;
+  IPMI_GET_WATCHDOG_TIMER_RESPONSE  GetWatchdogTimer;
 
   Status = IpmiGetWatchdogTimer (&GetWatchdogTimer);
   if (EFI_ERROR (Status)) {
@@ -53,7 +54,7 @@ EfiDisableFrb (
     return EFI_ABORTED;
   }
 
-  ZeroMem (&SetWatchdogTimer, sizeof(SetWatchdogTimer));
+  ZeroMem (&SetWatchdogTimer, sizeof (SetWatchdogTimer));
   //
   // Just flip the Timer Use bit. This should release the timer.
   //
@@ -69,9 +70,10 @@ EfiDisableFrb (
 VOID
 EFIAPI
 DisableFRB2Handler (
-  IN EFI_EVENT        Event,
-  IN VOID             *Context
+  IN EFI_EVENT  Event,
+  IN VOID       *Context
   )
+
 /*++
 
   Routine Description:
@@ -87,15 +89,16 @@ DisableFRB2Handler (
 
 --*/
 {
-  DEBUG((DEBUG_ERROR, "!!! enter DisableFRB2Handler()!!!\n"));
+  DEBUG ((DEBUG_ERROR, "!!! enter DisableFRB2Handler()!!!\n"));
 
   EfiDisableFrb ();
 }
 
 EFI_STATUS
-CheckForAndReportErrors(
+CheckForAndReportErrors (
   VOID
   )
+
 /*++
 
   Routine Description:
@@ -109,10 +112,10 @@ CheckForAndReportErrors(
 
 --*/
 {
-  EFI_STATUS                          Status;
-  IPMI_GET_WATCHDOG_TIMER_RESPONSE    GetWatchdogTimer;
-  IPMI_SET_WATCHDOG_TIMER_REQUEST     SetWatchdogTimer;
-  UINT8                               CompletionCode;
+  EFI_STATUS                        Status;
+  IPMI_GET_WATCHDOG_TIMER_RESPONSE  GetWatchdogTimer;
+  IPMI_SET_WATCHDOG_TIMER_REQUEST   SetWatchdogTimer;
+  UINT8                             CompletionCode;
 
   //
   // Get the Watchdog timer info to find out what kind of timer expiration occurred.
@@ -121,6 +124,7 @@ CheckForAndReportErrors(
   if (EFI_ERROR (Status)) {
     return Status;
   }
+
   //
   // If FRB2 Failure occurred, report it to the error manager and log a SEL.
   //
@@ -137,14 +141,14 @@ CheckForAndReportErrors(
   //
   // Need to clear Timer expiration flags after checking.
   //
-  ZeroMem (&SetWatchdogTimer, sizeof(SetWatchdogTimer));
-  SetWatchdogTimer.TimerUse                       = GetWatchdogTimer.TimerUse;
-  SetWatchdogTimer.TimerActions                   = GetWatchdogTimer.TimerActions;
-  SetWatchdogTimer.PretimeoutInterval             = GetWatchdogTimer.PretimeoutInterval;
-  SetWatchdogTimer.TimerUseExpirationFlagsClear   = GetWatchdogTimer.TimerUseExpirationFlagsClear;
-  SetWatchdogTimer.InitialCountdownValue          = GetWatchdogTimer.InitialCountdownValue;
-  SetWatchdogTimer.TimerUse.Bits.TimerRunning     = 1;
-  SetWatchdogTimer.TimerUseExpirationFlagsClear  |= BIT1 | BIT2 | BIT3;
+  ZeroMem (&SetWatchdogTimer, sizeof (SetWatchdogTimer));
+  SetWatchdogTimer.TimerUse                      = GetWatchdogTimer.TimerUse;
+  SetWatchdogTimer.TimerActions                  = GetWatchdogTimer.TimerActions;
+  SetWatchdogTimer.PretimeoutInterval            = GetWatchdogTimer.PretimeoutInterval;
+  SetWatchdogTimer.TimerUseExpirationFlagsClear  = GetWatchdogTimer.TimerUseExpirationFlagsClear;
+  SetWatchdogTimer.InitialCountdownValue         = GetWatchdogTimer.InitialCountdownValue;
+  SetWatchdogTimer.TimerUse.Bits.TimerRunning    = 1;
+  SetWatchdogTimer.TimerUseExpirationFlagsClear |= BIT1 | BIT2 | BIT3;
 
   Status = IpmiSetWatchdogTimer (&SetWatchdogTimer, &CompletionCode);
 
@@ -155,6 +159,7 @@ EFI_STATUS
 ReportFrb2Status (
   VOID
   )
+
 /*++
 
   Routine Description:
@@ -170,8 +175,8 @@ ReportFrb2Status (
 
 --*/
 {
-  EFI_STATUS                          Status;
-  IPMI_GET_WATCHDOG_TIMER_RESPONSE    GetWatchdogTimer;
+  EFI_STATUS                        Status;
+  IPMI_GET_WATCHDOG_TIMER_RESPONSE  GetWatchdogTimer;
 
   //
   // Get the Watchdog timer info to find out what kind of timer expiration occurred.
@@ -197,9 +202,10 @@ ReportFrb2Status (
 EFI_STATUS
 EFIAPI
 FrbDxeEntryPoint (
-  IN EFI_HANDLE         ImageHandle,
-  IN EFI_SYSTEM_TABLE   *SystemTable
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
   )
+
 /*++
 
   Routine Description:
@@ -219,18 +225,18 @@ FrbDxeEntryPoint (
   EFI_EVENT   ReadyToBootEvent;
   EFI_STATUS  Status;
 
-  CheckForAndReportErrors();
+  CheckForAndReportErrors ();
   ReportFrb2Status ();
 
   //
   // Register the event to Disable FRB2 before Boot.
   //
   Status = EfiCreateEventReadyToBootEx (
-            TPL_NOTIFY,
-            DisableFRB2Handler,
-            NULL,
-            &ReadyToBootEvent
-            );
+             TPL_NOTIFY,
+             DisableFRB2Handler,
+             NULL,
+             &ReadyToBootEvent
+             );
 
   return Status;
 }

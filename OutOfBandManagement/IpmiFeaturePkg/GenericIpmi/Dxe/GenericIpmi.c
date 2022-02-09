@@ -30,11 +30,11 @@
 EFI_STATUS
 EFIAPI
 LocateIpmiInterface (
-  IN EFI_HANDLE             ImageHandle,
-  IN EFI_SYSTEM_TABLE       *SystemTable
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
-  EFI_STATUS          Status;
+  EFI_STATUS  Status;
 
   Status = InitializeIpmiKcsPhysicalLayer (ImageHandle, SystemTable);
 
@@ -44,4 +44,3 @@ LocateIpmiInterface (
 
   return Status;
 } // LocateIpmiInterface()
-

@@ -25,10 +25,10 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Library/UefiLib.h>
 
 #ifndef EFI_ACPI_CREATOR_ID
-#define EFI_ACPI_CREATOR_ID       SIGNATURE_32 ('M', 'S', 'F', 'T')
+#define EFI_ACPI_CREATOR_ID  SIGNATURE_32 ('M', 'S', 'F', 'T')
 #endif
 #ifndef EFI_ACPI_CREATOR_REVISION
-#define EFI_ACPI_CREATOR_REVISION 0x0100000D
+#define EFI_ACPI_CREATOR_REVISION  0x0100000D
 #endif
 
 /**
@@ -48,9 +48,9 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 EFI_STATUS
 LocateSupportProtocol (
-  IN   EFI_GUID       *Protocol,
-  OUT  VOID           **Instance,
-  IN   UINT32         Type
+  IN   EFI_GUID  *Protocol,
+  OUT  VOID      **Instance,
+  IN   UINT32    Type
   )
 {
   EFI_STATUS              Status;
@@ -66,6 +66,7 @@ LocateSupportProtocol (
   if (EFI_ERROR (Status)) {
     return Status;
   }
+
   //
   // Looking for FV with ACPI storage file
   //
@@ -82,18 +83,19 @@ LocateSupportProtocol (
       //
       break;
     }
+
     //
     // See if it has the ACPI storage file
     //
-    Status = ((EFI_FIRMWARE_VOLUME2_PROTOCOL *) (*Instance))->ReadFile (
-                                                              *Instance,
-                                                              &gEfiCallerIdGuid,
-                                                              NULL,
-                                                              &Size,
-                                                              &FileType,
-                                                              &Attributes,
-                                                              &FvStatus
-                                                              );
+    Status = ((EFI_FIRMWARE_VOLUME2_PROTOCOL *)(*Instance))->ReadFile (
+                                                               *Instance,
+                                                               &gEfiCallerIdGuid,
+                                                               NULL,
+                                                               &Size,
+                                                               &FileType,
+                                                               &Attributes,
+                                                               &FvStatus
+                                                               );
 
     //
     // If we found it, then we are done
@@ -107,51 +109,51 @@ LocateSupportProtocol (
   return Status;
 }
 
-
 EFI_STATUS
 UpdateDeviceSsdtTable (
-  IN OUT EFI_ACPI_COMMON_HEADER     *Table
+  IN OUT EFI_ACPI_COMMON_HEADER  *Table
   )
 {
-  EFI_ACPI_DESCRIPTION_HEADER               *TableHeader = NULL;
-  UINT64                                    TempOemTableId;
-  UINT8                                     *DataPtr;
-  EFI_ACPI_IO_PORT_DESCRIPTOR               *IoRsc;
+  EFI_ACPI_DESCRIPTION_HEADER  *TableHeader = NULL;
+  UINT64                       TempOemTableId;
+  UINT8                        *DataPtr;
+  EFI_ACPI_IO_PORT_DESCRIPTOR  *IoRsc;
 
   TableHeader = (EFI_ACPI_DESCRIPTION_HEADER *)Table;
 
   //
   // Update the OEMID and OEM Table ID.
   //
-  CopyMem (&TableHeader->OemId, PcdGetPtr (PcdAcpiDefaultOemId), sizeof(TableHeader->OemId));
+  CopyMem (&TableHeader->OemId, PcdGetPtr (PcdAcpiDefaultOemId), sizeof (TableHeader->OemId));
   TempOemTableId = PcdGet64 (PcdAcpiDefaultOemTableId);
-  CopyMem (&TableHeader->OemTableId, &TempOemTableId, sizeof(UINT64));
-  TableHeader->CreatorId        = EFI_ACPI_CREATOR_ID;
-  TableHeader->CreatorRevision  = EFI_ACPI_CREATOR_REVISION;
+  CopyMem (&TableHeader->OemTableId, &TempOemTableId, sizeof (UINT64));
+  TableHeader->CreatorId       = EFI_ACPI_CREATOR_ID;
+  TableHeader->CreatorRevision = EFI_ACPI_CREATOR_REVISION;
 
   //
   // Update IO(Decode16, 0xCA2, 0xCA2, 0, 2)
   //
   DEBUG ((DEBUG_INFO, "UpdateDeviceSsdtTable - IPMI\n"));
   for (DataPtr = (UINT8 *)(Table + 1);
-       DataPtr < (UINT8 *) ((UINT8 *) Table + Table->Length - 4);
-       DataPtr++) {
-    if (CompareMem(DataPtr, "_CRS", 4) == 0) {
+       DataPtr < (UINT8 *)((UINT8 *)Table + Table->Length - 4);
+       DataPtr++)
+  {
+    if (CompareMem (DataPtr, "_CRS", 4) == 0) {
       DataPtr += 4; // Skip _CRS
       ASSERT (*DataPtr == AML_BUFFER_OP);
-      DataPtr ++; // Skip AML_BUFFER_OP
+      DataPtr++;  // Skip AML_BUFFER_OP
       ASSERT ((*DataPtr & (BIT7|BIT6)) == 0);
-      DataPtr ++; // Skip PkgLength - 0xD
+      DataPtr++;  // Skip PkgLength - 0xD
       ASSERT ((*DataPtr) == AML_BYTE_PREFIX);
-      DataPtr ++; // Skip BufferSize OpCode
-      DataPtr ++; // Skip BufferSize - 0xA
+      DataPtr++;  // Skip BufferSize OpCode
+      DataPtr++;  // Skip BufferSize - 0xA
       IoRsc = (VOID *)DataPtr;
       ASSERT (IoRsc->Header.Bits.Type == ACPI_SMALL_ITEM_FLAG);
       ASSERT (IoRsc->Header.Bits.Name == ACPI_SMALL_IO_PORT_DESCRIPTOR_NAME);
-      ASSERT (IoRsc->Header.Bits.Length == sizeof(EFI_ACPI_IO_PORT_DESCRIPTOR) - sizeof(ACPI_SMALL_RESOURCE_HEADER));
-      DEBUG ((DEBUG_INFO, "IPMI IO Base in ASL update - 0x%04x <= 0x%04x\n", IoRsc->BaseAddressMin, PcdGet16(PcdIpmiIoBaseAddress)));
-      IoRsc->BaseAddressMin = PcdGet16(PcdIpmiIoBaseAddress);
-      IoRsc->BaseAddressMax = PcdGet16(PcdIpmiIoBaseAddress);
+      ASSERT (IoRsc->Header.Bits.Length == sizeof (EFI_ACPI_IO_PORT_DESCRIPTOR) - sizeof (ACPI_SMALL_RESOURCE_HEADER));
+      DEBUG ((DEBUG_INFO, "IPMI IO Base in ASL update - 0x%04x <= 0x%04x\n", IoRsc->BaseAddressMin, PcdGet16 (PcdIpmiIoBaseAddress)));
+      IoRsc->BaseAddressMin = PcdGet16 (PcdIpmiIoBaseAddress);
+      IoRsc->BaseAddressMax = PcdGet16 (PcdIpmiIoBaseAddress);
     }
   }
 
@@ -173,28 +175,27 @@ UpdateDeviceSsdtTable (
 EFI_STATUS
 EFIAPI
 BmcAcpiEntryPoint (
-  IN EFI_HANDLE         ImageHandle,
-  IN EFI_SYSTEM_TABLE   *SystemTable
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
-  EFI_STATUS                    Status;
-  EFI_STATUS                    AcpiStatus;
+  EFI_STATUS  Status;
+  EFI_STATUS  AcpiStatus;
 
   EFI_FIRMWARE_VOLUME2_PROTOCOL  *FwVol;
-  INTN                          Instance = 0;
-  EFI_ACPI_COMMON_HEADER        *CurrentTable = NULL;
-  UINTN                         TableHandle = 0;
-  UINT32                        FvStatus;
-  UINT32                        Size;
+  INTN                           Instance      = 0;
+  EFI_ACPI_COMMON_HEADER         *CurrentTable = NULL;
+  UINTN                          TableHandle   = 0;
+  UINT32                         FvStatus;
+  UINT32                         Size;
 
-  EFI_ACPI_TABLE_PROTOCOL        *AcpiTable;
-  UINTN                          TableSize;
-
+  EFI_ACPI_TABLE_PROTOCOL  *AcpiTable;
+  UINTN                    TableSize;
 
   //
   // Find the AcpiTable protocol
   //
-  Status = gBS->LocateProtocol (&gEfiAcpiTableProtocolGuid, NULL, (VOID**)&AcpiTable);
+  Status = gBS->LocateProtocol (&gEfiAcpiTableProtocolGuid, NULL, (VOID **)&AcpiTable);
   if (EFI_ERROR (Status)) {
     return EFI_ABORTED;
   }
@@ -202,13 +203,13 @@ BmcAcpiEntryPoint (
   //
   // Locate the firmware volume protocol
   //
-  Status = LocateSupportProtocol (&gEfiFirmwareVolume2ProtocolGuid, (VOID **) &FwVol, 1);
+  Status = LocateSupportProtocol (&gEfiFirmwareVolume2ProtocolGuid, (VOID **)&FwVol, 1);
   if (EFI_ERROR (Status)) {
     return Status;
   }
 
-  Status    = EFI_SUCCESS;
-  Instance  = 0;
+  Status   = EFI_SUCCESS;
+  Instance = 0;
 
   //
   // Read tables from the storage file.
@@ -221,8 +222,8 @@ BmcAcpiEntryPoint (
                       &gEfiCallerIdGuid,
                       EFI_SECTION_RAW,
                       Instance,
-                      (VOID **) &CurrentTable,
-                      (UINTN *) &Size,
+                      (VOID **)&CurrentTable,
+                      (UINTN *)&Size,
                       &FvStatus
                       );
     if (!EFI_ERROR (Status)) {
@@ -231,9 +232,8 @@ BmcAcpiEntryPoint (
       //
       AcpiStatus = UpdateDeviceSsdtTable (CurrentTable);
       if (!EFI_ERROR (AcpiStatus)) {
-
         TableHandle = 0;
-        TableSize = ((EFI_ACPI_DESCRIPTION_HEADER *) CurrentTable)->Length;
+        TableSize   = ((EFI_ACPI_DESCRIPTION_HEADER *)CurrentTable)->Length;
         ASSERT (Size >= TableSize);
 
         Status = AcpiTable->InstallAcpiTable (

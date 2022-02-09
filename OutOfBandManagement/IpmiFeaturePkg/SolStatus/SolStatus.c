@@ -16,7 +16,7 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Library/IpmiCommandLib.h>
 #include <IndustryStandard/Ipmi.h>
 
-#define SOL_CMD_RETRY_COUNT           10
+#define SOL_CMD_RETRY_COUNT  10
 
 /*++
 
@@ -35,35 +35,35 @@ Returns:
 --*/
 EFI_STATUS
 GetSOLStatus (
-  IN UINT8                             Channel,
-  IN UINT8                             ParamSel,
-  IN OUT UINT8                         *Data
+  IN UINT8      Channel,
+  IN UINT8      ParamSel,
+  IN OUT UINT8  *Data
   )
 {
-  EFI_STATUS                                     Status = EFI_SUCCESS;
-  IPMI_GET_SOL_CONFIGURATION_PARAMETERS_REQUEST  GetConfigurationParametersRequest;
-  IPMI_GET_SOL_CONFIGURATION_PARAMETERS_RESPONSE GetConfigurationParametersResponse;
-  UINT32                                         DataSize;
-  UINT8                                          RetryCount;
+  EFI_STATUS                                      Status = EFI_SUCCESS;
+  IPMI_GET_SOL_CONFIGURATION_PARAMETERS_REQUEST   GetConfigurationParametersRequest;
+  IPMI_GET_SOL_CONFIGURATION_PARAMETERS_RESPONSE  GetConfigurationParametersResponse;
+  UINT32                                          DataSize;
+  UINT8                                           RetryCount;
 
   for (RetryCount = 0; RetryCount < SOL_CMD_RETRY_COUNT; RetryCount++) {
-    ZeroMem (&GetConfigurationParametersRequest, sizeof(GetConfigurationParametersRequest));
+    ZeroMem (&GetConfigurationParametersRequest, sizeof (GetConfigurationParametersRequest));
     GetConfigurationParametersRequest.ChannelNumber.Bits.ChannelNumber = Channel;
     GetConfigurationParametersRequest.ParameterSelector                = ParamSel;
 
-    ZeroMem (&GetConfigurationParametersResponse, sizeof(GetConfigurationParametersResponse));
+    ZeroMem (&GetConfigurationParametersResponse, sizeof (GetConfigurationParametersResponse));
 
-    DataSize = sizeof(GetConfigurationParametersResponse);
-    Status = IpmiGetSolConfigurationParameters (
-               &GetConfigurationParametersRequest,
-               &GetConfigurationParametersResponse,
-               &DataSize
-               );
+    DataSize = sizeof (GetConfigurationParametersResponse);
+    Status   = IpmiGetSolConfigurationParameters (
+                 &GetConfigurationParametersRequest,
+                 &GetConfigurationParametersResponse,
+                 &DataSize
+                 );
 
-    if (Status == EFI_SUCCESS){
+    if (Status == EFI_SUCCESS) {
       break;
     } else {
-      gBS->Stall(100000);
+      gBS->Stall (100000);
     }
   }
 
@@ -91,9 +91,9 @@ Returns:
 --*/
 EFI_STATUS
 SetSOLParams (
-  IN UINT8                             Channel,
-  IN UINT8                             ParamSel,
-  IN UINT8                             Data
+  IN UINT8  Channel,
+  IN UINT8  ParamSel,
+  IN UINT8  Data
   )
 {
   EFI_STATUS                                     Status = EFI_SUCCESS;
@@ -102,7 +102,7 @@ SetSOLParams (
   UINT8                                          RetryCount;
 
   for (RetryCount = 0; RetryCount < SOL_CMD_RETRY_COUNT; RetryCount++) {
-    ZeroMem (&SetConfigurationParametersRequest, sizeof(SetConfigurationParametersRequest));
+    ZeroMem (&SetConfigurationParametersRequest, sizeof (SetConfigurationParametersRequest));
     SetConfigurationParametersRequest.ChannelNumber.Bits.ChannelNumber = Channel;
     SetConfigurationParametersRequest.ParameterSelector                = ParamSel;
     SetConfigurationParametersRequest.ParameterData[0]                 = Data;
@@ -111,14 +111,14 @@ SetSOLParams (
 
     Status = IpmiSetSolConfigurationParameters (
                &SetConfigurationParametersRequest,
-               sizeof(SetConfigurationParametersRequest),
+               sizeof (SetConfigurationParametersRequest),
                &CompletionCode
                );
 
     if (Status == EFI_SUCCESS) {
       break;
     } else {
-      gBS->Stall(100000);
+      gBS->Stall (100000);
     }
   }
 
@@ -128,9 +128,10 @@ SetSOLParams (
 EFI_STATUS
 EFIAPI
 SolStatusEntryPoint (
-  IN EFI_HANDLE         ImageHandle,
-  IN EFI_SYSTEM_TABLE   *SystemTable
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
   )
+
 /*++
 
   Routine Description:

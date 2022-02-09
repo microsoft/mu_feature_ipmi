@@ -10,9 +10,10 @@
 
 EFI_STATUS
 UpdateErrorStatus (
-  IN UINT8                      BmcError,
-  IPMI_BMC_INSTANCE_DATA    *IpmiInstance
+  IN UINT8                BmcError,
+  IPMI_BMC_INSTANCE_DATA  *IpmiInstance
   )
+
 /*++
 
 Routine Description:
@@ -56,16 +57,17 @@ Returns:
 EFI_STATUS
 EFIAPI
 IpmiSendCommandToBmc (
-  IN      IPMI_TRANSPORT            *This,
-  IN      UINT8                         NetFunction,
-  IN      UINT8                         Lun,
-  IN      UINT8                         Command,
-  IN      UINT8                         *CommandData,
-  IN      UINT8                         CommandDataSize,
-  IN OUT  UINT8                         *ResponseData,
-  IN OUT  UINT8                         *ResponseDataSize,
-  IN      VOID                          *Context
+  IN      IPMI_TRANSPORT  *This,
+  IN      UINT8           NetFunction,
+  IN      UINT8           Lun,
+  IN      UINT8           Command,
+  IN      UINT8           *CommandData,
+  IN      UINT8           CommandDataSize,
+  IN OUT  UINT8           *ResponseData,
+  IN OUT  UINT8           *ResponseDataSize,
+  IN      VOID            *Context
   )
+
 /*++
 
 Routine Description:
@@ -110,15 +112,15 @@ Returns:
     // response data.  Since the command format is different from the response
     // format, the buffer is cast to both structure definitions.
     //
-    IpmiCommand  = (IPMI_COMMAND*)  IpmiInstance->TempData;
-    IpmiResponse = (IPMI_RESPONSE*) IpmiInstance->TempData;
+    IpmiCommand  = (IPMI_COMMAND *)IpmiInstance->TempData;
+    IpmiResponse = (IPMI_RESPONSE *)IpmiInstance->TempData;
 
     //
     // Send IPMI command to BMC
     //
-    IpmiCommand->Lun = Lun;
+    IpmiCommand->Lun         = Lun;
     IpmiCommand->NetFunction = NetFunction;
-    IpmiCommand->Command = Command;
+    IpmiCommand->Command     = Command;
 
     //
     // Ensure that the buffer is valid before attempting to copy the command data
@@ -140,7 +142,7 @@ Returns:
                IpmiInstance->KcsTimeoutPeriod,
                IpmiInstance->IpmiIoBase,
                Context,
-               (UINT8 *) IpmiCommand,
+               (UINT8 *)IpmiCommand,
                (CommandDataSize + IPMI_COMMAND_HEADER_SIZE)
                );
 
@@ -155,13 +157,13 @@ Returns:
     // Subtract 1 from DataSize so memory past the end of the buffer can't be written
     //
     DataSize = MAX_TEMP_DATA - 1;
-    Status = ReceiveBmcDataFromPort (
-               IpmiInstance->KcsTimeoutPeriod,
-               IpmiInstance->IpmiIoBase,
-               Context,
-               (UINT8 *) IpmiResponse,
-               &DataSize
-               );
+    Status   = ReceiveBmcDataFromPort (
+                 IpmiInstance->KcsTimeoutPeriod,
+                 IpmiInstance->IpmiIoBase,
+                 Context,
+                 (UINT8 *)IpmiResponse,
+                 &DataSize
+                 );
 
     if (Status != EFI_SUCCESS) {
       IpmiInstance->BmcStatus = BMC_SOFTFAIL;
@@ -178,7 +180,8 @@ Returns:
     }
 
     if ((IpmiResponse->CompletionCode != COMP_CODE_NORMAL) &&
-        (IpmiInstance->BmcStatus == BMC_UPDATE_IN_PROGRESS)) {
+        (IpmiInstance->BmcStatus == BMC_UPDATE_IN_PROGRESS))
+    {
       //
       // If the completion code is not normal and the BMC is in Force Update
       // mode, then update the error status and return EFI_UNSUPPORTED.
@@ -214,7 +217,7 @@ Returns:
     //
     if ((DataSize - IPMI_RESPONSE_HEADER_SIZE) > *ResponseDataSize) {
       //
-      //Verify the response data matched with the cmd sent.
+      // Verify the response data matched with the cmd sent.
       //
       if ((IpmiResponse->NetFunction != (NetFunction | 0x1)) || (IpmiResponse->Command != Command)) {
         if (0 == RetryCnt) {
@@ -223,11 +226,13 @@ Returns:
           continue;
         }
       }
+
       return EFI_BUFFER_TOO_SMALL;
     }
 
     break;
   }
+
   //
   // Copy data over to the response data buffer.
   //
@@ -243,23 +248,24 @@ Returns:
   //
   *ResponseDataSize += 1; // Add one byte for Completion Code
   for (Index = 1; Index < *ResponseDataSize; Index++) {
-    ResponseData [*ResponseDataSize - Index] = ResponseData [*ResponseDataSize - (Index + 1)];
+    ResponseData[*ResponseDataSize - Index] = ResponseData[*ResponseDataSize - (Index + 1)];
   }
-  ResponseData [0] = IpmiResponse->CompletionCode;
+
+  ResponseData[0] = IpmiResponse->CompletionCode;
 
   IpmiInstance->BmcStatus = BMC_OK;
   return EFI_SUCCESS;
 }
 
-
 EFI_STATUS
 EFIAPI
 IpmiBmcStatus (
-  IN  IPMI_TRANSPORT              *This,
-  OUT BMC_STATUS                  *BmcStatus,
-  OUT SM_COM_ADDRESS              *ComAddress,
-  IN  VOID                            *Context
+  IN  IPMI_TRANSPORT  *This,
+  OUT BMC_STATUS      *BmcStatus,
+  OUT SM_COM_ADDRESS  *ComAddress,
+  IN  VOID            *Context
   )
+
 /*++
 
 Routine Description:
@@ -287,10 +293,10 @@ Returns:
     IpmiInstance->BmcStatus = BMC_HARDFAIL;
   }
 
-  *BmcStatus = IpmiInstance->BmcStatus;
-  ComAddress->ChannelType = SmBmc;
-  ComAddress->Address.BmcAddress.LunAddress = 0x0;
-  ComAddress->Address.BmcAddress.SlaveAddress = IpmiInstance->SlaveAddress;
+  *BmcStatus                                    = IpmiInstance->BmcStatus;
+  ComAddress->ChannelType                       = SmBmc;
+  ComAddress->Address.BmcAddress.LunAddress     = 0x0;
+  ComAddress->Address.BmcAddress.SlaveAddress   = IpmiInstance->SlaveAddress;
   ComAddress->Address.BmcAddress.ChannelAddress = 0x0;
 
   return EFI_SUCCESS;

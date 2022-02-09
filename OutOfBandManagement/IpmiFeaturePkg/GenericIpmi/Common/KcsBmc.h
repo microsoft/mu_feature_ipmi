@@ -14,24 +14,23 @@
 #include <Library/DebugLib.h>
 #include <Library/TimerLib.h>
 
-#define KCS_WRITE_START       0x61
-#define KCS_WRITE_END         0x62
-#define KCS_READ              0x68
-#define KCS_GET_STATUS        0x60
-#define KCS_ABORT             0x60
-#define KCS_DELAY_UNIT        50  // [s] Each KSC IO delay
+#define KCS_WRITE_START  0x61
+#define KCS_WRITE_END    0x62
+#define KCS_READ         0x68
+#define KCS_GET_STATUS   0x60
+#define KCS_ABORT        0x60
+#define KCS_DELAY_UNIT   50       // [s] Each KSC IO delay
 
 //
 // In OpenBMC, UpdateMode: the bit 7 of byte 4 in get device id command is used for the BMC status:
 // 0 means BMC is ready, 1 means BMC is not ready.
 // At the very beginning of BMC power on, the status is 1 means BMC is in booting process and not ready. It is not the flag for force update mode.
 //
-#define BMC_READY             0
+#define BMC_READY  0
 
+#define KCS_ABORT_RETRY_COUNT  1
 
-#define KCS_ABORT_RETRY_COUNT 1
-
-//#define TIMEOUT64(a,b)  ((INT64)((b) - (a)) < 0)
+// #define TIMEOUT64(a,b)  ((INT64)((b) - (a)) < 0)
 
 typedef enum {
   KcsIdleState,
@@ -41,30 +40,30 @@ typedef enum {
 } KCS_STATE;
 
 typedef union {
-  UINT8     RawData;
+  UINT8    RawData;
   struct {
-    UINT8 Obf   : 1;
-    UINT8 Ibf   : 1;
-    UINT8 SmAtn : 1;
-    UINT8 CD    : 1;
-    UINT8 Oem1  : 1;
-    UINT8 Oem2  : 1;
-    UINT8 State : 2;
+    UINT8    Obf   : 1;
+    UINT8    Ibf   : 1;
+    UINT8    SmAtn : 1;
+    UINT8    CD    : 1;
+    UINT8    Oem1  : 1;
+    UINT8    Oem2  : 1;
+    UINT8    State : 2;
   } Status;
 } KCS_STATUS;
 
-
 //
-//External Fucntion List
+// External Fucntion List
 //
 EFI_STATUS
 SendDataToBmcPort (
-  UINT64                                    KcsTimeoutPeriod,
-  UINT16                                    KcsPort,
-  VOID                                      *Context,
-  UINT8                                     *Data,
-  UINT8                                     DataSize
+  UINT64  KcsTimeoutPeriod,
+  UINT16  KcsPort,
+  VOID    *Context,
+  UINT8   *Data,
+  UINT8   DataSize
   )
+
 /*++
 
 Routine Description:
@@ -87,12 +86,13 @@ Returns:
 
 EFI_STATUS
 ReceiveBmcDataFromPort (
-  UINT64                          KcsTimeoutPeriod,
-  UINT16                          KcsPort,
-  VOID                            *Context,
-  UINT8                           *Data,
-  UINT8                           *DataSize
+  UINT64  KcsTimeoutPeriod,
+  UINT16  KcsPort,
+  VOID    *Context,
+  UINT8   *Data,
+  UINT8   *DataSize
   )
+
 /*++
 
 Routine Description:
@@ -116,14 +116,15 @@ Returns:
 ;
 
 //
-//Internal Fucntion List
+// Internal Fucntion List
 //
 EFI_STATUS
 KcsErrorExit (
-  UINT64                            KcsTimeoutPeriod,
-  UINT16                            KcsPort,
-  VOID                              *Context
+  UINT64  KcsTimeoutPeriod,
+  UINT16  KcsPort,
+  VOID    *Context
   )
+
 /*++
 
 Routine Description:
@@ -146,12 +147,13 @@ Returns:
 
 EFI_STATUS
 KcsCheckStatus (
-  UINT64                            KcsTimeoutPeriod,
-  UINT16                            KcsPort,
-  KCS_STATE                         KcsState,
-  BOOLEAN                           *Idle,
-  VOID                              *Context
+  UINT64     KcsTimeoutPeriod,
+  UINT16     KcsPort,
+  KCS_STATE  KcsState,
+  BOOLEAN    *Idle,
+  VOID       *Context
   )
+
 /*++
 
 Routine Description:
@@ -173,15 +175,15 @@ Returns:
 --*/
 ;
 
-
 EFI_STATUS
 SendDataToBmc (
-  UINT64                          KcsTimeoutPeriod,
-  UINT16                          KcsPort,
-  VOID                            *Context,
-  UINT8                           *Data,
-  UINT8                           DataSize
+  UINT64  KcsTimeoutPeriod,
+  UINT16  KcsPort,
+  VOID    *Context,
+  UINT8   *Data,
+  UINT8   DataSize
   )
+
 /*++
 
 Routine Description:
@@ -202,15 +204,15 @@ Returns:
 --*/
 ;
 
-
 EFI_STATUS
 ReceiveBmcData (
-  UINT64                          KcsTimeoutPeriod,
-  UINT16                          KcsPort,
-  VOID                            *Context,
-  UINT8                           *Data,
-  UINT8                           *DataSize
+  UINT64  KcsTimeoutPeriod,
+  UINT16  KcsPort,
+  VOID    *Context,
+  UINT8   *Data,
+  UINT8   *DataSize
   )
+
 /*++
 
 Routine Description:

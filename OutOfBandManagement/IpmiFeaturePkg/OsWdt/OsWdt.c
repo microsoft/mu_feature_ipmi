@@ -13,16 +13,17 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Library/IpmiCommandLib.h>
 #include <IndustryStandard/Ipmi.h>
 
-BOOLEAN mOsWdtFlag = FALSE;
+BOOLEAN  mOsWdtFlag = FALSE;
 
-EFI_EVENT                   mExitBootServicesEvent;
+EFI_EVENT  mExitBootServicesEvent;
 
 VOID
 EFIAPI
 EnableEfiOsBootWdtHandler (
-  IN EFI_EVENT        Event,
-  IN VOID             *Context
+  IN EFI_EVENT  Event,
+  IN VOID       *Context
   )
+
 /*++
 
 Routine Description:
@@ -38,29 +39,29 @@ Returns:
 
 --*/
 {
-  EFI_STATUS                       Status;
-  IPMI_SET_WATCHDOG_TIMER_REQUEST  SetWatchdogTimer;
-  UINT8                            CompletionCode;
-  IPMI_GET_WATCHDOG_TIMER_RESPONSE GetWatchdogTimer;
-  static BOOLEAN                   OsWdtEventHandled = FALSE;
+  EFI_STATUS                        Status;
+  IPMI_SET_WATCHDOG_TIMER_REQUEST   SetWatchdogTimer;
+  UINT8                             CompletionCode;
+  IPMI_GET_WATCHDOG_TIMER_RESPONSE  GetWatchdogTimer;
+  static BOOLEAN                    OsWdtEventHandled = FALSE;
 
-  DEBUG((DEBUG_ERROR, "!!! EnableEfiOsBootWdtHandler()!!!\n"));
+  DEBUG ((DEBUG_ERROR, "!!! EnableEfiOsBootWdtHandler()!!!\n"));
 
   //
   // Make sure it processes once only. And proceess it only if OsWdtFlag==TRUE;
   //
   if (OsWdtEventHandled || !mOsWdtFlag) {
-    return ;
+    return;
   }
 
   OsWdtEventHandled = TRUE;
 
   Status = IpmiGetWatchdogTimer (&GetWatchdogTimer);
   if (EFI_ERROR (Status)) {
-    return ;
+    return;
   }
 
-  ZeroMem (&SetWatchdogTimer, sizeof(SetWatchdogTimer));
+  ZeroMem (&SetWatchdogTimer, sizeof (SetWatchdogTimer));
   //
   // Just flip the Timer Use bit. This should release the timer.
   //
@@ -72,15 +73,16 @@ Returns:
   SetWatchdogTimer.InitialCountdownValue         = 600; // 100ms / count
 
   Status = IpmiSetWatchdogTimer (&SetWatchdogTimer, &CompletionCode);
-  return ;
+  return;
 }
 
 EFI_STATUS
 EFIAPI
 DriverInit (
-  IN EFI_HANDLE         ImageHandle,
-  IN EFI_SYSTEM_TABLE   *SystemTable
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
   )
+
 /*++
 
 Routine Description:

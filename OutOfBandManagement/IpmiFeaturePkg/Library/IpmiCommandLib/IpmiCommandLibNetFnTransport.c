@@ -12,7 +12,6 @@
 
 #include <IndustryStandard/Ipmi.h>
 
-
 EFI_STATUS
 EFIAPI
 IpmiSolActivating (
@@ -20,18 +19,18 @@ IpmiSolActivating (
   OUT UINT8                        *CompletionCode
   )
 {
-  EFI_STATUS                   Status;
-  UINT32                       DataSize;
+  EFI_STATUS  Status;
+  UINT32      DataSize;
 
-  DataSize = sizeof(*CompletionCode);
-  Status = IpmiSubmitCommand (
-             IPMI_NETFN_TRANSPORT,
-             IPMI_TRANSPORT_SOL_ACTIVATING,
-             (VOID *)SolActivatingRequest,
-             sizeof(*SolActivatingRequest),
-             (VOID *)CompletionCode,
-             &DataSize
-             );
+  DataSize = sizeof (*CompletionCode);
+  Status   = IpmiSubmitCommand (
+               IPMI_NETFN_TRANSPORT,
+               IPMI_TRANSPORT_SOL_ACTIVATING,
+               (VOID *)SolActivatingRequest,
+               sizeof (*SolActivatingRequest),
+               (VOID *)CompletionCode,
+               &DataSize
+               );
   return Status;
 }
 
@@ -43,36 +42,36 @@ IpmiSetSolConfigurationParameters (
   OUT UINT8                                          *CompletionCode
   )
 {
-  EFI_STATUS                   Status;
-  UINT32                       DataSize;
+  EFI_STATUS  Status;
+  UINT32      DataSize;
 
-  DataSize = sizeof(*CompletionCode);
-  Status = IpmiSubmitCommand (
-             IPMI_NETFN_TRANSPORT,
-             IPMI_TRANSPORT_SET_SOL_CONFIG_PARAM,
-             (VOID *)SetConfigurationParametersRequest,
-             SetConfigurationParametersRequestSize,
-             (VOID *)CompletionCode,
-             &DataSize
-             );
+  DataSize = sizeof (*CompletionCode);
+  Status   = IpmiSubmitCommand (
+               IPMI_NETFN_TRANSPORT,
+               IPMI_TRANSPORT_SET_SOL_CONFIG_PARAM,
+               (VOID *)SetConfigurationParametersRequest,
+               SetConfigurationParametersRequestSize,
+               (VOID *)CompletionCode,
+               &DataSize
+               );
   return Status;
 }
 
 EFI_STATUS
 EFIAPI
 IpmiGetSolConfigurationParameters (
-  IN  IPMI_GET_SOL_CONFIGURATION_PARAMETERS_REQUEST  *GetConfigurationParametersRequest,
-  OUT IPMI_GET_SOL_CONFIGURATION_PARAMETERS_RESPONSE *GetConfigurationParametersResponse,
-  IN OUT UINT32                                      *GetConfigurationParametersResponseSize
+  IN  IPMI_GET_SOL_CONFIGURATION_PARAMETERS_REQUEST   *GetConfigurationParametersRequest,
+  OUT IPMI_GET_SOL_CONFIGURATION_PARAMETERS_RESPONSE  *GetConfigurationParametersResponse,
+  IN OUT UINT32                                       *GetConfigurationParametersResponseSize
   )
 {
-  EFI_STATUS                   Status;
+  EFI_STATUS  Status;
 
   Status = IpmiSubmitCommand (
              IPMI_NETFN_TRANSPORT,
              IPMI_TRANSPORT_GET_SOL_CONFIG_PARAM,
              (VOID *)GetConfigurationParametersRequest,
-             sizeof(*GetConfigurationParametersRequest),
+             sizeof (*GetConfigurationParametersRequest),
              (VOID *)GetConfigurationParametersResponse,
              GetConfigurationParametersResponseSize
              );
