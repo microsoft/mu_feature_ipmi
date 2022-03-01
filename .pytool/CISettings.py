@@ -163,7 +163,7 @@ class Settings(CiSetupSettingsManager, CiBuildSettingsManager, UpdateSettingsMan
         return rs
 
     def GetName(self):
-        return "MuCommonIntelAdvFeatures"
+        return "MuFeaturesIpmi"
 
     def GetDependencies(self):
         ''' Return Git Repository Dependencies
@@ -179,23 +179,13 @@ class Settings(CiSetupSettingsManager, CiBuildSettingsManager, UpdateSettingsMan
         }
         '''
         return [
-            {
-                "Path": "Common/MU_TIANO",
-                "Url": "https://github.com/microsoft/mu_tiano_plus.git",
-                "Branch": "release/202111"
-            },
-            {
-                "Path": "MU_BASECORE",
-                "Url": "https://github.com/microsoft/mu_basecore.git",
-                "Branch": "release/202111"
-            }
         ]
 
 
     def GetPackagesPath(self):
         ''' Return a list of workspace relative paths that should be mapped as edk2 PackagesPath '''
         result = [
-            "OutOfBandManagement",
+            shell_environment.GetBuildVars().GetValue("BASECORE_PATH", "") + "/MU_BASECORE"
         ]
         for a in self.GetDependencies():
             result.append(a["Path"])

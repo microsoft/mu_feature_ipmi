@@ -1,0 +1,27 @@
+## @file
+#  KCS IPMI transport library
+#
+#  Copyright (c) Microsoft Corporation.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.26
+  BASE_NAME                      = KcsIpmiTransportLib
+  FILE_GUID                      = E8DB0064-694B-4FA1-8FAA-61FEB2E34AEB
+  MODULE_TYPE                    = UEFI_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = IpmiTransportLib
+
+[sources]
+  KcsBmc.c
+  KcsBmc.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  DebugLib

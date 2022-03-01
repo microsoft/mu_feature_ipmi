@@ -8,10 +8,5 @@ tags/
 *.bak
 BuildConfig.conf
 
-# Ignore cloned dependencies
-/Common/MU_TIANO
-/MU_BASECORE
-/Silicon/Intel/MU_TIANO
-
 # Ignore unused UDK PKGs.
 /Conf/

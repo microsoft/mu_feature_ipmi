@@ -1,0 +1,12 @@
+## @file
+#  FDF file for pre-memory modules that enable Intelligent Platform Management Interface.
+#
+# Copyright (c) 2019, Intel Corporation. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+INF IpmiFeaturePkg/GenericIpmi/Pei/PeiGenericIpmi.inf
+INF IpmiFeaturePkg/IpmiInit/PeiIpmiInit.inf
+INF IpmiFeaturePkg/Frb/FrbPei.inf

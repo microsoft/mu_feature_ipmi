@@ -1,0 +1,29 @@
+## @file
+#
+# @copyright
+# Copyright 2010 - 2021 Intel Corporation. <BR>
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SmmIpmiBaseLib
+  FILE_GUID                      = 6539C282-7DD5-419A-B502-79135DE86C09
+  MODULE_TYPE                    = DXE_SMM_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = IpmiBaseLib|DXE_SMM_DRIVER SMM_CORE
+
+[sources]
+  SmmIpmiBaseLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  UefiBootServicesTableLib
+  DebugLib
+  SmmServicesTableLib
+
+[Protocols]
+  gSmmIpmiTransportProtocolGuid

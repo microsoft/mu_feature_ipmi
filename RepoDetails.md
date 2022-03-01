@@ -1,12 +1,12 @@
-# Project Mu Common Intel AdvFeatures
+# Project Mu Feature IPMI
 
 ??? info "Git Details"
-    Repository Url: {{mu_common_intel_adv_features.url}}  
-    Branch:         {{mu_common_intel_adv_features.branch}}  
-    Commit:         [{{mu_common_intel_adv_features.commit}}]({{mu_common_intel_adv_features.commitlink}})  
-    Commit Date:    {{mu_common_intel_adv_features.date}}
+    Repository Url: {{mu_feature_ipmi.url}}  
+    Branch:         {{mu_feature_ipmi.branch}}  
+    Commit:         [{{mu_feature_ipmi.commit}}]({{mu_feature_ipmi.commitlink}})  
+    Commit Date:    {{mu_feature_ipmi.date}}
 
-This repository contains Project Mu code based on TianoCore edk2 code for Intel Advanced Features.
+This repository contains Project Mu code based on TianoCore edk2 code for IPMI.
 
 ## More Info
 

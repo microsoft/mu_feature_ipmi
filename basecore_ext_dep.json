@@ -1,0 +1,9 @@
+{
+  "scope": "global",
+  "type": "git",
+  "name": "MU_BASECORE",
+  "var_name": "BASECORE_PATH",
+  "source": "https://github.com/microsoft/mu_basecore.git",
+  "version": "9ac4330036f3b1811c748a7bd74de65a2cadedfd",
+  "flags": ["set_build_var"]
+}
