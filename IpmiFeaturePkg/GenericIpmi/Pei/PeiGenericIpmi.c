@@ -25,7 +25,7 @@
 **/
 EFI_STATUS
 EFIAPI
-PeiInitializeIpmiKcsPhysicalLayer (
+PeiInitializeIpmiPhysicalLayer (
   IN CONST EFI_PEI_SERVICES  **PeiServices
   )
 {
@@ -42,16 +42,6 @@ PeiInitializeIpmiKcsPhysicalLayer (
     if (EFI_ERROR (Status)) {
       return Status;
     }
-  }
-
-  //
-  // Enable OEM specific southbridge SIO KCS I/O address range 0xCA0 to 0xCAF at here
-  // if the the I/O address range has not been enabled.
-  //
-  Status = PlatformIpmiIoRangeSet (PcdGet16 (PcdIpmiIoBaseAddress));
-  DEBUG ((DEBUG_INFO, "IPMI Peim:PlatformIpmiIoRangeSet - %r!\n", Status));
-  if (EFI_ERROR (Status)) {
-    return Status;
   }
 
   mIpmiInstance = AllocateZeroPool (sizeof (PEI_IPMI_BMC_INSTANCE_DATA));
@@ -71,8 +61,6 @@ PeiInitializeIpmiKcsPhysicalLayer (
   //
   // Initialize IPMI IO Base.
   //
-  mIpmiInstance->IpmiIoBase = PcdGet16 (PcdIpmiIoBaseAddress);
-  DEBUG ((EFI_D_INFO, "IPMI Peim:IpmiIoBase=0x%x\n", mIpmiInstance->IpmiIoBase));
   mIpmiInstance->Signature                          = SM_IPMI_BMC_SIGNATURE;
   mIpmiInstance->SlaveAddress                       = BMC_SLAVE_ADDRESS;
   mIpmiInstance->BmcStatus                          = BMC_NOTREADY;
@@ -82,6 +70,14 @@ PeiInitializeIpmiKcsPhysicalLayer (
   mIpmiInstance->PeiIpmiBmcDataDesc.Flags = EFI_PEI_PPI_DESCRIPTOR_PPI | EFI_PEI_PPI_DESCRIPTOR_TERMINATE_LIST;
   mIpmiInstance->PeiIpmiBmcDataDesc.Guid  = &gPeiIpmiTransportPpiGuid;
   mIpmiInstance->PeiIpmiBmcDataDesc.Ppi   = &mIpmiInstance->IpmiTransportPpi;
+
+  //
+  // Initialize the transport layer.
+  //
+  Status = InitializeIpmiTransportHardware ();
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "IPMI: InitializeIpmiTransportHardware failed - %r!\n", Status));
+  }
 
   //
   // Get the Device ID and check if the system is in Force Update mode.
@@ -168,10 +164,9 @@ PeimIpmiInterfaceInit (
   // EFI_STATUS  Status;    // MU_CHANGE - Unused.
 
   //
-  // Performing Ipmi KCS physical layer initialization
+  // Performing Ipmi physical layer initialization
   //
-  // Status = PeiInitializeIpmiKcsPhysicalLayer (PeiServices);    // MU_CHANGE
-  PeiInitializeIpmiKcsPhysicalLayer (PeiServices);                // MU_CHANGE
+  PeiInitializeIpmiPhysicalLayer (PeiServices);                // MU_CHANGE
 
   return EFI_SUCCESS;
 } // PeimIpmiInterfaceInit()

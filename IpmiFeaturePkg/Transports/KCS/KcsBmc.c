@@ -8,10 +8,54 @@
 
 #include "KcsBmc.h"
 
+UINT16  KcsPort;
+
+/**
+  Initializing hardware for the IPMI transport.
+
+  @retval   EFI_SUCCESS     Hardware was successfully initialized.
+  @retval   Other           An error was returned from PlatformIpmiIoRangeSet.
+**/
+EFI_STATUS
+InitializeIpmiTransportHardware (
+  VOID
+  )
+
+{
+  EFI_STATUS  Status;
+
+  //
+  // Enable OEM specific southbridge SIO KCS I/O address range 0xCA0 to 0xCAF at here
+  // if the the I/O address range has not been enabled.
+  //
+  Status = PlatformIpmiIoRangeSet (KcsPort);
+  DEBUG ((DEBUG_INFO, "IPMI: PlatformIpmiIoRangeSet - %r!\n", Status));
+  return Status;
+}
+
+/**
+  The constructor function initializing global state for the KCS library.
+
+  @param  ImageHandle   The firmware allocated handle for the EFI image.
+  @param  SystemTable   A pointer to the Management mode System Table.
+
+  @retval EFI_SUCCESS   The constructor always returns EFI_SUCCESS.
+
+**/
+EFI_STATUS
+EFIAPI
+BmcKcsConstructor (
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
+  )
+{
+  KcsPort = PcdGet16 (PcdIpmiIoBaseAddress);
+  return EFI_SUCCESS;
+}
+
 EFI_STATUS
 KcsErrorExit (
   UINT64  IpmiTimeoutPeriod,
-  UINT16  KcsPort,
   VOID    *Context
   )
 
@@ -24,7 +68,6 @@ Routine Description:
 Arguments:
 
   IpmiInstance     - The pointer of IPMI_BMC_INSTANCE_DATA
-  KcsPort          - The base port of KCS
   Context          - The Context for this operation
 
 Returns:
@@ -162,7 +205,6 @@ LabelError:
 EFI_STATUS
 KcsCheckStatus (
   UINT64     IpmiTimeoutPeriod,
-  UINT16     KcsPort,
   KCS_STATE  KcsState,
   BOOLEAN    *Idle,
   VOID       *Context
@@ -220,7 +262,7 @@ Returns:
     if ((KcsStatus.Status.State == KcsIdleState) && (KcsState == KcsReadState)) {
       *Idle = TRUE;
     } else {
-      Status = KcsErrorExit (IpmiTimeoutPeriod, KcsPort, Context);
+      Status = KcsErrorExit (IpmiTimeoutPeriod, Context);
       goto LabelError;
     }
   }
@@ -253,7 +295,6 @@ LabelError:
 EFI_STATUS
 SendDataToBmc (
   UINT64  IpmiTimeoutPeriod,
-  UINT16  KcsPort,
   VOID    *Context,
   UINT8   *Data,
   UINT8   DataSize
@@ -294,7 +335,7 @@ Returns:
     MicroSecondDelay (IPMI_DELAY_UNIT);
     KcsStatus.RawData = IoRead8 (KcsIoBase + 1);
     if ((KcsStatus.RawData == 0xFF) || (TimeOut >= IpmiTimeoutPeriod)) {
-      if ((Status = KcsErrorExit (IpmiTimeoutPeriod, KcsIoBase, Context)) != EFI_SUCCESS) {
+      if ((Status = KcsErrorExit (IpmiTimeoutPeriod, Context)) != EFI_SUCCESS) {
         return Status;
       }
     }
@@ -304,13 +345,13 @@ Returns:
 
   KcsData = KCS_WRITE_START;
   IoWrite8 ((KcsIoBase + 1), KcsData);
-  if ((Status = KcsCheckStatus (IpmiTimeoutPeriod, KcsIoBase, KcsWriteState, &Idle, Context)) != EFI_SUCCESS) {
+  if ((Status = KcsCheckStatus (IpmiTimeoutPeriod, KcsWriteState, &Idle, Context)) != EFI_SUCCESS) {
     return Status;
   }
 
   for (i = 0; i < DataSize; i++) {
     if (i == (DataSize - 1)) {
-      if ((Status = KcsCheckStatus (IpmiTimeoutPeriod, KcsIoBase, KcsWriteState, &Idle, Context)) != EFI_SUCCESS) {
+      if ((Status = KcsCheckStatus (IpmiTimeoutPeriod, KcsWriteState, &Idle, Context)) != EFI_SUCCESS) {
         return Status;
       }
 
@@ -318,7 +359,7 @@ Returns:
       IoWrite8 ((KcsIoBase + 1), KcsData);
     }
 
-    Status = KcsCheckStatus (IpmiTimeoutPeriod, KcsIoBase, KcsWriteState, &Idle, Context);
+    Status = KcsCheckStatus (IpmiTimeoutPeriod, KcsWriteState, &Idle, Context);
     if (EFI_ERROR (Status)) {
       return Status;
     }
@@ -332,7 +373,6 @@ Returns:
 EFI_STATUS
 ReceiveBmcData (
   UINT64  IpmiTimeoutPeriod,
-  UINT16  KcsPort,
   VOID    *Context,
   UINT8   *Data,
   UINT8   *DataSize
@@ -369,7 +409,7 @@ Returns:
   KcsIoBase = KcsPort;
 
   while (TRUE) {
-    if ((Status = KcsCheckStatus (IpmiTimeoutPeriod, KcsIoBase, KcsReadState, &Idle, Context)) != EFI_SUCCESS) {
+    if ((Status = KcsCheckStatus (IpmiTimeoutPeriod, KcsReadState, &Idle, Context)) != EFI_SUCCESS) {
       return Status;
     }
 
@@ -399,7 +439,6 @@ Returns:
 EFI_STATUS
 ReceiveBmcDataFromPort (
   UINT64  IpmiTimeoutPeriod,
-  UINT16  KcsPort,
   VOID    *Context,
   UINT8   *Data,
   UINT8   *DataSize
@@ -433,9 +472,9 @@ Returns:
   KcsIoBase  = KcsPort;
 
   for (i = 0; i < KCS_ABORT_RETRY_COUNT; i++) {
-    Status = ReceiveBmcData (IpmiTimeoutPeriod, KcsIoBase, Context, Data, DataSize);
+    Status = ReceiveBmcData (IpmiTimeoutPeriod, Context, Data, DataSize);
     if (EFI_ERROR (Status)) {
-      if ((Status = KcsErrorExit (IpmiTimeoutPeriod, KcsIoBase, Context)) != EFI_SUCCESS) {
+      if ((Status = KcsErrorExit (IpmiTimeoutPeriod, Context)) != EFI_SUCCESS) {
         return Status;
       }
 
@@ -451,7 +490,6 @@ Returns:
 EFI_STATUS
 SendDataToBmcPort (
   UINT64  IpmiTimeoutPeriod,
-  UINT16  KcsPort,
   VOID    *Context,
   UINT8   *Data,
   UINT8   DataSize
@@ -483,9 +521,9 @@ Returns:
   KcsIoBase = KcsPort;
 
   for (i = 0; i < KCS_ABORT_RETRY_COUNT; i++) {
-    Status = SendDataToBmc (IpmiTimeoutPeriod, KcsIoBase, Context, Data, DataSize);
+    Status = SendDataToBmc (IpmiTimeoutPeriod, Context, Data, DataSize);
     if (EFI_ERROR (Status)) {
-      if ((Status = KcsErrorExit (IpmiTimeoutPeriod, KcsIoBase, Context)) != EFI_SUCCESS) {
+      if ((Status = KcsErrorExit (IpmiTimeoutPeriod, Context)) != EFI_SUCCESS) {
         return Status;
       }
     } else {

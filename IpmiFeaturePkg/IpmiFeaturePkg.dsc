@@ -42,6 +42,8 @@
     PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
     DxeServicesTableLib|MdePkg/Library/DxeServicesTableLib/DxeServicesTableLib.inf
     IpmiTransportLib|IpmiFeaturePkg/Transports/KCS/KcsIpmiTransportLib.inf
+    IpmiTransportLib|IpmiFeaturePkg/Transports/SSIF/SsifIpmiTransportLib.inf
+    BmcSmbusLib|IpmiFeaturePkg/Library/BmcSmbusLibNull/BmcSmbusLibNull.inf
 
 [LibraryClasses.common.DXE_DRIVER]
     ReportStatusCodeLib|MdeModulePkg/Library/DxeReportStatusCodeLib/DxeReportStatusCodeLib.inf
@@ -58,3 +60,5 @@
     IpmiFeaturePkg/GenericIpmi/Smm/SmmGenericIpmi.inf
 # MU_CHANGE [END] - [TCBZ3037] Add several components that are missing in DSCs
     IpmiFeaturePkg/Transports/KCS/KcsIpmiTransportLib.inf
+    IpmiFeaturePkg/Transports/SSIF/SsifIpmiTransportLib.inf
+    IpmiFeaturePkg/Library/BmcSmbusLibNull/BmcSmbusLibNull.inf

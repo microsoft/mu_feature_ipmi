@@ -25,6 +25,9 @@
     "CompilerPlugin": {
         "DscPath": "IpmiFeaturePkg.dsc"
     },
+    "HostUnitTestCompilerPlugin": {
+        "DscPath": "Test/IpmiFeaturePkgHostTest.dsc"
+    },
     "CharEncodingCheck": {
         "IgnoreFiles": []
     },
@@ -35,7 +38,9 @@
             "IpmiFeaturePkg/IpmiFeaturePkg.dec",
         ],
         # For host based unit tests
-        "AcceptableDependencies-HOST_APPLICATION":[],
+        "AcceptableDependencies-HOST_APPLICATION":[
+            "UnitTestFrameworkPkg/UnitTestFrameworkPkg.dec"
+        ],
         # For UEFI shell based apps
         "AcceptableDependencies-UEFI_APPLICATION":[],
         "IgnoreInf": []
@@ -43,6 +48,10 @@
     "DscCompleteCheck": {
         "DscPath": "IpmiFeaturePkg.dsc",
         "IgnoreInf": []
+    },
+    "HostUnitTestDscCompleteCheck": {
+        "IgnoreInf": [""],
+        "DscPath": "Test/IpmiFeaturePkgHostTest.dsc"
     },
     "GuidCheck": {
         "IgnoreGuidName": [],

@@ -10,10 +10,16 @@
 #ifndef _IPMI_TRANSPORT_H
 #define _IPMI_TRANSPORT_H
 
+/**
+  Send data to BMC over the IPMI transport.
+
+  @param[in]  IpmiTimeoutPeriod   The timeout for the transaction.
+
+  @retval   EFI_SUCCESS                 <Description>
+**/
 EFI_STATUS
 SendDataToBmcPort (
   UINT64  IpmiTimeoutPeriod,
-  UINT16  KcsPort,
   VOID    *Context,
   UINT8   *Data,
   UINT8   DataSize
@@ -42,7 +48,6 @@ Returns:
 EFI_STATUS
 ReceiveBmcDataFromPort (
   UINT64  IpmiTimeoutPeriod,
-  UINT16  KcsPort,
   VOID    *Context,
   UINT8   *Data,
   UINT8   *DataSize
@@ -69,5 +74,16 @@ Returns:
 
 --*/
 ;
+
+/**
+  Initializing hardware for the IPMI transport.
+
+  @retval   EFI_SUCCESS     Hardware was successfully initialized.
+  @retval   Other           There was a hardware specific failure.
+**/
+EFI_STATUS
+InitializeIpmiTransport (
+  VOID
+  );
 
 #endif

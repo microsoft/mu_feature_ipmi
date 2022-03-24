@@ -82,11 +82,7 @@ Returns:
       //
       // Display message and retry.
       //
-      DEBUG (
-        (EFI_D_ERROR | EFI_D_INFO,
-         "IPMI: Waiting for BMC (KCS 0x%x)...\n",
-         IpmiInstance->IpmiIoBase)
-        );
+      DEBUG ((EFI_D_ERROR | EFI_D_INFO, "IPMI: Waiting for BMC...\n"));
       MicroSecondDelay (500 * 1000);
       TimeOut++;
     }
@@ -115,7 +111,7 @@ Returns:
 }
 
 EFI_STATUS
-SmmInitializeIpmiKcsPhysicalLayer (
+SmmInitializeIpmiPhysicalLayer (
   IN EFI_HANDLE        ImageHandle,
   IN EFI_SYSTEM_TABLE  *SystemTable
   )
@@ -143,7 +139,7 @@ Returns:
   EFI_HANDLE             Handle;
   EFI_STATUS_CODE_VALUE  StatusCodeValue[MAX_SOFT_COUNT];
 
-  DEBUG ((DEBUG_INFO, "SmmInitializeIpmiKcsPhysicalLayer entry \n"));
+  DEBUG ((DEBUG_INFO, "SmmInitializeIpmiPhysicalLayer entry \n"));
   ErrorCount   = 0;
   mImageHandle = ImageHandle;
 
@@ -162,7 +158,6 @@ Returns:
     //
     // Initialize IPMI IO Base, we still use SMS IO base to get device ID and Seltest result since SMM IF may have different cmds supported
     //
-    mIpmiInstance->IpmiIoBase                      = PcdGet16 (PcdIpmiSmmIoBaseAddress);
     mIpmiInstance->Signature                       = SM_IPMI_BMC_SIGNATURE;
     mIpmiInstance->SlaveAddress                    = BMC_SLAVE_ADDRESS;
     mIpmiInstance->BmcStatus                       = BMC_NOTREADY;
@@ -191,7 +186,7 @@ Returns:
                       );
     ASSERT_EFI_ERROR (Status);
 
-    DEBUG ((DEBUG_INFO, "SmmInitializeIpmiKcsPhysicalLayer exit \n"));
+    DEBUG ((DEBUG_INFO, "SmmInitializeIpmiPhysicalLayer exit \n"));
 
     return EFI_SUCCESS;
   }
@@ -204,6 +199,6 @@ InitializeSmmGenericIpmi (
   IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
-  SmmInitializeIpmiKcsPhysicalLayer (ImageHandle, SystemTable);
+  SmmInitializeIpmiPhysicalLayer (ImageHandle, SystemTable);
   return EFI_SUCCESS;
 }

@@ -9,14 +9,12 @@ import os
 import logging
 from edk2toolext.environment import shell_environment
 from edk2toolext.invocables.edk2_ci_build import CiBuildSettingsManager
-from edk2toolext.invocables.edk2_ci_setup import CiSetupSettingsManager
-from edk2toolext.invocables.edk2_setup import SetupSettingsManager, RequiredSubmodule
 from edk2toolext.invocables.edk2_update import UpdateSettingsManager
 from edk2toolext.invocables.edk2_pr_eval import PrEvalSettingsManager
 from edk2toollib.utility_functions import GetHostInfo
 
 
-class Settings(CiSetupSettingsManager, CiBuildSettingsManager, UpdateSettingsManager, SetupSettingsManager, PrEvalSettingsManager):
+class Settings(CiBuildSettingsManager, UpdateSettingsManager, PrEvalSettingsManager):
 
     def __init__(self):
         self.ActualPackages = []
@@ -123,7 +121,7 @@ class Settings(CiSetupSettingsManager, CiBuildSettingsManager, UpdateSettingsMan
     def GetActiveScopes(self):
         ''' return tuple containing scopes that should be active for this process '''
         if self.ActualScopes is None:
-            scopes = ("cibuild", "edk2-build", "host-based-test")
+            scopes = ("feature-ipmi-ci", "cibuild", "edk2-build", "host-based-test")
 
             self.ActualToolChainTag = shell_environment.GetBuildVars().GetValue("TOOL_CHAIN_TAG", "")
 
@@ -185,7 +183,7 @@ class Settings(CiSetupSettingsManager, CiBuildSettingsManager, UpdateSettingsMan
     def GetPackagesPath(self):
         ''' Return a list of workspace relative paths that should be mapped as edk2 PackagesPath '''
         result = [
-            shell_environment.GetBuildVars().GetValue("BASECORE_PATH", "") + "/MU_BASECORE"
+            shell_environment.GetBuildVars().GetValue("BASECORE_PATH", "")
         ]
         for a in self.GetDependencies():
             result.append(a["Path"])

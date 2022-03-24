@@ -137,7 +137,6 @@ Returns:
 
   Status = SendDataToBmcPort (
              IpmiInstance->IpmiTimeoutPeriod,
-             IpmiInstance->IpmiIoBase,
              Context,
              (UINT8 *)IpmiCommand,
              (CommandDataSize + IPMI_COMMAND_HEADER_SIZE)
@@ -156,7 +155,6 @@ Returns:
   DataSize = MAX_TEMP_DATA;
   Status   = ReceiveBmcDataFromPort (
                IpmiInstance->IpmiTimeoutPeriod,
-               IpmiInstance->IpmiIoBase,
                Context,
                (UINT8 *)IpmiResponse,
                &DataSize

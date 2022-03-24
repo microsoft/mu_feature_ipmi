@@ -15,7 +15,12 @@
 #include <Library/PcdLib.h>
 #include <Library/UefiLib.h>
 #include <Library/BaseLib.h>
-#include "IpmiPhysicalLayer.h"
+
+EFI_STATUS
+InitializeIpmiPhysicalLayer (
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
+  );
 
 /*****************************************************************************
  @brief
@@ -36,7 +41,7 @@ LocateIpmiInterface (
 {
   EFI_STATUS  Status;
 
-  Status = InitializeIpmiKcsPhysicalLayer (ImageHandle, SystemTable);
+  Status = InitializeIpmiPhysicalLayer (ImageHandle, SystemTable);
 
   //
   // keep this interface for other Physical Layer as new interface.

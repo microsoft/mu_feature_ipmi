@@ -1,0 +1,27 @@
+## @file
+#  SSIF IPMI transport library
+#
+#  Copyright (c) Microsoft Corporation.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.26
+  BASE_NAME                      = BmcSmbusLibTest
+  FILE_GUID                      = 0DC87EBF-9D35-4850-BAAF-2FB5EDC367D9
+  MODULE_TYPE                    = HOST_APPLICATION
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = BmcSmbusLib
+
+[sources]
+  BmcSmbusLibTest.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  DebugLib
+  BmcSmbusLib

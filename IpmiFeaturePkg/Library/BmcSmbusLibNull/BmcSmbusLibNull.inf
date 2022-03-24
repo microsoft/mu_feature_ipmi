@@ -1,0 +1,24 @@
+## @file
+# The NULL implementation of the SSIF SMBus library.
+#
+# Copyright (c) Microsoft Corporation.<BR>
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = BmcSmbusLibNull
+  FILE_GUID                      = C6A5693A-A71E-424B-ABDE-76FE165F610E
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = BmcSmbusLib
+
+[sources]
+  BmcSmbusLibNull.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  DebugLib

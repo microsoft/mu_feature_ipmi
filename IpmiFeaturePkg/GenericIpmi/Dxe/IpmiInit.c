@@ -11,7 +11,6 @@
 #include "IpmiHooks.h"
 #include "IpmiBmcCommon.h"
 #include "IpmiBmc.h"
-#include "IpmiPhysicalLayer.h"
 #include <Library/TimerLib.h>
 #ifdef FAST_VIDEO_SUPPORT
   #include <Protocol/VideoPrint.h>
@@ -371,7 +370,7 @@ Returns:
 } // GetDeviceId()
 
 /**
-  This function initializes KCS interface to BMC.
+  This function initializes interface to BMC.
 
   Setup and initialize the BMC for the DXE phase.  In order to verify the BMC is functioning
   as expected, the BMC Selftest is performed.  The results are then checked and any errors are
@@ -382,10 +381,10 @@ Returns:
   @param[in] ImageHandle - Handle of this driver image
   @param[in] SystemTable - Table containing standard EFI services
 
-  @retval EFI_SUCCESS - Always success is returned even if KCS does not function
+  @retval EFI_SUCCESS - Always success is returned even if transport does not function
  **/
 EFI_STATUS
-InitializeIpmiKcsPhysicalLayer (
+InitializeIpmiPhysicalLayer (
   IN EFI_HANDLE        ImageHandle,
   IN EFI_SYSTEM_TABLE  *SystemTable
   )
@@ -411,7 +410,7 @@ InitializeIpmiKcsPhysicalLayer (
     //
 
     //
-    // Initialize the KCS transaction timeout.
+    // Initialize the transaction timeout.
     //
     mIpmiInstance->IpmiTimeoutPeriod = (BMC_IPMI_TIMEOUT * 1000*1000) / IPMI_DELAY_UNIT;
     DEBUG ((EFI_D_ERROR, "[IPMI] mIpmiInstance->IpmiTimeoutPeriod: 0x%lx\n", mIpmiInstance->IpmiTimeoutPeriod));
@@ -419,7 +418,6 @@ InitializeIpmiKcsPhysicalLayer (
     //
     // Initialize IPMI IO Base.
     //
-    mIpmiInstance->IpmiIoBase                      = PcdGet16 (PcdIpmiIoBaseAddress);
     mIpmiInstance->Signature                       = SM_IPMI_BMC_SIGNATURE;
     mIpmiInstance->SlaveAddress                    = BMC_SLAVE_ADDRESS;
     mIpmiInstance->BmcStatus                       = BMC_NOTREADY;
@@ -476,4 +474,4 @@ InitializeIpmiKcsPhysicalLayer (
 
     return EFI_SUCCESS;
   }
-} // InitializeIpmiKcsPhysicalLayer()
+} // InitializeIpmiPhysicalLayer()

@@ -9,10 +9,12 @@
 #ifndef _KCS_BMC_H
 #define _KCS_BMC_H
 
+#include <uefi.h>
 #include <Library/BaseLib.h>
 #include <Library/IoLib.h>
 #include <Library/DebugLib.h>
 #include <Library/TimerLib.h>
+#include <Library/IpmiPlatformHookLib.h>
 
 #define KCS_WRITE_START  0x61
 #define KCS_WRITE_END    0x62
@@ -54,7 +56,6 @@ typedef union {
 EFI_STATUS
 KcsCheckStatus (
   UINT64     IpmiTimeoutPeriod,
-  UINT16     KcsPort,
   KCS_STATE  KcsState,
   BOOLEAN    *Idle,
   VOID       *Context
@@ -69,7 +70,6 @@ Routine Description:
 Arguments:
 
   IpmiInstance  - The pointer of IPMI_BMC_INSTANCE_DATA
-  KcsPort       - The base port of KCS
   KcsState      - The state of KCS to be checked
   Idle          - If the KCS is idle
   Context       - The context for this operation
@@ -84,7 +84,6 @@ Returns:
 EFI_STATUS
 KcsErrorExit (
   UINT64  IpmiTimeoutPeriod,
-  UINT16  KcsPort,
   VOID    *Context
   )
 
@@ -97,7 +96,6 @@ Routine Description:
 Arguments:
 
   IpmiInstance     - The pointer of IPMI_BMC_INSTANCE_DATA
-  KcsPort          - The base port of KCS
   Context          - The Context for this operation
 
 Returns:
@@ -111,7 +109,6 @@ Returns:
 EFI_STATUS
 SendDataToBmc (
   UINT64  IpmiTimeoutPeriod,
-  UINT16  KcsPort,
   VOID    *Context,
   UINT8   *Data,
   UINT8   DataSize
@@ -140,7 +137,6 @@ Returns:
 EFI_STATUS
 ReceiveBmcData (
   UINT64  IpmiTimeoutPeriod,
-  UINT16  KcsPort,
   VOID    *Context,
   UINT8   *Data,
   UINT8   *DataSize

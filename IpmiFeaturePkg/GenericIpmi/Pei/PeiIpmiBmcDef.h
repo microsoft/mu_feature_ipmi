@@ -53,7 +53,6 @@ typedef struct {
   BMC_STATUS                BmcStatus;
   UINT64                    ErrorStatus;
   UINT8                     SoftErrorCount;
-  UINT16                    IpmiIoBase;
   PEI_IPMI_TRANSPORT_PPI    IpmiTransportPpi;
   EFI_PEI_PPI_DESCRIPTOR    PeiIpmiBmcDataDesc;
 } PEI_IPMI_BMC_INSTANCE_DATA;
