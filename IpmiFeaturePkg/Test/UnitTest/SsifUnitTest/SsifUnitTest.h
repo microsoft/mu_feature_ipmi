@@ -9,7 +9,7 @@
 #ifndef _SSIF_UNIT_TEST_H
 #define _SSIF_UNIT_TEST_H
 
-#include <UEFI.h>
+#include <Uefi.h>
 #include <Library/BaseLib.h>
 #include <Library/DebugLib.h>
 #include <Library/TimerLib.h>
