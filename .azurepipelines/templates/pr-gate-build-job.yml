@@ -23,7 +23,7 @@ jobs:
   strategy:
     matrix:
       TARGET_Ipmi:
-        Build.Pkgs: 'IpmiFeaturePkg,BeepDebugFeaturePkg,PostCodeDebugFeaturePkg,Usb3DebugFeaturePkg'
+        Build.Pkgs: 'IpmiFeaturePkg'
         Build.Targets: 'DEBUG,RELEASE,NO-TARGET,NOOPT'
 
   workspace:
