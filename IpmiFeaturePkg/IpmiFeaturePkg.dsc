@@ -57,8 +57,10 @@
     IpmiFeaturePkg/Library/IpmiBaseLib/IpmiBaseLib.inf
     IpmiFeaturePkg/Library/IpmiBaseLibNull/IpmiBaseLibNull.inf
     IpmiFeaturePkg/Library/PeiIpmiBaseLib/PeiIpmiBaseLib.inf
-    IpmiFeaturePkg/GenericIpmi/Smm/SmmGenericIpmi.inf
 # MU_CHANGE [END] - [TCBZ3037] Add several components that are missing in DSCs
     IpmiFeaturePkg/Transports/KCS/KcsIpmiTransportLib.inf
     IpmiFeaturePkg/Transports/SSIF/SsifIpmiTransportLib.inf
     IpmiFeaturePkg/Library/BmcSmbusLibNull/BmcSmbusLibNull.inf
+
+[Components.IA32, Components.X64]
+    IpmiFeaturePkg/GenericIpmi/Smm/SmmGenericIpmi.inf
