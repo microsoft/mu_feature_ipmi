@@ -63,8 +63,7 @@ steps:
 
 # MU_CHANGE - Add MarkdownLint
 # install markdownlint check prereqs
-# TEMP: Remove Markdown lint since we don't own these docs.
-#- template: markdownlint-check-prereq-steps.yml
+- template: markdownlint-check-prereq-steps.yml
 
 # Build repo
 # MU_CHANGE - We use CI dependencies as well as submodules.
