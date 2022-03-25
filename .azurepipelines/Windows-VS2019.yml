@@ -6,21 +6,18 @@
 ##
 # MU_CHANGE [BEGIN]
 trigger:
-- dev/*
-- release/*
+- main
 
 schedules:
 - cron: "0 8 * * 0,3"   # Sun/Wed at 1AM Pacific
   displayName: Sun/Wed Build
   branches:
     include:
-    - dev/*
-    - release/*
+    - main
   always: true          # Always build, even if no changes
 
 pr:
-- dev/*
-- release/*
+- main
 # MU_CHANGE [END]
 
 jobs:
@@ -28,4 +25,4 @@ jobs:
   parameters:
     tool_chain_tag: 'VS2019'
     vm_image: 'windows-latest'
-    arch_list: "IA32,X64"
+    arch_list: "X64"
