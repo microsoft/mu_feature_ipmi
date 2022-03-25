@@ -464,12 +464,10 @@ Returns:
 --*/
 {
   EFI_STATUS  Status;
-  UINT16      KcsIoBase;
   UINT8       i;
   UINT8       MyDataSize;
 
   MyDataSize = *DataSize;
-  KcsIoBase  = KcsPort;
 
   for (i = 0; i < KCS_ABORT_RETRY_COUNT; i++) {
     Status = ReceiveBmcData (IpmiTimeoutPeriod, Context, Data, DataSize);
@@ -515,10 +513,7 @@ Returns:
 --*/
 {
   EFI_STATUS  Status;
-  UINT16      KcsIoBase;
   UINT8       i;
-
-  KcsIoBase = KcsPort;
 
   for (i = 0; i < KCS_ABORT_RETRY_COUNT; i++) {
     Status = SendDataToBmc (IpmiTimeoutPeriod, Context, Data, DataSize);
