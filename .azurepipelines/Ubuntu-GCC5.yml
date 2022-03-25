@@ -7,21 +7,18 @@
 ##
 # MU_CHANGE [BEGIN]
 trigger:
-- dev/*
-- release/*
+- main
 
 schedules:
 - cron: "30 9 * * 0,3"  # Sun/Wed at 2:30AM Pacific
   displayName: Sun/Wed Build
   branches:
     include:
-    - dev/*
-    - release/*
+    - main
   always: true          # Always build, even if no changes
 
 pr:
-- dev/*
-- release/*
+- main
 # MU_CHANGE [END]
 
 jobs:
@@ -29,7 +26,7 @@ jobs:
   parameters:
     tool_chain_tag: 'GCC5'
     vm_image: 'ubuntu-latest'
-    arch_list: "IA32,X64,ARM,AARCH64"
+    arch_list: "IA32,X64,AARCH64"
     # MU_CHANGE
     extra_steps:
     - script: sudo apt-get install mingw-w64

@@ -19,7 +19,7 @@
   PLATFORM_VERSION               = 0.1
   DSC_SPECIFICATION              = 0x00010005
   OUTPUT_DIRECTORY               = Build/$(PLATFORM_NAME)
-  SUPPORTED_ARCHITECTURES        = IA32|X64
+  SUPPORTED_ARCHITECTURES        = IA32|X64|AARCH64
   BUILD_TARGETS                  = DEBUG|RELEASE|NOOPT
   SKUID_IDENTIFIER               = DEFAULT
   PEI_ARCH                       = IA32
@@ -57,8 +57,10 @@
     IpmiFeaturePkg/Library/IpmiBaseLib/IpmiBaseLib.inf
     IpmiFeaturePkg/Library/IpmiBaseLibNull/IpmiBaseLibNull.inf
     IpmiFeaturePkg/Library/PeiIpmiBaseLib/PeiIpmiBaseLib.inf
-    IpmiFeaturePkg/GenericIpmi/Smm/SmmGenericIpmi.inf
 # MU_CHANGE [END] - [TCBZ3037] Add several components that are missing in DSCs
     IpmiFeaturePkg/Transports/KCS/KcsIpmiTransportLib.inf
     IpmiFeaturePkg/Transports/SSIF/SsifIpmiTransportLib.inf
     IpmiFeaturePkg/Library/BmcSmbusLibNull/BmcSmbusLibNull.inf
+
+[Components.IA32, Components.X64]
+    IpmiFeaturePkg/GenericIpmi/Smm/SmmGenericIpmi.inf
