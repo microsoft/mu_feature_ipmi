@@ -22,14 +22,8 @@ jobs:
   #Use matrix to speed up the build process
   strategy:
     matrix:
-      TARGET_Debugging:
-        Build.Pkgs: 'AcpiDebugFeaturePkg,BeepDebugFeaturePkg,PostCodeDebugFeaturePkg,Usb3DebugFeaturePkg'
-        Build.Targets: 'DEBUG,RELEASE,NO-TARGET,NOOPT'
-      TARGET_OutOfBandManagement_PowerManagement:
-        Build.Pkgs: 'IpmiFeaturePkg,SpcrFeaturePkg,S3FeaturePkg'
-        Build.Targets: 'DEBUG,RELEASE,NO-TARGET,NOOPT'
-      TARGET_SystemInformation_UserInterface:
-        Build.Pkgs: 'SmbiosFeaturePkg,LogoFeaturePkg,UserAuthFeaturePkg,VirtualKeyboardFeaturePkg'
+      TARGET_Ipmi:
+        Build.Pkgs: 'IpmiFeaturePkg,BeepDebugFeaturePkg,PostCodeDebugFeaturePkg,Usb3DebugFeaturePkg'
         Build.Targets: 'DEBUG,RELEASE,NO-TARGET,NOOPT'
 
   workspace:
