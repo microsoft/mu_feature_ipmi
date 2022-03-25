@@ -25,4 +25,4 @@ jobs:
   parameters:
     tool_chain_tag: 'VS2019'
     vm_image: 'windows-latest'
-    arch_list: "X64"
+    arch_list: "IA32,X64"

@@ -26,7 +26,7 @@ jobs:
   parameters:
     tool_chain_tag: 'GCC5'
     vm_image: 'ubuntu-latest'
-    arch_list: "X64,AARCH64"
+    arch_list: "IA32,X64,AARCH64"
     # MU_CHANGE
     extra_steps:
     - script: sudo apt-get install mingw-w64
