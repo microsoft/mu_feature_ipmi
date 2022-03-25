@@ -9,7 +9,7 @@
 #ifndef _KCS_BMC_H
 #define _KCS_BMC_H
 
-#include <uefi.h>
+#include <Uefi.h>
 #include <Library/BaseLib.h>
 #include <Library/IoLib.h>
 #include <Library/DebugLib.h>
