@@ -188,7 +188,7 @@ ReceiveBmcDataFromPort (
   @retval   EFI_SUCCESS     Always.
 **/
 EFI_STATUS
-InitializeIpmiTransport (
+InitializeIpmiTransportHardware (
   VOID
   )
 {

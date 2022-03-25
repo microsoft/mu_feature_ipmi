@@ -82,7 +82,7 @@ Returns:
   @retval   Other           There was a hardware specific failure.
 **/
 EFI_STATUS
-InitializeIpmiTransport (
+InitializeIpmiTransportHardware (
   VOID
   );
 
