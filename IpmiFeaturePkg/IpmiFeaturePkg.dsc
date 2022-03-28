@@ -32,35 +32,37 @@
 
 # MU_CHANGE [BEGIN] - [TCBZ3037] Add several components that are missing in DSCs
 [LibraryClasses]
-    IoLib|MdePkg/Library/BaseIoLibIntrinsic/BaseIoLibIntrinsic.inf
-    PciLib|MdePkg/Library/BasePciLibCf8/BasePciLibCf8.inf
-    PciCf8Lib|MdePkg/Library/BasePciCf8Lib/BasePciCf8Lib.inf
-    OemHookStatusCodeLib|MdeModulePkg/Library/OemHookStatusCodeLibNull/OemHookStatusCodeLibNull.inf
-    UefiBootServicesTableLib|MdePkg/Library/UefiBootServicesTableLib/UefiBootServicesTableLib.inf
-    SmmServicesTableLib|MdePkg/Library/SmmServicesTableLib/SmmServicesTableLib.inf
-    UefiDriverEntryPoint|MdePkg/Library/UefiDriverEntryPoint/UefiDriverEntryPoint.inf
-    PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
-    DxeServicesTableLib|MdePkg/Library/DxeServicesTableLib/DxeServicesTableLib.inf
-    IpmiTransportLib|IpmiFeaturePkg/Transports/KCS/KcsIpmiTransportLib.inf
-    IpmiTransportLib|IpmiFeaturePkg/Transports/SSIF/SsifIpmiTransportLib.inf
-    BmcSmbusLib|IpmiFeaturePkg/Library/BmcSmbusLibNull/BmcSmbusLibNull.inf
+  IoLib|MdePkg/Library/BaseIoLibIntrinsic/BaseIoLibIntrinsic.inf
+  PciLib|MdePkg/Library/BasePciLibCf8/BasePciLibCf8.inf
+  PciCf8Lib|MdePkg/Library/BasePciCf8Lib/BasePciCf8Lib.inf
+  OemHookStatusCodeLib|MdeModulePkg/Library/OemHookStatusCodeLibNull/OemHookStatusCodeLibNull.inf
+  UefiBootServicesTableLib|MdePkg/Library/UefiBootServicesTableLib/UefiBootServicesTableLib.inf
+  SmmServicesTableLib|MdePkg/Library/SmmServicesTableLib/SmmServicesTableLib.inf
+  UefiDriverEntryPoint|MdePkg/Library/UefiDriverEntryPoint/UefiDriverEntryPoint.inf
+  PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
+  DxeServicesTableLib|MdePkg/Library/DxeServicesTableLib/DxeServicesTableLib.inf
+  IpmiTransportLib|IpmiFeaturePkg/Library/IpmiTransportLibNull/IpmiTransportLibNull.inf
 
 [LibraryClasses.common.DXE_DRIVER]
-    ReportStatusCodeLib|MdeModulePkg/Library/DxeReportStatusCodeLib/DxeReportStatusCodeLib.inf
+  ReportStatusCodeLib|MdeModulePkg/Library/DxeReportStatusCodeLib/DxeReportStatusCodeLib.inf
 
 [LibraryClasses.common.DXE_SMM_DRIVER]
-    MemoryAllocationLib|MdePkg/Library/SmmMemoryAllocationLib/SmmMemoryAllocationLib.inf
-    ReportStatusCodeLib|MdeModulePkg/Library/SmmReportStatusCodeLib/SmmReportStatusCodeLib.inf
+  MemoryAllocationLib|MdePkg/Library/SmmMemoryAllocationLib/SmmMemoryAllocationLib.inf
+  ReportStatusCodeLib|MdeModulePkg/Library/SmmReportStatusCodeLib/SmmReportStatusCodeLib.inf
 
 [Components]
-    IpmiFeaturePkg/Library/IpmiCommandLib/IpmiCommandLib.inf
-    IpmiFeaturePkg/Library/IpmiBaseLib/IpmiBaseLib.inf
-    IpmiFeaturePkg/Library/IpmiBaseLibNull/IpmiBaseLibNull.inf
-    IpmiFeaturePkg/Library/PeiIpmiBaseLib/PeiIpmiBaseLib.inf
-# MU_CHANGE [END] - [TCBZ3037] Add several components that are missing in DSCs
-    IpmiFeaturePkg/Transports/KCS/KcsIpmiTransportLib.inf
-    IpmiFeaturePkg/Transports/SSIF/SsifIpmiTransportLib.inf
-    IpmiFeaturePkg/Library/BmcSmbusLibNull/BmcSmbusLibNull.inf
+  IpmiFeaturePkg/Library/IpmiCommandLib/IpmiCommandLib.inf
+  IpmiFeaturePkg/Library/IpmiBaseLib/IpmiBaseLib.inf
+  IpmiFeaturePkg/Library/IpmiBaseLibNull/IpmiBaseLibNull.inf
+  IpmiFeaturePkg/Library/PeiIpmiBaseLib/PeiIpmiBaseLib.inf
+  IpmiFeaturePkg/Library/IpmiTransportLibNull/IpmiTransportLibNull.inf
+  IpmiFeaturePkg/Library/IpmiTransportLibKcs/KcsIpmiTransportLib.inf
+  IpmiFeaturePkg/Library/IpmiTransportLibSsif/SsifIpmiTransportLib.inf {
+    <LibraryClasses>    
+      BmcSmbusLib|IpmiFeaturePkg/Library/BmcSmbusLibNull/BmcSmbusLibNull.inf
+  }
+
+  IpmiFeaturePkg/Library/BmcSmbusLibNull/BmcSmbusLibNull.inf
 
 [Components.IA32, Components.X64]
-    IpmiFeaturePkg/GenericIpmi/Smm/SmmGenericIpmi.inf
+  IpmiFeaturePkg/GenericIpmi/Smm/SmmGenericIpmi.inf

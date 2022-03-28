@@ -25,7 +25,7 @@
   IpmiFeaturePkg/Test/UnitTest/SsifUnitTest/BmcSmbusLibTest.inf
   IpmiFeaturePkg/Test/UnitTest/SsifUnitTest/SsifUnitTestHost.inf {
     <LibraryClasses>
-      IpmiTransportLib|IpmiFeaturePkg/Transports/SSIF/SsifIpmiTransportLib.inf
+      IpmiTransportLib|IpmiFeaturePkg/Library/IpmiTransportLibSsif/SsifIpmiTransportLib.inf
   }
 
   #
