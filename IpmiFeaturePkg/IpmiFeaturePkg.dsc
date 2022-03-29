@@ -63,7 +63,7 @@
   #####################################
   # IPMI Feature Package
   #####################################
-  IpmiBaseLib|IpmiFeaturePkg/Library/PeiIpmiBaseLib/PeiIpmiBaseLib.inf
+  IpmiBaseLib|IpmiFeaturePkg/Library/IpmiBaseLibPei/IpmiBaseLibPei.inf
 
 [LibraryClasses.common.DXE_DRIVER,LibraryClasses.common.UEFI_DRIVER]
   #######################################
@@ -80,7 +80,7 @@
   #####################################
   # IPMI Feature Package
   #####################################
-  IpmiBaseLib|IpmiFeaturePkg/Library/IpmiBaseLib/IpmiBaseLib.inf
+  IpmiBaseLib|IpmiFeaturePkg/Library/IpmiBaseLibDxe/IpmiBaseLibDxe.inf
 
 [LibraryClasses.common.DXE_DRIVER]
   ReportStatusCodeLib|MdeModulePkg/Library/DxeReportStatusCodeLib/DxeReportStatusCodeLib.inf
@@ -91,16 +91,16 @@
 
 [Components]
   IpmiFeaturePkg/Library/IpmiCommandLib/IpmiCommandLib.inf
-  IpmiFeaturePkg/Library/IpmiBaseLib/IpmiBaseLib.inf
   IpmiFeaturePkg/Library/IpmiBaseLibNull/IpmiBaseLibNull.inf
-  IpmiFeaturePkg/Library/PeiIpmiBaseLib/PeiIpmiBaseLib.inf
+  IpmiFeaturePkg/Library/IpmiBaseLibDxe/IpmiBaseLibDxe.inf
+  IpmiFeaturePkg/Library/IpmiBaseLibPei/IpmiBaseLibPei.inf
+  IpmiFeaturePkg/Library/IpmiBaseLibMm/IpmiBaseLibMm.inf
   IpmiFeaturePkg/Library/BmcSmbusLibNull/BmcSmbusLibNull.inf
   IpmiFeaturePkg/Library/IpmiPlatformHookLibNull/IpmiPlatformHookLibNull.inf
   IpmiFeaturePkg/GenericIpmi/Pei/PeiGenericIpmi.inf
   IpmiFeaturePkg/Frb/FrbPei.inf
   IpmiFeaturePkg/IpmiInit/PeiIpmiInit.inf
   IpmiFeaturePkg/GenericIpmi/Dxe/GenericIpmi.inf
-  IpmiFeaturePkg/Library/SmmIpmiBaseLib/SmmIpmiBaseLib.inf
   IpmiFeaturePkg/BmcAcpi/BmcAcpi.inf
   IpmiFeaturePkg/BmcElog/BmcElog.inf
   IpmiFeaturePkg/Frb/FrbDxe.inf
