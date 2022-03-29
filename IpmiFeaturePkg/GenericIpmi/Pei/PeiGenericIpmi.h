@@ -22,7 +22,6 @@
 #include <Library/PeiServicesLib.h>
 #include <Library/PeiServicesTablePointerLib.h>
 #include <Library/TimerLib.h>
-#include <Library/PciLib.h>
 
 #include "PeiIpmiBmcDef.h"
 #include "PeiIpmiBmc.h"

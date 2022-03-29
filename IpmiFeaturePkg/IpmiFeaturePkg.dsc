@@ -22,26 +22,65 @@
   SUPPORTED_ARCHITECTURES        = IA32|X64|AARCH64
   BUILD_TARGETS                  = DEBUG|RELEASE|NOOPT
   SKUID_IDENTIFIER               = DEFAULT
-  PEI_ARCH                       = IA32
-  DXE_ARCH                       = X64
 
-#
-# This package always builds the feature.
-#
-!include Include/IpmiFeature.dsc
-
-# MU_CHANGE [BEGIN] - [TCBZ3037] Add several components that are missing in DSCs
+!include MdePkg/MdeLibs.dsc.inc
 [LibraryClasses]
+  #######################################
+  # BaseCore Packages
+  #######################################
+  BaseLib|MdePkg/Library/BaseLib/BaseLib.inf
+  BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
+  DebugLib|MdePkg/Library/BaseDebugLibNull/BaseDebugLibNull.inf
+  PrintLib|MdePkg/Library/BasePrintLib/BasePrintLib.inf
+  TimerLib|MdePkg/Library/BaseTimerLibNullTemplate/BaseTimerLibNullTemplate.inf
   IoLib|MdePkg/Library/BaseIoLibIntrinsic/BaseIoLibIntrinsic.inf
-  PciLib|MdePkg/Library/BasePciLibCf8/BasePciLibCf8.inf
-  PciCf8Lib|MdePkg/Library/BasePciCf8Lib/BasePciCf8Lib.inf
   OemHookStatusCodeLib|MdeModulePkg/Library/OemHookStatusCodeLibNull/OemHookStatusCodeLibNull.inf
   UefiBootServicesTableLib|MdePkg/Library/UefiBootServicesTableLib/UefiBootServicesTableLib.inf
   SmmServicesTableLib|MdePkg/Library/SmmServicesTableLib/SmmServicesTableLib.inf
   UefiDriverEntryPoint|MdePkg/Library/UefiDriverEntryPoint/UefiDriverEntryPoint.inf
   PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
   DxeServicesTableLib|MdePkg/Library/DxeServicesTableLib/DxeServicesTableLib.inf
+
+  #####################################
+  # IPMI Feature Package
+  #####################################
+  IpmiCommandLib|IpmiFeaturePkg/Library/IpmiCommandLib/IpmiCommandLib.inf
+  IpmiPlatformHookLib|IpmiFeaturePkg/Library/IpmiPlatformHookLibNull/IpmiPlatformHookLibNull.inf
   IpmiTransportLib|IpmiFeaturePkg/Library/IpmiTransportLibNull/IpmiTransportLibNull.inf
+
+[LibraryClasses.common.PEI_CORE,LibraryClasses.common.PEIM]
+  #######################################
+  # BaseCore Packages
+  #######################################
+  HobLib|MdePkg/Library/PeiHobLib/PeiHobLib.inf
+  MemoryAllocationLib|MdePkg/Library/PeiMemoryAllocationLib/PeiMemoryAllocationLib.inf
+  PcdLib|MdePkg/Library/PeiPcdLib/PeiPcdLib.inf
+  PeimEntryPoint|MdePkg/Library/PeimEntryPoint/PeimEntryPoint.inf
+  PeiServicesLib|MdePkg/Library/PeiServicesLib/PeiServicesLib.inf
+  PeiServicesTablePointerLib|MdePkg/Library/PeiServicesTablePointerLib/PeiServicesTablePointerLib.inf
+  ReportStatusCodeLib|MdeModulePkg/Library/PeiReportStatusCodeLib/PeiReportStatusCodeLib.inf
+
+  #####################################
+  # IPMI Feature Package
+  #####################################
+  IpmiBaseLib|IpmiFeaturePkg/Library/PeiIpmiBaseLib/PeiIpmiBaseLib.inf
+
+[LibraryClasses.common.DXE_DRIVER,LibraryClasses.common.UEFI_DRIVER]
+  #######################################
+  # BaseCore Packages
+  #######################################
+  DevicePathLib|MdePkg/Library/UefiDevicePathLib/UefiDevicePathLib.inf
+  MemoryAllocationLib|MdePkg/Library/UefiMemoryAllocationLib/UefiMemoryAllocationLib.inf
+  PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
+  UefiBootServicesTableLib|MdePkg/Library/UefiBootServicesTableLib/UefiBootServicesTableLib.inf
+  UefiDriverEntryPoint|MdePkg/Library/UefiDriverEntryPoint/UefiDriverEntryPoint.inf
+  UefiLib|MdePkg/Library/UefiLib/UefiLib.inf
+  UefiRuntimeServicesTableLib|MdePkg/Library/UefiRuntimeServicesTableLib/UefiRuntimeServicesTableLib.inf
+
+  #####################################
+  # IPMI Feature Package
+  #####################################
+  IpmiBaseLib|IpmiFeaturePkg/Library/IpmiBaseLib/IpmiBaseLib.inf
 
 [LibraryClasses.common.DXE_DRIVER]
   ReportStatusCodeLib|MdeModulePkg/Library/DxeReportStatusCodeLib/DxeReportStatusCodeLib.inf
@@ -55,14 +94,27 @@
   IpmiFeaturePkg/Library/IpmiBaseLib/IpmiBaseLib.inf
   IpmiFeaturePkg/Library/IpmiBaseLibNull/IpmiBaseLibNull.inf
   IpmiFeaturePkg/Library/PeiIpmiBaseLib/PeiIpmiBaseLib.inf
+  IpmiFeaturePkg/Library/BmcSmbusLibNull/BmcSmbusLibNull.inf
+  IpmiFeaturePkg/Library/IpmiPlatformHookLibNull/IpmiPlatformHookLibNull.inf
+  IpmiFeaturePkg/GenericIpmi/Pei/PeiGenericIpmi.inf
+  IpmiFeaturePkg/Frb/FrbPei.inf
+  IpmiFeaturePkg/IpmiInit/PeiIpmiInit.inf
+  IpmiFeaturePkg/GenericIpmi/Dxe/GenericIpmi.inf
+  IpmiFeaturePkg/Library/SmmIpmiBaseLib/SmmIpmiBaseLib.inf
+  IpmiFeaturePkg/BmcAcpi/BmcAcpi.inf
+  IpmiFeaturePkg/BmcElog/BmcElog.inf
+  IpmiFeaturePkg/Frb/FrbDxe.inf
+  IpmiFeaturePkg/IpmiFru/IpmiFru.inf
+  IpmiFeaturePkg/IpmiInit/DxeIpmiInit.inf
+  IpmiFeaturePkg/OsWdt/OsWdt.inf
+  IpmiFeaturePkg/SolStatus/SolStatus.inf
+
   IpmiFeaturePkg/Library/IpmiTransportLibNull/IpmiTransportLibNull.inf
   IpmiFeaturePkg/Library/IpmiTransportLibKcs/KcsIpmiTransportLib.inf
   IpmiFeaturePkg/Library/IpmiTransportLibSsif/SsifIpmiTransportLib.inf {
     <LibraryClasses>    
       BmcSmbusLib|IpmiFeaturePkg/Library/BmcSmbusLibNull/BmcSmbusLibNull.inf
   }
-
-  IpmiFeaturePkg/Library/BmcSmbusLibNull/BmcSmbusLibNull.inf
 
 [Components.IA32, Components.X64]
   IpmiFeaturePkg/GenericIpmi/Smm/SmmGenericIpmi.inf
