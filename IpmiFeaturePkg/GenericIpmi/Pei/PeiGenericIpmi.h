@@ -23,8 +23,8 @@
 #include <Library/PeiServicesTablePointerLib.h>
 #include <Library/TimerLib.h>
 
-#include "PeiIpmiBmcDef.h"
-#include "PeiIpmiBmc.h"
+#include "PeiIpmiDef.h"
+#include "PeiIpmi.h"
 
 //
 // Prototypes

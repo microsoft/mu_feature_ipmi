@@ -6,7 +6,7 @@
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
-#include "IpmiBmc.h"
+#include "GenericIpmi.h"
 
 EFI_STATUS
 UpdateErrorStatus (
@@ -56,7 +56,7 @@ Returns:
 
 EFI_STATUS
 EFIAPI
-IpmiSendCommandToBmc (
+IpmiSendCommandInternal (
   IN      IPMI_TRANSPORT  *This,
   IN      UINT8           NetFunction,
   IN      UINT8           Lun,

@@ -85,7 +85,7 @@ typedef struct {
 #pragma pack()
 
 EFI_STATUS
-PeiIpmiSendCommandToBmc (
+PeiIpmiSendCommandInternal (
   IN      PEI_IPMI_TRANSPORT_PPI  *This,
   IN      UINT8                   NetFunction,
   IN      UINT8                   Lun,

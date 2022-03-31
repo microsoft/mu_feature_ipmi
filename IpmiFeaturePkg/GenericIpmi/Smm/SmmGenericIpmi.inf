@@ -18,9 +18,9 @@
 [Sources]
   ../Common/IpmiHooks.h
   ../Common/IpmiHooks.c
-  ../Common/IpmiBmcCommon.h
-  ../Common/IpmiBmc.c
-  ../Common/IpmiBmc.h
+  ../Common/GenericIpmiCommon.h
+  ../Common/GenericIpmi.c
+  ../Common/GenericIpmi.h
   SmmGenericIpmi.c          #GenericIpmi.c+IpmiBmcInitialize.c
 
 [Packages]

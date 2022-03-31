@@ -20,7 +20,7 @@
 
 #include <Ppi/IpmiTransportPpi.h>
 
-#include "PeiIpmiBmcDef.h"
+#include "PeiIpmiDef.h"
 
 //
 // IPMI Instance signature

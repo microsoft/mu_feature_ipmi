@@ -9,7 +9,7 @@
 #ifndef _IPMI_HOOKS_H
 #define _IPMI_HOOKS_H
 
-#include "IpmiBmc.h"
+#include "GenericIpmi.h"
 
 //
 // Internal(hook) function list

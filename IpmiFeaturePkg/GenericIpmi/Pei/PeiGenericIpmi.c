@@ -216,7 +216,7 @@ Returns:
   //
   // This Will be unchanged ( BMC/KCS style )
   //
-  return PeiIpmiSendCommandToBmc (
+  return PeiIpmiSendCommandInternal (
            This,
            NetFunction,
            Lun,

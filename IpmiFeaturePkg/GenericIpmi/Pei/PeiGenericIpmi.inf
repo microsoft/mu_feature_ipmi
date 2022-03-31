@@ -22,12 +22,12 @@
 #  HOB Guid C Name: gEfiHtBistHobGuid Hob Type: GUID_EXTENSION
 #
 [Sources]
-  ../Common/IpmiBmcCommon.h
-  PeiIpmiBmc.c
-  PeiIpmiBmc.h
-  PeiIpmiBmcDef.h
+  ../Common/GenericIpmiCommon.h
   PeiGenericIpmi.c
   PeiGenericIpmi.h
+  PeiIpmiDef.h
+  PeiIpmi.c
+  PeiIpmi.h
 
 [Packages]
   MdePkg/MdePkg.dec
