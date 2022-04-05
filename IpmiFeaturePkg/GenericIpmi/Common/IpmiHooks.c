@@ -52,7 +52,7 @@ Returns:
   //
   // This Will be unchanged ( BMC/KCS style )
   //
-  return IpmiSendCommandToBmc (
+  return IpmiSendCommandInternal (
            This,
            NetFunction,
            Lun,

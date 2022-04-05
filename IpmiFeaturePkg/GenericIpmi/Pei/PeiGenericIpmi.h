@@ -22,10 +22,9 @@
 #include <Library/PeiServicesLib.h>
 #include <Library/PeiServicesTablePointerLib.h>
 #include <Library/TimerLib.h>
-#include <Library/PciLib.h>
 
-#include "PeiIpmiBmcDef.h"
-#include "PeiIpmiBmc.h"
+#include "PeiIpmiDef.h"
+#include "PeiIpmi.h"
 
 //
 // Prototypes
@@ -57,6 +56,7 @@ EFI_SUCCESS           - Success
 ;
 
 EFI_STATUS
+EFIAPI
 PeiIpmiSendCommand (
   IN      PEI_IPMI_TRANSPORT_PPI  *This,
   IN      UINT8                   NetFunction,
@@ -93,6 +93,7 @@ Returns:
 ;
 
 EFI_STATUS
+EFIAPI
 PeiGetIpmiBmcStatus (
   IN  PEI_IPMI_TRANSPORT_PPI  *This,
   OUT BMC_STATUS              *BmcStatus,

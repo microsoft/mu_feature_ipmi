@@ -25,11 +25,11 @@
 [Sources]
   ../Common/IpmiHooks.h
   ../Common/IpmiHooks.c
-  ../Common/IpmiBmcCommon.h
-  ../Common/IpmiBmc.h
-  ../Common/IpmiBmc.c
-  GenericIpmi.c
-  IpmiInit.c
+  ../Common/GenericIpmiCommon.h
+  ../Common/GenericIpmi.h
+  ../Common/GenericIpmi.c
+  DxeGenericIpmi.c
+  DxeIpmiInit.c
 
 
 [Packages]

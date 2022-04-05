@@ -1,16 +1,27 @@
-# IPMI Feature Repo
+=================================
+Project Mu IPMI Feature Repository
+=================================
+
+============================= ================= =============== ===================
+ Host Type & Toolchain        Build Status      Test Status     Code Coverage
+============================= ================= =============== ===================
+Windows_VS2022_               |WindowsCiBuild|  |WindowsCiTest| |WindowsCiCoverage|
+Ubuntu_GCC5_                  |UbuntuCiBuild|   |UbuntuCiTest|  |UbuntuCiCoverage|
+============================= ================= =============== ===================
+
+This repository is part of Project Mu. Please see [Project Mu](https://microsoft.github.io/mu) for details.
 
 This IPMI feature repo contains the generic IPMI code from TianoCore's
 edk2-platforms repo which has been refactored to support more general use and
 with added functionality.
 
-??? info "Git Details"
-    Repository Url: {{mu_feature_ipmi.url}}  
-    Branch:         {{mu_feature_ipmi.branch}}  
-    Commit:         [{{mu_feature_ipmi.commit}}]({{mu_feature_ipmi.commitlink}})  
-    Commit Date:    {{mu_feature_ipmi.date}}
+Detailed Feature Information
+============================
 
-## Repository Philosophy
+Far more details about using this repo can be found in: `IPMI Feature Package Readme <IpmiFeaturePkg/Readme.md>`_.
+
+Repository Philosophy
+=====================
 
 Unlike other Project MU repositories, the IPMI feature repo does not strictly
 follow the EDKII releases, but rather has a continuous main branch which will
@@ -19,7 +30,8 @@ builds, release tags will be used instead to determine commit hashes at stable
 points in development. Release branches may be created as needed to facilitate a
 specific release with needed features, but this should be avoided.
 
-## Consuming the IPMI Feature Package
+Consuming the IPMI Feature Package
+==================================
 
 Since this project does not follow the release fork model, the code should be
 consumed from a release hash and should be consumed as a extdep in the platform
@@ -29,11 +41,17 @@ desired.
 
     {
       "scope": "global",
+
       "type": "git",
+
       "name": "FEATURE_IPMI",
+
       "var_name": "FEATURE_IPMI_PATH",
+
       "source": "https://github.com/microsoft/mu_feature_ipmi.git",
+
       "version": "<RELEASE HASH>",
+
       "flags": ["set_build_var"]
     }
 
@@ -44,13 +62,14 @@ configurations GetPackagesPath list.
 
     shell_environment.GetBuildVars().GetValue("FEATURE_IPMI_PATH", "")
 
-_Note: If using pytool extensions older then version 0.17.0 you will need to
-append the root path to the build variable string._
+*Note: If using pytool extensions older then version 0.17.0 you will need to
+append the root path to the build variable string.*
 
 After this the package should be discoverable to can be used in the build like
 any other dependency.
 
-## More Info
+More Info
+=========
 
 Please see the Project Mu docs (<https://github.com/Microsoft/mu>) for more
 information.  
@@ -63,7 +82,8 @@ FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact
 [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional
 questions or comments.
 
-## Issues
+Issues
+======
 
 Please open any issues in the Project Mu GitHub tracker. [More
 Details](https://microsoft.github.io/mu/How/contributing/)
@@ -76,17 +96,20 @@ Details](https://microsoft.github.io/mu/How/contributing/)
 * [Code Requirements](https://microsoft.github.io/mu/CodeDevelopment/requirements/)
 * [Doc Requirements](https://microsoft.github.io/mu/DeveloperDocs/requirements/)
 
-## Builds
+Builds
+======
 
 Please follow the steps in the Project Mu docs to build for CI and local
 testing. [More Details](https://microsoft.github.io/mu/CodeDevelopment/compile/)
 
-## Copyright & License
+Copyright & License
+===================
 
 Copyright (C) Microsoft Corporation  
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
-### Upstream License (TianoCore)
+Upstream License (TianoCore)
+============================
 
 Copyright (c) 2019, TianoCore and contributors.  All rights reserved.
 
@@ -137,3 +160,19 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+.. ===================================================================
+.. This is a bunch of directives to make the README file more readable
+.. ===================================================================
+
+.. CoreCI
+
+.. _Windows_VS2022: https://dev.azure.com/projectmu/mu/_build/latest?definitionId=99&&branchName=main
+.. |WindowsCiBuild| image:: https://dev.azure.com/projectmu/mu/_apis/build/status/CI/feature_ipmi/Windows%20VS2022%20CI?branchName=main
+.. |WindowsCiTest| image:: https://img.shields.io/azure-devops/tests/projectmu/mu/99.svg
+.. |WindowsCiCoverage| image:: https://img.shields.io/badge/coverage-coming_soon-blue
+
+.. _Ubuntu_GCC5: https://dev.azure.com/projectmu/mu/_build/latest?definitionId=98&branchName=main
+.. |UbuntuCiBuild| image:: https://dev.azure.com/projectmu/mu/_apis/build/status/CI/feature_ipmi/Ubuntu%20GCC5%20CI?branchName=main
+.. |UbuntuCiTest| image:: https://img.shields.io/azure-devops/tests/projectmu/mu/98.svg
+.. |UbuntuCiCoverage| image:: https://img.shields.io/badge/coverage-coming_soon-blue

@@ -6,7 +6,7 @@
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
-#include "PeiIpmiBmc.h"
+#include "PeiGenericIpmi.h"
 
 EFI_STATUS
 UpdateErrorStatus (
@@ -55,7 +55,7 @@ Returns:
 }
 
 EFI_STATUS
-PeiIpmiSendCommandToBmc (
+PeiIpmiSendCommandInternal (
   IN      PEI_IPMI_TRANSPORT_PPI  *This,
   IN      UINT8                   NetFunction,
   IN      UINT8                   Lun,

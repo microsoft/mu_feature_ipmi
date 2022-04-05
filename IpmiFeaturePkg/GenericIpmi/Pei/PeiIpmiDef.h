@@ -39,10 +39,6 @@
     COMP_CODE_DEV_IN_FW_UPDATE_MODE, COMP_CODE_BMC_INIT_IN_PROGRESS, COMP_CODE_UNSPECIFIED \
   }
 //
-// Ensure proper structure formats
-//
-#pragma pack(1)
-//
 // Pei Ipmi instance data
 //
 typedef struct {
@@ -56,6 +52,11 @@ typedef struct {
   PEI_IPMI_TRANSPORT_PPI    IpmiTransportPpi;
   EFI_PEI_PPI_DESCRIPTOR    PeiIpmiBmcDataDesc;
 } PEI_IPMI_BMC_INSTANCE_DATA;
+
+//
+// Ensure proper structure formats
+//
+#pragma pack(1)
 
 //
 // Structure of IPMI Command buffer
@@ -84,7 +85,7 @@ typedef struct {
 #pragma pack()
 
 EFI_STATUS
-PeiIpmiSendCommandToBmc (
+PeiIpmiSendCommandInternal (
   IN      PEI_IPMI_TRANSPORT_PPI  *This,
   IN      UINT8                   NetFunction,
   IN      UINT8                   Lun,

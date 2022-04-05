@@ -156,6 +156,7 @@ SendPreBootSignaltoBmc (
   @retval EFI_SUCCESS   Indicates that Ipmi initialization completed successfully.
 **/
 EFI_STATUS
+EFIAPI
 PeimIpmiInterfaceInit (
   IN       EFI_PEI_FILE_HANDLE  FileHandle,
   IN CONST EFI_PEI_SERVICES     **PeiServices
@@ -172,6 +173,7 @@ PeimIpmiInterfaceInit (
 } // PeimIpmiInterfaceInit()
 
 EFI_STATUS
+EFIAPI
 PeiIpmiSendCommand (
   IN      PEI_IPMI_TRANSPORT_PPI  *This,
   IN      UINT8                   NetFunction,
@@ -214,7 +216,7 @@ Returns:
   //
   // This Will be unchanged ( BMC/KCS style )
   //
-  return PeiIpmiSendCommandToBmc (
+  return PeiIpmiSendCommandInternal (
            This,
            NetFunction,
            Lun,
@@ -228,6 +230,7 @@ Returns:
 } // IpmiSendCommand()
 
 EFI_STATUS
+EFIAPI
 PeiGetIpmiBmcStatus (
   IN      PEI_IPMI_TRANSPORT_PPI  *This,
   OUT BMC_STATUS                  *BmcStatus,

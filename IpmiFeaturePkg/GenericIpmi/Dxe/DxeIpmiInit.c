@@ -9,8 +9,8 @@
 #include <IndustryStandard/Ipmi.h>
 #include <SmStatusCodes.h>
 #include "IpmiHooks.h"
-#include "IpmiBmcCommon.h"
-#include "IpmiBmc.h"
+#include "GenericIpmiCommon.h"
+#include "GenericIpmi.h"
 #include <Library/TimerLib.h>
 #ifdef FAST_VIDEO_SUPPORT
   #include <Protocol/VideoPrint.h>

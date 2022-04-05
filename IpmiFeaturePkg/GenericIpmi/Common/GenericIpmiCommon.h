@@ -85,7 +85,7 @@ typedef struct {
 
 EFI_STATUS
 EFIAPI
-IpmiSendCommandToBmc (
+IpmiSendCommandInternal (
   IN      IPMI_TRANSPORT  *This,
   IN      UINT8           NetFunction,
   IN      UINT8           Lun,

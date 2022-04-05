@@ -21,8 +21,8 @@
 #include <Library/IpmiBaseLib.h>
 #include <SmStatusCodes.h>
 #include "IpmiHooks.h"
-#include "IpmiBmcCommon.h"
-#include "IpmiBmc.h"
+#include "GenericIpmiCommon.h"
+#include "GenericIpmi.h"
 #include <Library/TimerLib.h>
 
 IPMI_BMC_INSTANCE_DATA  *mIpmiInstance;

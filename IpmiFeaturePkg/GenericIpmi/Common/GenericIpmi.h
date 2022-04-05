@@ -23,7 +23,7 @@
 #include <Library/IpmiTransportLib.h>
 #include <Protocol/IpmiTransportProtocol.h>
 
-#include "IpmiBmcCommon.h"
+#include "GenericIpmiCommon.h"
 
 #define BMC_IPMI_TIMEOUT  5   // [s] Single IPMI request timeout
 #define IPMI_DELAY_UNIT   50
