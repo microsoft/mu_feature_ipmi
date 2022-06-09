@@ -16,6 +16,32 @@ UINT32  TxSize   = 0;
 UINT8   RxBlock  = 0xFF;
 
 /**
+  Opens the SMBus connection if needed.
+
+  @retval   EFI_SUCCESS           Them SMBus connection was successfully opened.
+**/
+EFI_STATUS
+BmcSmbusOpen (
+  VOID
+  )
+{
+  return EFI_SUCCESS;
+}
+
+/**
+  Opens the SMBus connection if needed.
+
+  @retval   EFI_SUCCESS           Them SMBus connection was successfully closed.
+**/
+EFI_STATUS
+BmcSmbusClose (
+  VOID
+  )
+{
+  return EFI_SUCCESS;
+}
+
+/**
   Reset state in the test SMBus simple lib.
 **/
 VOID
@@ -38,7 +64,6 @@ SmbusTestLibReset (
   @param[in]  WriteBlock          The message data block.
   @param[in]  BlockLength         The length of the message data.
   @param[in]  BlockLength         The length of the message data.
-  @param[in]  IncludePEC          Specifies if a PEC should be used in the message.
 
   @retval   EFI_SUCCESS           The message was successfully stored.
   @retval   EFI_INVALID_PARAMETER Unexpected write command.
@@ -47,10 +72,9 @@ SmbusTestLibReset (
 **/
 EFI_STATUS
 BmcSmbusBlockWrite (
-  UINT8    Command,
-  UINT8    *WriteBlock,
-  UINT8    BlockLength,
-  BOOLEAN  IncludePEC
+  UINT8  Command,
+  UINT8  *WriteBlock,
+  UINT8  BlockLength
   )
 {
   UINT8  WriteSize;
@@ -92,7 +116,6 @@ BmcSmbusBlockWrite (
   @param[out]     ReadBlock         The message data block.
   @param[in,out]  BlockLength       Input specifies the buffer size.
                                     Output specifies the read size.
-  @param[in]      IncludePEC        Specifies if a PEC should be used in the message.
 
   @retval   EFI_SUCCESS           The message was successfully sent.
   @retval   EFI_NOT_FOUND         No  message was found.
@@ -104,10 +127,9 @@ BmcSmbusBlockWrite (
 **/
 EFI_STATUS
 BmcSmbusBlockRead (
-  UINT8    Command,
-  UINT8    *ReadBlock,
-  UINT8    *BlockLength,
-  BOOLEAN  IncludePEC
+  UINT8  Command,
+  UINT8  *ReadBlock,
+  UINT8  *BlockLength
   )
 {
   UINT8  ReadSize;

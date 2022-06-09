@@ -17,22 +17,40 @@
 // NOTE: This API is tentative and may be subject to change!
 
 /**
+  Opens the SMBus connection if needed.
+
+  @retval   EFI_SUCCESS           Them SMBus connection was successfully opened.
+**/
+EFI_STATUS
+BmcSmbusOpen (
+  VOID
+  );
+
+/**
+  Opens the SMBus connection if needed.
+
+  @retval   EFI_SUCCESS           Them SMBus connection was successfully closed.
+**/
+EFI_STATUS
+BmcSmbusClose (
+  VOID
+  );
+
+/**
   Writes the provided SMBus message to the BMC.
 
   @param[in]  Command             The SMBus command value.
   @param[in]  WriteBlock          The message data block.
   @param[in]  BlockLength         The length of the message data.
   @param[in]  BlockLength         The length of the message data.
-  @param[in]  IncludePEC          Specifies if a PEC should be used in the message.
 
   @retval   EFI_SUCCESS           The message was successfully sent.
 **/
 EFI_STATUS
 BmcSmbusBlockWrite (
-  UINT8    Command,
-  UINT8    *WriteBlock,
-  UINT8    BlockLength,
-  BOOLEAN  IncludePEC
+  UINT8  Command,
+  UINT8  *WriteBlock,
+  UINT8  BlockLength
   );
 
 /**
@@ -50,10 +68,9 @@ BmcSmbusBlockWrite (
 **/
 EFI_STATUS
 BmcSmbusBlockRead (
-  UINT8    Command,
-  UINT8    *ReadBlock,
-  UINT8    *BlockLength,
-  BOOLEAN  IncludePEC
+  UINT8  Command,
+  UINT8  *ReadBlock,
+  UINT8  *BlockLength
   );
 
 #endif

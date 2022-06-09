@@ -109,11 +109,23 @@
   IpmiFeaturePkg/OsWdt/OsWdt.inf
   IpmiFeaturePkg/SolStatus/SolStatus.inf
 
+  # Transport Libraries
   IpmiFeaturePkg/Library/IpmiTransportLibNull/IpmiTransportLibNull.inf
   IpmiFeaturePkg/Library/IpmiTransportLibKcs/KcsIpmiTransportLib.inf
   IpmiFeaturePkg/Library/IpmiTransportLibSsif/SsifIpmiTransportLib.inf {
-    <LibraryClasses>    
+    <LibraryClasses>
       BmcSmbusLib|IpmiFeaturePkg/Library/BmcSmbusLibNull/BmcSmbusLibNull.inf
+  }
+
+  # Functional Tests
+  IpmiFeaturePkg/Test/FunctionalTest/IpmiShellTest/IpmiShellTest.inf {
+    <LibraryClasses>
+      UefiApplicationEntryPoint|MdePkg/Library/UefiApplicationEntryPoint/UefiApplicationEntryPoint.inf
+      UnitTestLib|UnitTestFrameworkPkg/Library/UnitTestLib/UnitTestLib.inf
+      UnitTestPersistenceLib|UnitTestFrameworkPkg/Library/UnitTestPersistenceLibNull/UnitTestPersistenceLibNull.inf
+      UnitTestResultReportLib|UnitTestFrameworkPkg/Library/UnitTestResultReportLib/UnitTestResultReportLibDebugLib.inf
+      IpmiBaseLib|IpmiFeaturePkg/Library/IpmiBaseLibDxe/IpmiBaseLibDxe.inf
+      MemoryAllocationLib|MdePkg/Library/UefiMemoryAllocationLib/UefiMemoryAllocationLib.inf
   }
 
 [Components.IA32, Components.X64]

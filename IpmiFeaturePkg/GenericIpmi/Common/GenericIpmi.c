@@ -105,6 +105,7 @@ Returns:
   UINT8                   Index;
 
   IpmiInstance = INSTANCE_FROM_SM_IPMI_BMC_THIS (This);
+  DEBUG ((DEBUG_VERBOSE, "[IPMI] Generic - Sending IPMI Command. Fun: %d Cmd: %d\n", NetFunction, Command));
 
   while (RetryCnt--) {
     //
@@ -164,6 +165,7 @@ Returns:
                  );
 
     if (Status != EFI_SUCCESS) {
+      DEBUG ((DEBUG_ERROR, "[IPMI] Generic - Softfail! (%r)\n", Status));
       IpmiInstance->BmcStatus = BMC_SOFTFAIL;
       IpmiInstance->SoftErrorCount++;
       return Status;
@@ -174,6 +176,7 @@ Returns:
     // command response failed, so do not continue.
     //
     if (DataSize < IPMI_RESPONSE_HEADER_SIZE) {
+      DEBUG ((DEBUG_ERROR, "[IPMI] Generic - DataSize too small! (%d)\n", DataSize));
       return EFI_DEVICE_ERROR;
     }
 
