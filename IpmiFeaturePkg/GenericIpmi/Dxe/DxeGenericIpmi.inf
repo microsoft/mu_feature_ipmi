@@ -60,6 +60,4 @@
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiBmcReadyDelayTimer
 
 [Depex]
-  gEfiRuntimeArchProtocolGuid AND
-  gEfiVariableArchProtocolGuid
-
+  TRUE

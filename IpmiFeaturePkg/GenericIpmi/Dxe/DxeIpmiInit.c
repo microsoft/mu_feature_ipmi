@@ -389,11 +389,12 @@ InitializeIpmiPhysicalLayer (
   IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
-  EFI_STATUS             Status;
-  UINT8                  ErrorCount;
-  EFI_HANDLE             Handle;
-  UINT8                  Index;
-  EFI_STATUS_CODE_VALUE  StatusCodeValue[MAX_SOFT_COUNT];
+  EFI_STATUS  Status;
+  UINT8       ErrorCount;
+  EFI_HANDLE  Handle;
+
+  // UINT8                  Index;
+  // EFI_STATUS_CODE_VALUE  StatusCodeValue[MAX_SOFT_COUNT];
 
   ErrorCount   = 0;
   mImageHandle = ImageHandle;
@@ -413,7 +414,7 @@ InitializeIpmiPhysicalLayer (
     // Initialize the transaction timeout.
     //
     mIpmiInstance->IpmiTimeoutPeriod = (BMC_IPMI_TIMEOUT * 1000*1000) / IPMI_DELAY_UNIT;
-    DEBUG ((EFI_D_ERROR, "[IPMI] mIpmiInstance->IpmiTimeoutPeriod: 0x%lx\n", mIpmiInstance->IpmiTimeoutPeriod));
+    DEBUG ((DEBUG_INFO, "[IPMI] mIpmiInstance->IpmiTimeoutPeriod: 0x%lx\n", mIpmiInstance->IpmiTimeoutPeriod));
 
     //
     // Initialize IPMI IO Base.
@@ -424,45 +425,49 @@ InitializeIpmiPhysicalLayer (
     mIpmiInstance->IpmiTransport.IpmiSubmitCommand = IpmiSendCommand;
     mIpmiInstance->IpmiTransport.GetBmcStatus      = IpmiGetBmcStatus;
 
+    DEBUG ((DEBUG_INFO, "[IPMI] TESTING MODE - Skipping standard DXE hardware init\n"));
+    mIpmiInstance->BmcStatus = BMC_READY;
+
     //
     // Get the Device ID and check if the system is in Force Update mode.
     //
-    Status = GetDeviceId (
-               mIpmiInstance,
-               StatusCodeValue,
-               &ErrorCount
-               );
-    //
-    // Do not continue initialization if the BMC is in Force Update Mode.
-    //
-    if ((mIpmiInstance->BmcStatus != BMC_UPDATE_IN_PROGRESS) &&
-        (mIpmiInstance->BmcStatus != BMC_HARDFAIL))
-    {
-      //
-      // Get the SELF TEST Results.
-      //
-      Status = GetSelfTest (
-                 mIpmiInstance,
-                 StatusCodeValue,
-                 &ErrorCount
-                 );
-    }
+    // Status = GetDeviceId (
+    //            mIpmiInstance,
+    //            StatusCodeValue,
+    //            &ErrorCount
+    //            );
+    // //
+    // // Do not continue initialization if the BMC is in Force Update Mode.
+    // //
+    // if ((mIpmiInstance->BmcStatus != BMC_UPDATE_IN_PROGRESS) &&
+    //     (mIpmiInstance->BmcStatus != BMC_HARDFAIL))
+    // {
+    //   //
+    //   // Get the SELF TEST Results.
+    //   //
+    //   Status = GetSelfTest (
+    //              mIpmiInstance,
+    //              StatusCodeValue,
+    //              &ErrorCount
+    //              );
+    // }
 
     //
     // iterate through the errors reporting them to the error manager.
     //
-    for (Index = 0; Index < ErrorCount; Index++) {
-      ReportStatusCode (
-        EFI_ERROR_CODE | EFI_ERROR_MAJOR,
-        StatusCodeValue[Index]
-        );
-    }
+    // for (Index = 0; Index < ErrorCount; Index++) {
+    //   ReportStatusCode (
+    //     EFI_ERROR_CODE | EFI_ERROR_MAJOR,
+    //     StatusCodeValue[Index]
+    //     );
+    // }
 
     //
     // Now install the Protocol if the BMC is not in a HardFail State and not in Force Update mode
     //
     if ((mIpmiInstance->BmcStatus != BMC_HARDFAIL) && (mIpmiInstance->BmcStatus != BMC_UPDATE_IN_PROGRESS)) {
       Handle = NULL;
+      DEBUG ((DEBUG_INFO, "[IPMI] Installing DXE protocol!\n"));
       Status = gBS->InstallProtocolInterface (
                       &Handle,
                       &gIpmiTransportProtocolGuid,
