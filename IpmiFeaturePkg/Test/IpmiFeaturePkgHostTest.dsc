@@ -21,6 +21,10 @@
 [LibraryClasses]
   BmcSmbusLib|IpmiFeaturePkg/Test/UnitTest/SsifUnitTest/BmcSmbusLibTest.inf
 
+[LibraryClasses.ARM, LibraryClasses.AARCH64]
+  NULL|MdePkg/Library/CompilerIntrinsicsLib/ArmCompilerIntrinsicsLib.inf
+  NULL|MdePkg/Library/BaseStackCheckLib/BaseStackCheckLib.inf
+
 [Components]
   IpmiFeaturePkg/Test/UnitTest/SsifUnitTest/BmcSmbusLibTest.inf
   IpmiFeaturePkg/Test/UnitTest/SsifUnitTest/SsifUnitTestHost.inf {

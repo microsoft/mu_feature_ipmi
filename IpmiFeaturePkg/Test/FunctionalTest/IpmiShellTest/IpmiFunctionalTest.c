@@ -198,7 +198,7 @@ SelAddEntryTest (
 }
 
 //
-// Test Orchestation
+// Test Orchestration
 //
 
 EFI_STATUS
