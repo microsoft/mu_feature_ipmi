@@ -54,6 +54,21 @@ SendDataToBmcPort (
     SMBusCmd = SMBUS_CMD_WRITE;
   }
 
+  DEBUG ((
+    DEBUG_VERBOSE,
+    "[SSIF] Sending IPMI Message - \n"
+    "[SSIF]     Send type: %a\n"
+    "[SSIF]     DataSize: %d\n",
+    (SMBusCmd == SMBUS_CMD_MULT_WRITE_START) ? "MULTI-WRITE" : "WRITE",
+    DataSize
+    ));
+
+  Status = BmcSmbusOpen ();
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "[SSIF] Failed to open SMBus connection. %r\n", Status));
+    return Status;
+  }
+
   DataOffset    = 0;
   RemainingSize = DataSize;
 
@@ -64,9 +79,11 @@ SendDataToBmcPort (
   while (RemainingSize > 0) {
     WriteSize = (RemainingSize < SSIF_MAX_WRITE_SIZE) ? RemainingSize : SSIF_MAX_WRITE_SIZE;
 
-    Status = BmcSmbusBlockWrite (SMBusCmd, &Data[DataOffset], WriteSize, TRUE);
+    DEBUG ((DEBUG_VERBOSE, "[SSIF]     Sending 0x%x bytes. Cmd: 0x%x\n", WriteSize, SMBusCmd));
+    Status = BmcSmbusBlockWrite (SMBusCmd, &Data[DataOffset], WriteSize);
     if (EFI_ERROR (Status)) {
-      return Status;
+      DEBUG ((DEBUG_ERROR, "[SSIF] Failed to write SMBus block. Cmd: 0x%x Size: 0x%x (%r)\n", SMBusCmd, WriteSize, Status));
+      goto Exit;
     }
 
     DataOffset   += WriteSize;
@@ -86,7 +103,9 @@ SendDataToBmcPort (
     }
   }
 
-  return EFI_SUCCESS;
+Exit:
+  BmcSmbusClose ();
+  return Status;
 }
 
 /**
@@ -125,13 +144,22 @@ ReceiveBmcDataFromPort (
   Done       = FALSE;
   SMBusCmd   = SMBUS_CMD_READ;
 
+  DEBUG ((DEBUG_VERBOSE, "[SSIF] Reading IPMI Message - \n"));
+  Status = BmcSmbusOpen ();
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "[SSIF] Failed to open SMBus connection. %r\n", Status));
+    return Status;
+  }
+
   while (!Done) {
     ReadSize = SSIF_MAX_READ_BUFFER_SIZE;
-    Status   = BmcSmbusBlockRead (SMBusCmd, &BlockBuffer[0], &ReadSize, TRUE);
+    Status   = BmcSmbusBlockRead (SMBusCmd, &BlockBuffer[0], &ReadSize);
     if (EFI_ERROR (Status)) {
-      return Status;
+      DEBUG ((DEBUG_ERROR, "[SSIF] Failed to read SMBus block. Cmd: 0x%x Offset: 0x%x (%r)\n", SMBusCmd, BlockDataOffset, Status));
+      goto Exit;
     }
 
+    DEBUG ((DEBUG_VERBOSE, "[SSIF]     Read 0x%x bytes.\n", ReadSize));
     if (SMBusCmd == SMBUS_CMD_READ) {
       //
       // If the first two bytes of the data are 0 and 1 this indicates it is the
@@ -139,6 +167,7 @@ ReceiveBmcDataFromPort (
       //
 
       if ((BlockBuffer[0] == 0) && (BlockBuffer[1] == 1)) {
+        DEBUG ((DEBUG_VERBOSE, "[SSIF]     Multi-read detected.\n", ReadSize));
         //
         // Trim off the indicator and copy the data over. Set the multi-command
         // for the next loop.
@@ -162,7 +191,9 @@ ReceiveBmcDataFromPort (
         Done = TRUE;
       } else {
         if (BlockBuffer[0] != BlockNumber + 1) {
-          return EFI_DEVICE_ERROR;
+          DEBUG ((DEBUG_ERROR, "[SSIF] SMBus block out of order! Expected %d, Received %d.\n", BlockNumber + 1, BlockBuffer[0]));
+          Status = EFI_DEVICE_ERROR;
+          goto Exit;
         }
 
         BlockNumber = BlockBuffer[0];
@@ -171,7 +202,9 @@ ReceiveBmcDataFromPort (
 
     BlockDataSize = ReadSize - BlockDataOffset;
     if (DataOffset + BlockDataSize > *DataSize) {
-      return EFI_BUFFER_TOO_SMALL;
+      DEBUG ((DEBUG_ERROR, "[SSIF] Buffer too small! Buffer size: 0x%x\n", *DataSize));
+      Status = EFI_BUFFER_TOO_SMALL;
+      goto Exit;
     }
 
     CopyMem (&Data[DataOffset], &BlockBuffer[BlockDataOffset], BlockDataSize);
@@ -179,7 +212,9 @@ ReceiveBmcDataFromPort (
   }
 
   *DataSize = DataOffset;
-  return EFI_SUCCESS;
+Exit:
+  BmcSmbusClose ();
+  return Status;
 }
 
 /**

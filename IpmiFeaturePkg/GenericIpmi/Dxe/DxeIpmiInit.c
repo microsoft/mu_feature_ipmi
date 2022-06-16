@@ -3,6 +3,7 @@
 
   @copyright
   Copyright 1999 - 2021 Intel Corporation. <BR>
+  Copyright (c) Microsoft Corporation
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
@@ -12,9 +13,6 @@
 #include "GenericIpmiCommon.h"
 #include "GenericIpmi.h"
 #include <Library/TimerLib.h>
-#ifdef FAST_VIDEO_SUPPORT
-  #include <Protocol/VideoPrint.h>
-#endif
 #include <Library/UefiRuntimeServicesTableLib.h>
 
 /******************************************************************************
@@ -249,19 +247,6 @@ Returns:
   IPMI_MSG_GET_BMC_EXEC_RSP  *pBmcExecContext;
   UINT32                     Retries;
 
- #ifdef FAST_VIDEO_SUPPORT
-  EFI_VIDEOPRINT_PROTOCOL  *VideoPrintProtocol;
-  EFI_STATUS               VideoPrintStatus;
- #endif
-
- #ifdef FAST_VIDEO_SUPPORT
-  VideoPrintStatus = gBS->LocateProtocol (
-                            &gEfiVideoPrintProtocolGuid,
-                            NULL,
-                            &VideoPrintProtocol
-                            );
- #endif
-
   //
   // Set up a loop to retry for up to PcdIpmiBmcReadyDelayTimer seconds. Calculate retries not timeout
   // so that in case KCS is not enabled and IpmiSendCommand() returns
@@ -413,7 +398,7 @@ InitializeIpmiPhysicalLayer (
     // Initialize the transaction timeout.
     //
     mIpmiInstance->IpmiTimeoutPeriod = (BMC_IPMI_TIMEOUT * 1000*1000) / IPMI_DELAY_UNIT;
-    DEBUG ((EFI_D_ERROR, "[IPMI] mIpmiInstance->IpmiTimeoutPeriod: 0x%lx\n", mIpmiInstance->IpmiTimeoutPeriod));
+    DEBUG ((DEBUG_INFO, "[IPMI] mIpmiInstance->IpmiTimeoutPeriod: 0x%lx\n", mIpmiInstance->IpmiTimeoutPeriod));
 
     //
     // Initialize IPMI IO Base.
@@ -435,7 +420,8 @@ InitializeIpmiPhysicalLayer (
     //
     // Do not continue initialization if the BMC is in Force Update Mode.
     //
-    if ((mIpmiInstance->BmcStatus != BMC_UPDATE_IN_PROGRESS) &&
+    if (PcdGetBool (PcdIpmiCheckSelfTestResults) &&
+        (mIpmiInstance->BmcStatus != BMC_UPDATE_IN_PROGRESS) &&
         (mIpmiInstance->BmcStatus != BMC_HARDFAIL))
     {
       //
@@ -463,6 +449,7 @@ InitializeIpmiPhysicalLayer (
     //
     if ((mIpmiInstance->BmcStatus != BMC_HARDFAIL) && (mIpmiInstance->BmcStatus != BMC_UPDATE_IN_PROGRESS)) {
       Handle = NULL;
+      DEBUG ((DEBUG_INFO, "[IPMI] Installing DXE protocol!\n"));
       Status = gBS->InstallProtocolInterface (
                       &Handle,
                       &gIpmiTransportProtocolGuid,

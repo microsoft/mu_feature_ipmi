@@ -157,7 +157,7 @@ SsifTestMain (
   }
 
   //
-  // Populate the SimpleMathTests Unit Test Suite.
+  // Populate the SSIF Unit Test Suite.
   //
   Status = CreateUnitTestSuite (&SsifTests, Framework, "SSIF Transport Tests", "IPMI.SSIF", NULL, NULL);
   if (EFI_ERROR (Status)) {

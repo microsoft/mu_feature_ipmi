@@ -54,6 +54,7 @@
   gIpmiFeaturePkgTokenSpaceGuid.PcdMaxSOLChannels|3|UINT8|0xF0000001
   #When True, BIOS will send a Pre-Boot signal to BMC
   gIpmiFeaturePkgTokenSpaceGuid.PcdSignalPreBootToBmc|FALSE|BOOLEAN|0xF0000002
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCheckSelfTestResults|FALSE|BOOLEAN|0xF0000003
 
 [PcdsDynamic, PcdsDynamicEx]
   gIpmiFeaturePkgTokenSpaceGuid.PcdFRB2EnabledFlag|TRUE|BOOLEAN|0xD0000001

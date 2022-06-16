@@ -11,22 +11,46 @@
 #include <Library/BmcSmbusLib.h>
 
 /**
+  Opens the SMBus connection if needed.
+
+  @retval   EFI_SUCCESS           Them SMBus connection was successfully opened.
+**/
+EFI_STATUS
+BmcSmbusOpen (
+  VOID
+  )
+{
+  return EFI_SUCCESS;
+}
+
+/**
+  Opens the SMBus connection if needed.
+
+  @retval   EFI_SUCCESS           Them SMBus connection was successfully closed.
+**/
+EFI_STATUS
+BmcSmbusClose (
+  VOID
+  )
+{
+  return EFI_SUCCESS;
+}
+
+/**
   NULL implementation of the SMBus write routine for BMC SMBus.
 
   @param[in]  Command             The SMBus command value.
   @param[in]  WriteBlock          The message data block.
   @param[in]  BlockLength         The length of the message data.
   @param[in]  BlockLength         The length of the message data.
-  @param[in]  IncludePEC          Specifies if a PEC should be used in the message.
 
   @retval   EFI_SUCCESS           Always
 **/
 EFI_STATUS
 BmcSmbusBlockWrite (
-  UINT8    Command,
-  UINT8    *WriteBlock,
-  UINT8    BlockLength,
-  BOOLEAN  IncludePEC
+  UINT8  Command,
+  UINT8  *WriteBlock,
+  UINT8  BlockLength
   )
 {
   return EFI_SUCCESS;
@@ -39,16 +63,14 @@ BmcSmbusBlockWrite (
   @param[out]     ReadBlock         The message data block.
   @param[in,out]  BlockLength       Input specifies the buffer size.
                                     Output specifies the read size.
-  @param[in]      IncludePEC        Specifies if a PEC should be used in the message.
 
   @retval   EFI_SUCCESS           Always.
 **/
 EFI_STATUS
 BmcSmbusBlockRead (
-  UINT8    Command,
-  UINT8    *ReadBlock,
-  UINT8    *BlockLength,
-  BOOLEAN  IncludePEC
+  UINT8  Command,
+  UINT8  *ReadBlock,
+  UINT8  *BlockLength
   )
 {
   *BlockLength = 0;

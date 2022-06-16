@@ -58,8 +58,7 @@
 [Pcd]
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiBmcReadyDelayTimer
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCheckSelfTestResults
 
 [Depex]
-  gEfiRuntimeArchProtocolGuid AND
-  gEfiVariableArchProtocolGuid
-
+  TRUE
