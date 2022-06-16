@@ -4,7 +4,7 @@
   intended to be a test of the BMC's implementation of IPMI or related features.
 
   Copyright (c) Microsoft Corporation
-  PDX-License-Identifier: BSD-2-Clause-Patent
+  SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
@@ -47,7 +47,7 @@ GetDeviceIdTest (
   DEBUG ((DEBUG_INFO, "************ DEVICE ID **************\n"));
   DEBUG ((
     DEBUG_INFO,
-    "DeviceID: %d\nSpecVersion: %d\nManufacturerId %c%c%c\nProductId: %d",
+    "DeviceID: %d\nSpecVersion: %d\nManufacturerId %c%c%c\nProductId: %d\n",
     DeviceId.DeviceId,
     DeviceId.SpecificationVersion,
     DeviceId.ManufacturerId[0],

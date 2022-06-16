@@ -58,6 +58,7 @@
 [Pcd]
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiBmcReadyDelayTimer
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCheckSelfTestResults
 
 [Depex]
   TRUE

@@ -3,6 +3,7 @@
 
   @copyright
   Copyright 1999 - 2021 Intel Corporation. <BR>
+  Copyright (c) Microsoft Corporation
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
@@ -12,9 +13,6 @@
 #include "GenericIpmiCommon.h"
 #include "GenericIpmi.h"
 #include <Library/TimerLib.h>
-#ifdef FAST_VIDEO_SUPPORT
-  #include <Protocol/VideoPrint.h>
-#endif
 #include <Library/UefiRuntimeServicesTableLib.h>
 
 /******************************************************************************
@@ -249,19 +247,6 @@ Returns:
   IPMI_MSG_GET_BMC_EXEC_RSP  *pBmcExecContext;
   UINT32                     Retries;
 
- #ifdef FAST_VIDEO_SUPPORT
-  EFI_VIDEOPRINT_PROTOCOL  *VideoPrintProtocol;
-  EFI_STATUS               VideoPrintStatus;
- #endif
-
- #ifdef FAST_VIDEO_SUPPORT
-  VideoPrintStatus = gBS->LocateProtocol (
-                            &gEfiVideoPrintProtocolGuid,
-                            NULL,
-                            &VideoPrintProtocol
-                            );
- #endif
-
   //
   // Set up a loop to retry for up to PcdIpmiBmcReadyDelayTimer seconds. Calculate retries not timeout
   // so that in case KCS is not enabled and IpmiSendCommand() returns
@@ -389,12 +374,11 @@ InitializeIpmiPhysicalLayer (
   IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
-  EFI_STATUS  Status;
-  UINT8       ErrorCount;
-  EFI_HANDLE  Handle;
-
-  // UINT8                  Index;
-  // EFI_STATUS_CODE_VALUE  StatusCodeValue[MAX_SOFT_COUNT];
+  EFI_STATUS             Status;
+  UINT8                  ErrorCount;
+  EFI_HANDLE             Handle;
+  UINT8                  Index;
+  EFI_STATUS_CODE_VALUE  StatusCodeValue[MAX_SOFT_COUNT];
 
   ErrorCount   = 0;
   mImageHandle = ImageHandle;
@@ -425,42 +409,40 @@ InitializeIpmiPhysicalLayer (
     mIpmiInstance->IpmiTransport.IpmiSubmitCommand = IpmiSendCommand;
     mIpmiInstance->IpmiTransport.GetBmcStatus      = IpmiGetBmcStatus;
 
-    DEBUG ((DEBUG_INFO, "[IPMI] TESTING MODE - Skipping standard DXE hardware init\n"));
-    mIpmiInstance->BmcStatus = BMC_READY;
-
     //
     // Get the Device ID and check if the system is in Force Update mode.
     //
-    // Status = GetDeviceId (
-    //            mIpmiInstance,
-    //            StatusCodeValue,
-    //            &ErrorCount
-    //            );
-    // //
-    // // Do not continue initialization if the BMC is in Force Update Mode.
-    // //
-    // if ((mIpmiInstance->BmcStatus != BMC_UPDATE_IN_PROGRESS) &&
-    //     (mIpmiInstance->BmcStatus != BMC_HARDFAIL))
-    // {
-    //   //
-    //   // Get the SELF TEST Results.
-    //   //
-    //   Status = GetSelfTest (
-    //              mIpmiInstance,
-    //              StatusCodeValue,
-    //              &ErrorCount
-    //              );
-    // }
+    Status = GetDeviceId (
+               mIpmiInstance,
+               StatusCodeValue,
+               &ErrorCount
+               );
+    //
+    // Do not continue initialization if the BMC is in Force Update Mode.
+    //
+    if (PcdGetBool (PcdIpmiCheckSelfTestResults) &&
+        (mIpmiInstance->BmcStatus != BMC_UPDATE_IN_PROGRESS) &&
+        (mIpmiInstance->BmcStatus != BMC_HARDFAIL))
+    {
+      //
+      // Get the SELF TEST Results.
+      //
+      Status = GetSelfTest (
+                 mIpmiInstance,
+                 StatusCodeValue,
+                 &ErrorCount
+                 );
+    }
 
     //
     // iterate through the errors reporting them to the error manager.
     //
-    // for (Index = 0; Index < ErrorCount; Index++) {
-    //   ReportStatusCode (
-    //     EFI_ERROR_CODE | EFI_ERROR_MAJOR,
-    //     StatusCodeValue[Index]
-    //     );
-    // }
+    for (Index = 0; Index < ErrorCount; Index++) {
+      ReportStatusCode (
+        EFI_ERROR_CODE | EFI_ERROR_MAJOR,
+        StatusCodeValue[Index]
+        );
+    }
 
     //
     // Now install the Protocol if the BMC is not in a HardFail State and not in Force Update mode
