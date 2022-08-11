@@ -99,13 +99,11 @@
   IpmiFeaturePkg/Library/IpmiPlatformHookLibNull/IpmiPlatformHookLibNull.inf
   IpmiFeaturePkg/GenericIpmi/Pei/PeiGenericIpmi.inf
   IpmiFeaturePkg/Frb/FrbPei.inf
-  IpmiFeaturePkg/IpmiInit/PeiIpmiInit.inf
   IpmiFeaturePkg/GenericIpmi/Dxe/DxeGenericIpmi.inf
   IpmiFeaturePkg/BmcAcpi/BmcAcpi.inf
   IpmiFeaturePkg/BmcElog/BmcElog.inf
   IpmiFeaturePkg/Frb/FrbDxe.inf
   IpmiFeaturePkg/IpmiFru/IpmiFru.inf
-  IpmiFeaturePkg/IpmiInit/DxeIpmiInit.inf
   IpmiFeaturePkg/OsWdt/OsWdt.inf
   IpmiFeaturePkg/SolStatus/SolStatus.inf
 
