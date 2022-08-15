@@ -101,9 +101,10 @@ Returns:
   EFI_STATUS              Status;
   IPMI_COMMAND            *IpmiCommand;
   IPMI_RESPONSE           *IpmiResponse;
-  UINT8                   RetryCnt = IPMI_SEND_COMMAND_MAX_RETRY;
+  UINT8                   RetryCnt;
   UINT8                   Index;
 
+  RetryCnt     = PcdGet8 (PcdIpmiCommandMaxReties);
   IpmiInstance = INSTANCE_FROM_SM_IPMI_BMC_THIS (This);
   DEBUG ((DEBUG_VERBOSE, "[IPMI] Generic - Sending IPMI Command. Fun: %d Cmd: %d\n", NetFunction, Command));
 
@@ -147,6 +148,7 @@ Returns:
                );
 
     if (Status != EFI_SUCCESS) {
+      DEBUG ((DEBUG_ERROR, "[IPMI] Generic - Softfail! (%r)\n", Status));
       IpmiInstance->BmcStatus = BMC_SOFTFAIL;
       IpmiInstance->SoftErrorCount++;
       return Status;

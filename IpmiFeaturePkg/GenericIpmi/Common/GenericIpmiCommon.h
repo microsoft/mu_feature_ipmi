@@ -154,27 +154,4 @@ Returns:
 --*/
 ;
 
-VOID
-GetDeviceSpecificTestResults (
-  IN      IPMI_BMC_INSTANCE_DATA  *IpmiInstance
-  )
-
-/*++
-
-Routine Description:
-
-  This is a BMC specific routine to check the device specific self test results as defined
-  in the Bensley BMC core specification.
-
-Arguments:
-
-  IpmiInstance  - Data structure describing BMC variables and used for sending commands
-
-Returns:
-
-  VOID
-
---*/
-;
-
 #endif
