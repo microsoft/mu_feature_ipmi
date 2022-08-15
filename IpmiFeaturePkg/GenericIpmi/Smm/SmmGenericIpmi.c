@@ -153,7 +153,7 @@ Returns:
     //
     // Initialize the KCS transaction timeout. Assume delay unit is 1000 us.
     //
-    mIpmiInstance->IpmiTimeoutPeriod = (BMC_IPMI_TIMEOUT * 1000*1000) / IPMI_DELAY_UNIT;
+    mIpmiInstance->IpmiTimeoutPeriod = (PcdGet8 (PcdIpmiCommandTimeoutSeconds) * 1000*1000) / IPMI_DELAY_UNIT;
 
     //
     // Initialize IPMI IO Base, we still use SMS IO base to get device ID and Seltest result since SMM IF may have different cmds supported

@@ -216,6 +216,14 @@ Returns:
     }
 
     //
+    // If we got this far without any error codes, but the DataSize is 0 then the
+    // command response failed, so do not continue.
+    //
+    if (DataSize < IPMI_RESPONSE_HEADER_SIZE) {
+      return EFI_DEVICE_ERROR;
+    }
+
+    //
     // Verify the response data buffer passed in is big enough.
     //
     if ((DataSize - IPMI_RESPONSE_HEADER_SIZE) > *ResponseDataSize) {

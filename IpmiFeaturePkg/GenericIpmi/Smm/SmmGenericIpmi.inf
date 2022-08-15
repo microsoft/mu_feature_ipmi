@@ -47,6 +47,8 @@
 [Pcd]
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiBmcReadyDelayTimer
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCommandTimeoutSeconds
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCommandMaxReties
 
 [Depex]
  gIpmiTransportProtocolGuid

@@ -9,28 +9,20 @@
 #ifndef _IPMI_BMC_H_
 #define _IPMI_BMC_H_
 
-#include <Library/UefiBootServicesTableLib.h>
-#include <Library/MemoryAllocationLib.h>
-#include <Library/UefiDriverEntryPoint.h>
+#include <Uefi.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
-#include <Library/PcdLib.h>
-#include <Library/UefiLib.h>
-#include <Library/BaseLib.h>
-#include <Library/IoLib.h>
-#include <Library/ReportStatusCodeLib.h>
-#include <Library/IpmiBaseLib.h>
 #include <Library/IpmiTransportLib.h>
-#include <Protocol/IpmiTransportProtocol.h>
+#include <IpmiInterface.h>
 
 #include "GenericIpmiCommon.h"
 
-#define IPMI_DELAY_UNIT   50  // Unit is microseconds.
+#define IPMI_DELAY_UNIT  50   // Unit is microseconds.
 
 //
 // IPMI Instance signature
 //
-#define SM_IPMI_BMC_SIGNATURE        SIGNATURE_32 ('i', 'p', 'm', 'i')
+#define SM_IPMI_BMC_SIGNATURE  SIGNATURE_32 ('i', 'p', 'm', 'i')
 #define INSTANCE_FROM_SM_IPMI_BMC_THIS(a) \
   CR ( \
   a, \

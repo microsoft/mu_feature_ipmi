@@ -22,12 +22,13 @@
 #  HOB Guid C Name: gEfiHtBistHobGuid Hob Type: GUID_EXTENSION
 #
 [Sources]
+  ../Common/IpmiHooks.h
+  ../Common/IpmiHooks.c
   ../Common/GenericIpmiCommon.h
+  ../Common/GenericIpmi.h
+  ../Common/GenericIpmi.c
   PeiGenericIpmi.c
   PeiGenericIpmi.h
-  PeiIpmiDef.h
-  PeiIpmi.c
-  PeiIpmi.h
 
 [Packages]
   MdePkg/MdePkg.dec
@@ -53,6 +54,7 @@
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiBmcReadyDelayTimer
   gIpmiFeaturePkgTokenSpaceGuid.PcdSioMailboxBaseAddress
   gIpmiFeaturePkgTokenSpaceGuid.PcdSignalPreBootToBmc
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCommandMaxReties
 
 [Depex]
   TRUE

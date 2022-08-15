@@ -17,6 +17,7 @@
 #include <Library/MemoryAllocationLib.h>
 #include <Library/PcdLib.h>
 #include <Library/TimerLib.h>
+#include <Library/ReportStatusCodeLib.h>
 #include <IndustryStandard/Ipmi.h>
 #include <SmStatusCodes.h>
 

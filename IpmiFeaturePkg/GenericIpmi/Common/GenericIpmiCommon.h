@@ -9,7 +9,7 @@
 #ifndef _IPMI_COMMON_BMC_H_
 #define _IPMI_COMMON_BMC_H_
 
-#define MAX_TEMP_DATA      255// 160 Modified to increase number of bytes transfered per command
+#define MAX_TEMP_DATA      255
 #define BMC_SLAVE_ADDRESS  0x20
 #define MAX_SOFT_COUNT     10
 #define COMP_CODE_NORMAL   0x00
@@ -55,7 +55,6 @@ typedef struct {
   UINT64            ErrorStatus;
   UINT8             SoftErrorCount;
   IPMI_TRANSPORT    IpmiTransport;
-  EFI_HANDLE        IpmiSmmHandle;
 } IPMI_BMC_INSTANCE_DATA;
 
 //
