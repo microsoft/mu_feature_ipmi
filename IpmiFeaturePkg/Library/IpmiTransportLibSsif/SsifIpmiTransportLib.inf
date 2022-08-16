@@ -11,7 +11,7 @@
   INF_VERSION                    = 1.26
   BASE_NAME                      = SsifIpmiTransportLib
   FILE_GUID                      = A3C1723F-C9E1-4A13-B907-6A6BB258D57E
-  MODULE_TYPE                    = UEFI_DRIVER
+  MODULE_TYPE                    = BASE
   VERSION_STRING                 = 1.0
   LIBRARY_CLASS                  = IpmiTransportLib
 

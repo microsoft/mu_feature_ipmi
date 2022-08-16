@@ -7,8 +7,9 @@
 
 **/
 
+#include <Uefi.h>
 #include <IndustryStandard/IpmiNetFnApp.h>
-#include <ServerManagement.h>
+#include <IpmiInterface.h>
 
 /**
   Checks for the results of device specific self test codes.

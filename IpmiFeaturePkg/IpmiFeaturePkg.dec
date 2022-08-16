@@ -23,18 +23,12 @@
   Include
 
 [LibraryClasses]
-  ## @libraryclass  Provides services to send IPMI commands.
-  #
-# MU_CHANGE [BEGIN] - [TCBZ3038] IpmiFeaturePkg.dec has incorrect LibraryClasses
   IpmiCommandLib|Include/Library/IpmiCommandLib.h
   IpmiBaseLib|Include/Library/IpmiBaseLib.h
-
-  ## @libraryclass  Provides an API for platform-specific IPMI hooks.
-  #
   IpmiPlatformHookLib|Include/Library/IpmiPlatformHookLib.h
-# MU_CHANGE [END] - [TCBZ3038] IpmiFeaturePkg.dec has incorrect LibraryClasses
   IpmiTransportLib|Include/Library/IpmiTransportLib.h
   BmcSmbusLib|Include/Library/BmcSmbusLib.h
+  BmcSelfTestPlatformLib|Include/Library/BmcSelfTestPlatformLib.h
 
 [Guids]
   gIpmiFeaturePkgTokenSpaceGuid  =  {0xc05283f6, 0xd6a8, 0x48f3, {0x9b, 0x59, 0xfb, 0xca, 0x71, 0x32, 0x0f, 0x12}}
@@ -55,10 +49,13 @@
   #When True, BIOS will send a Pre-Boot signal to BMC
   gIpmiFeaturePkgTokenSpaceGuid.PcdSignalPreBootToBmc|FALSE|BOOLEAN|0xF0000002
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCheckSelfTestResults|FALSE|BOOLEAN|0xF0000003
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCommandTimeoutSeconds|5|UINT8|0xF0000004
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCommandMaxReties|3|UINT8|0xF0000005
+  gIpmiFeaturePkgTokenSpaceGuid.PcdBmcTimeoutSeconds|30|UINT8|0xF0000006
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiBmcReadyDelayTimer|120|UINT8|0xF0000007
 
 [PcdsDynamic, PcdsDynamicEx]
   gIpmiFeaturePkgTokenSpaceGuid.PcdFRB2EnabledFlag|TRUE|BOOLEAN|0xD0000001
   gIpmiFeaturePkgTokenSpaceGuid.PcdFRBTimeoutValue|360|UINT16|0xD0000002
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress|0xCA2|UINT16|0xD0000003
   gIpmiFeaturePkgTokenSpaceGuid.PcdSioMailboxBaseAddress|0x600|UINT32|0xD0000004
-  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiBmcReadyDelayTimer|120|UINT8|0xD0000005

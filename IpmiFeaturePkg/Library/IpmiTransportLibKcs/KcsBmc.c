@@ -36,17 +36,13 @@ InitializeIpmiTransportHardware (
 /**
   The constructor function initializing global state for the KCS library.
 
-  @param  ImageHandle   The firmware allocated handle for the EFI image.
-  @param  SystemTable   A pointer to the Management mode System Table.
-
   @retval EFI_SUCCESS   The constructor always returns EFI_SUCCESS.
 
 **/
 EFI_STATUS
 EFIAPI
 BmcKcsConstructor (
-  IN EFI_HANDLE        ImageHandle,
-  IN EFI_SYSTEM_TABLE  *SystemTable
+  VOID
   )
 {
   KcsPort = PcdGet16 (PcdIpmiIoBaseAddress);
