@@ -1,0 +1,28 @@
+## @file
+#  Library for easy use of SEL logging on IPMI.
+#
+#  Copyright (c) Microsoft Corporation.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.26
+  BASE_NAME                      = IpmiSelLib
+  FILE_GUID                      = 2BDED146-B158-4EF9-9D56-F97BA1AB97AA
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = IpmiSelLib
+
+[sources]
+  IpmiSelLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  BaseLib
+  DebugLib
+  IpmiCommandLib
