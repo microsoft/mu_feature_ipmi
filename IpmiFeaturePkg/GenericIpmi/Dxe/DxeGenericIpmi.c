@@ -59,12 +59,15 @@ Returns:
 
 --*/
 {
-  EFI_STATUS  Status;
-  UINT32      DataSize;
-  UINT8       Index;
-  UINT8       *TempPtr;
-  UINT32      Retries;
-  BOOLEAN     bResultFlag = FALSE;
+  EFI_STATUS                      Status;
+  UINT32                          DataSize;
+  UINT8                           Index;
+  UINT8                           *TempPtr;
+  UINT32                          Retries;
+  BOOLEAN                         bResultFlag = FALSE;
+  IPMI_SELF_TEST_RESULT_RESPONSE  *SelfTestResult;
+
+  SelfTestResult = (VOID *)&IpmiInstance->TempData[0];
 
   //
   // Get the SELF TEST Results.
@@ -95,7 +98,7 @@ Returns:
                );
 
     if (Status == EFI_SUCCESS) {
-      switch (IpmiInstance->TempData[1]) {
+      switch (SelfTestResult->Result) {
         case IPMI_APP_SELFTEST_NO_ERROR:
         case IPMI_APP_SELFTEST_NOT_IMPLEMENTED:
         case IPMI_APP_SELFTEST_ERROR:
@@ -119,7 +122,7 @@ Returns:
   // If Status indicates a Device error, then the BMC is not responding, so send an error.
   //
   if (EFI_ERROR (Status) || (Retries == 0)) {
-    DEBUG ((EFI_D_ERROR, "\n[IPMI]  BMC self-test does not respond (status: %r)!\n\n", Status));
+    DEBUG ((DEBUG_ERROR, "\n[IPMI]  BMC self-test does not respond (status: %r)!\n\n", Status));
     if (*ErrorCount < MAX_SOFT_COUNT) {
       StatusCodeValue[*ErrorCount] = EFI_COMPUTING_UNIT_FIRMWARE_PROCESSOR | EFI_CU_FP_EC_COMM_ERROR;
       (*ErrorCount)++;
@@ -128,7 +131,7 @@ Returns:
     IpmiInstance->BmcStatus = BMC_HARDFAIL;
     return Status;
   } else {
-    DEBUG ((EFI_D_INFO, "[IPMI] BMC self-test result: %02X-%02X\n", IpmiInstance->TempData[1], IpmiInstance->TempData[2]));
+    DEBUG ((DEBUG_INFO, "[IPMI] BMC self-test result: %02X-%02X\n", SelfTestResult->Result, SelfTestResult->Param));
     //
     // Copy the Self test results to Error Status.  Data will be copied as long as it
     // does not exceed the size of the ErrorStatus variable.
@@ -145,7 +148,7 @@ Returns:
     // Check the IPMI defined self test results.
     // Additional Cases are device specific test results.
     //
-    switch (IpmiInstance->TempData[0]) {
+    switch (SelfTestResult->Result) {
       case IPMI_APP_SELFTEST_NO_ERROR:
       case IPMI_APP_SELFTEST_NOT_IMPLEMENTED:
         IpmiInstance->BmcStatus = BMC_OK;
@@ -183,10 +186,7 @@ Returns:
         //
         // Call routine to check device specific failures.
         //
-        GetDeviceSpecificTestResults (
-          (IPMI_SELF_TEST_RESULT_RESPONSE *)&IpmiInstance->TempData[0],
-          &IpmiInstance->BmcStatus
-          );
+        GetDeviceSpecificTestResults (SelfTestResult, &IpmiInstance->BmcStatus);
     }
 
     if (IpmiInstance->BmcStatus == BMC_HARDFAIL) {
