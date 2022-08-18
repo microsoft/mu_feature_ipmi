@@ -12,35 +12,14 @@
 #define MAX_TEMP_DATA      255
 #define BMC_SLAVE_ADDRESS  0x20
 #define MAX_SOFT_COUNT     10
-#define COMP_CODE_NORMAL   0x00
-
-//
-// IPMI command completion codes to check for in the UpdateErrorStatus routine.
-// These completion codes indicate a soft error and a running total of the occurrences
-// of these errors is maintained.
-//
-#define COMP_CODE_NODE_BUSY               0xC0
-#define COMP_CODE_TIMEOUT                 0xC3
-#define COMP_CODE_OUT_OF_SPACE            0xC4
-#define COMP_CODE_OUT_OF_RANGE            0xC9
-#define COMP_CODE_CMD_RESP_NOT_PROVIDED   0xCE
-#define COMP_CODE_FAIL_DUP_REQUEST        0xCF
-#define COMP_CODE_SDR_REP_IN_UPDATE_MODE  0xD0
-#define COMP_CODE_DEV_IN_FW_UPDATE_MODE   0xD1
-#define COMP_CODE_BMC_INIT_IN_PROGRESS    0xD2
-//
-// Intel Server System Integrated Baseboard Management Controller (BMC) Firmware v0.62
-// D4h C Insufficient privilege, in KCS channel this indicates KCS Policy Control Mode is Deny All.
-// In authenticated channels this indicates invalid authentication/privilege.
-//
-#define COMP_INSUFFICIENT_PRIVILEGE  0xD4
-#define COMP_CODE_UNSPECIFIED        0xFF
 
 #define COMPLETION_CODES \
   { \
-    COMP_CODE_NODE_BUSY, COMP_CODE_TIMEOUT, COMP_CODE_OUT_OF_SPACE, COMP_CODE_OUT_OF_RANGE, \
-    COMP_CODE_CMD_RESP_NOT_PROVIDED, COMP_CODE_FAIL_DUP_REQUEST, COMP_CODE_SDR_REP_IN_UPDATE_MODE, \
-    COMP_CODE_DEV_IN_FW_UPDATE_MODE, COMP_CODE_BMC_INIT_IN_PROGRESS, COMP_INSUFFICIENT_PRIVILEGE, COMP_CODE_UNSPECIFIED \
+    IPMI_COMP_CODE_NODE_BUSY, IPMI_COMP_CODE_TIMEOUT, IPMI_COMP_CODE_OUT_OF_SPACE, \
+    IPMI_COMP_CODE_OUT_OF_RANGE, IPMI_COMP_CODE_CMD_RESP_NOT_PROVIDED, \
+    IPMI_COMP_CODE_FAIL_DUP_REQUEST, IPMI_COMP_CODE_SDR_REP_IN_UPDATE_MODE, \
+    IPMI_COMP_CODE_DEV_IN_FW_UPDATE_MODE, IPMI_COMP_CODE_BMC_INIT_IN_PROGRESS, \
+    IPMI_COMP_CODE_INSUFFICIENT_PRIVILEGE, IPMI_COMP_CODE_UNSPECIFIED \
   }
 
 //

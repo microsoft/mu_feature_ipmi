@@ -345,10 +345,10 @@ Returns:
  @brief
   This is entry point for IPMI service for DXE. Initializes the BMC information
   and prepares transport and protocol for use. Depending on the configuration,
+  this routine may also validate the BMC is ready for use.
 
-
- @param[in] ImageHandle  a handle to driver image
- @param[in] SystemTable  a pointer to system table
+ @param[in] ImageHandle  A handle to driver image.
+ @param[in] SystemTable  A pointer to system table.
 
  @retval EFI_SUCCESS      The function completed successfully.
  @retval EFI_UNSUPPORTED  IPMI is not available.

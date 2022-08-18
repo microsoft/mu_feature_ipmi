@@ -80,6 +80,7 @@ PeiInitializeIpmiPhysicalLayer (
   Status = InitializeIpmiTransportHardware ();
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "IPMI: InitializeIpmiTransportHardware failed - %r!\n", Status));
+    return Status;
   }
 
   //
@@ -88,6 +89,7 @@ PeiInitializeIpmiPhysicalLayer (
   Status = GetDeviceId (mIpmiInstance);
   if (EFI_ERROR (Status)) {
     DEBUG ((EFI_D_ERROR, "IPMI Peim:Get BMC Device Id Failed. Status=%r\n", Status));
+    return Status;
   }
 
   //

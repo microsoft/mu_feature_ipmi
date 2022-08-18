@@ -16,8 +16,6 @@
 
   @param[in]  Result      The self-test result to be checked by the platform.
   @param[out] BmcStatus   A pointer that receives the BMC status change if needed.
-
-  @retval   EFI_SUCCESS                 <Description>
 **/
 VOID
 GetDeviceSpecificTestResults (

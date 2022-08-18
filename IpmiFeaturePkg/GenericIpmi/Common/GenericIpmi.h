@@ -10,6 +10,7 @@
 #define _IPMI_BMC_H_
 
 #include <Uefi.h>
+#include <IndustryStandard/Ipmi.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
 #include <Library/IpmiTransportLib.h>
