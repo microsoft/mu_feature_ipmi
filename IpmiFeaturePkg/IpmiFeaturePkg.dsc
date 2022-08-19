@@ -111,6 +111,7 @@
 
   # Transport Libraries
   IpmiFeaturePkg/Library/IpmiTransportLibNull/IpmiTransportLibNull.inf
+  IpmiFeaturePkg/Library/IpmiTransportLibMock/IpmiTransportLibMock.inf
   IpmiFeaturePkg/Library/IpmiTransportLibKcs/KcsIpmiTransportLib.inf
   IpmiFeaturePkg/Library/IpmiTransportLibSsif/SsifIpmiTransportLib.inf {
     <LibraryClasses>

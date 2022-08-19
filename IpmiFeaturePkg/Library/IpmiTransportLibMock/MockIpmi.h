@@ -1,0 +1,71 @@
+/** @file
+  Definitions for the Mock IPMI implementation.
+
+  Copyright (c) Microsoft Corporation
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+**/
+
+#ifndef _MOCK_IPMI_H_
+#define _MOCK_IPMI_H_
+
+#include <Uefi.h>
+#include <Library/BaseLib.h>
+#include <Library/DebugLib.h>
+#include <Library/BaseMemoryLib.h>
+#include <IndustryStandard/Ipmi.h>
+
+#define MAX_TEMP_DATA  255
+
+//
+// Structure of IPMI Command buffer
+//
+#define IPMI_COMMAND_HEADER_SIZE  2
+typedef struct {
+  UINT8    Lun         : 2;
+  UINT8    NetFunction : 6;
+  UINT8    Command;
+  UINT8    CommandData[MAX_TEMP_DATA - IPMI_COMMAND_HEADER_SIZE];
+} IPMI_COMMAND;
+
+//
+// Structure of IPMI Command response buffer
+//
+#define IPMI_RESPONSE_HEADER_SIZE  3
+typedef struct {
+  UINT8    Lun         : 2;
+  UINT8    NetFunction : 6;
+  UINT8    Command;
+  UINT8    CompletionCode;
+  UINT8    ResponseData[MAX_TEMP_DATA - IPMI_RESPONSE_HEADER_SIZE];
+} IPMI_RESPONSE;
+
+/**
+  Processes a IPMI request and prepared the next response.
+
+  @param[in]  Command       The IPMI request to mock.
+  @param[in]  Size          The size of the IPMI request.
+
+  @retval   EFI_SUCCESS     Always
+**/
+EFI_STATUS
+MockIpmiCommand (
+  IN IPMI_COMMAND  *Command,
+  IN UINT8         Size
+  );
+
+/**
+  Provides the prepared response to the last IPMI request.
+
+  @param[out]     Response    The mocked response.
+  @param[in,out]  Size        The size of the mocked response.
+
+  @retval   EFI_SUCCESS       Always.
+**/
+EFI_STATUS
+MockIpmiResponse (
+  OUT IPMI_RESPONSE  *Response,
+  IN OUT UINT8       *Size
+  );
+
+#endif
