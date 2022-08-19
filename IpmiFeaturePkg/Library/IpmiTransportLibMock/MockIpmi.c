@@ -82,25 +82,6 @@ MockIpmiGetDeviceId (
 }
 
 //
-// Definitions for registering new handlers.
-//
-
-typedef
-VOID
-(*MOCK_IPMI_RESPONSE)(
-  IN VOID       *Data,
-  IN UINT8      DataSize,
-  OUT VOID      *Response,
-  IN OUT UINT8  *ResponseSize
-  );
-
-typedef struct _MOCK_IPMI_HANDLER_ENTRY {
-  UINT8                 NetFunction;
-  UINT8                 Command;
-  MOCK_IPMI_RESPONSE    Handler;
-} MOCK_IPMI_HANDLER_ENTRY;
-
-//
 // Registered handlers.
 //
 

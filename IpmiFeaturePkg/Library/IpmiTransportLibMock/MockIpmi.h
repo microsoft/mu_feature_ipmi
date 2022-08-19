@@ -40,6 +40,25 @@ typedef struct {
   UINT8    ResponseData[MAX_TEMP_DATA - IPMI_RESPONSE_HEADER_SIZE];
 } IPMI_RESPONSE;
 
+//
+// Definitions for registering new handlers.
+//
+
+typedef
+VOID
+(*MOCK_IPMI_RESPONSE)(
+  IN VOID       *Data,
+  IN UINT8      DataSize,
+  OUT VOID      *Response,
+  IN OUT UINT8  *ResponseSize
+  );
+
+typedef struct _MOCK_IPMI_HANDLER_ENTRY {
+  UINT8                 NetFunction;
+  UINT8                 Command;
+  MOCK_IPMI_RESPONSE    Handler;
+} MOCK_IPMI_HANDLER_ENTRY;
+
 /**
   Processes a IPMI request and prepared the next response.
 
