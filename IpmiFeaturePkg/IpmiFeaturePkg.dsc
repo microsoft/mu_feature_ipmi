@@ -47,6 +47,7 @@
   IpmiCommandLib|IpmiFeaturePkg/Library/IpmiCommandLib/IpmiCommandLib.inf
   IpmiPlatformHookLib|IpmiFeaturePkg/Library/IpmiPlatformHookLibNull/IpmiPlatformHookLibNull.inf
   IpmiTransportLib|IpmiFeaturePkg/Library/IpmiTransportLibNull/IpmiTransportLibNull.inf
+  BmcSelfTestPlatformLib|IpmiFeaturePkg/Library/BmcSelfTestPlatformLibNull/BmcSelfTestPlatformLibNull.inf
 
 [LibraryClasses.common.PEI_CORE,LibraryClasses.common.PEIM]
   #######################################
@@ -99,15 +100,14 @@
   IpmiFeaturePkg/Library/IpmiPlatformHookLibNull/IpmiPlatformHookLibNull.inf
   IpmiFeaturePkg/GenericIpmi/Pei/PeiGenericIpmi.inf
   IpmiFeaturePkg/Frb/FrbPei.inf
-  IpmiFeaturePkg/IpmiInit/PeiIpmiInit.inf
   IpmiFeaturePkg/GenericIpmi/Dxe/DxeGenericIpmi.inf
   IpmiFeaturePkg/BmcAcpi/BmcAcpi.inf
   IpmiFeaturePkg/BmcElog/BmcElog.inf
   IpmiFeaturePkg/Frb/FrbDxe.inf
   IpmiFeaturePkg/IpmiFru/IpmiFru.inf
-  IpmiFeaturePkg/IpmiInit/DxeIpmiInit.inf
   IpmiFeaturePkg/OsWdt/OsWdt.inf
   IpmiFeaturePkg/SolStatus/SolStatus.inf
+  IpmiFeaturePkg/Library/BmcSelfTestPlatformLibNull/BmcSelfTestPlatformLibNull.inf
 
   # Transport Libraries
   IpmiFeaturePkg/Library/IpmiTransportLibNull/IpmiTransportLibNull.inf

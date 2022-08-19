@@ -1,15 +1,18 @@
 /** @file
-  Generic IPMI stack during PEI phase
+  Generic IPMI stack during PEI phase.
 
   @copyright
   Copyright 2017 - 2021 Intel Corporation. <BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
-#include <IndustryStandard/Ipmi.h>
 #include "PeiGenericIpmi.h"
+#include <IndustryStandard/Ipmi.h>
+#include <Library/MemoryAllocationLib.h>
 #include <Library/ReportStatusCodeLib.h>
 #include <Library/IpmiPlatformHookLib.h>
+
+STATIC EFI_PEI_PPI_DESCRIPTOR  gPeiIpmiBmcDataDesc;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Function Implementations
@@ -29,8 +32,8 @@ PeiInitializeIpmiPhysicalLayer (
   IN CONST EFI_PEI_SERVICES  **PeiServices
   )
 {
-  EFI_STATUS                  Status;
-  PEI_IPMI_BMC_INSTANCE_DATA  *mIpmiInstance;
+  EFI_STATUS              Status;
+  IPMI_BMC_INSTANCE_DATA  *mIpmiInstance;
 
   mIpmiInstance = NULL;
 
@@ -44,7 +47,7 @@ PeiInitializeIpmiPhysicalLayer (
     }
   }
 
-  mIpmiInstance = AllocateZeroPool (sizeof (PEI_IPMI_BMC_INSTANCE_DATA));
+  mIpmiInstance = AllocateZeroPool (sizeof (IPMI_BMC_INSTANCE_DATA));
   if (mIpmiInstance == NULL) {
     DEBUG ((EFI_D_ERROR, "IPMI Peim:EFI_OUT_OF_RESOURCES of memory allocation\n"));
     return EFI_OUT_OF_RESOURCES;
@@ -61,15 +64,15 @@ PeiInitializeIpmiPhysicalLayer (
   //
   // Initialize IPMI IO Base.
   //
-  mIpmiInstance->Signature                          = SM_IPMI_BMC_SIGNATURE;
-  mIpmiInstance->SlaveAddress                       = BMC_SLAVE_ADDRESS;
-  mIpmiInstance->BmcStatus                          = BMC_NOTREADY;
-  mIpmiInstance->IpmiTransportPpi.IpmiSubmitCommand = PeiIpmiSendCommand;
-  mIpmiInstance->IpmiTransportPpi.GetBmcStatus      = PeiGetIpmiBmcStatus;
+  mIpmiInstance->Signature                       = SM_IPMI_BMC_SIGNATURE;
+  mIpmiInstance->SlaveAddress                    = BMC_SLAVE_ADDRESS;
+  mIpmiInstance->BmcStatus                       = BMC_NOTREADY;
+  mIpmiInstance->IpmiTransport.IpmiSubmitCommand = IpmiSendCommand;
+  mIpmiInstance->IpmiTransport.GetBmcStatus      = IpmiGetBmcStatus;
 
-  mIpmiInstance->PeiIpmiBmcDataDesc.Flags = EFI_PEI_PPI_DESCRIPTOR_PPI | EFI_PEI_PPI_DESCRIPTOR_TERMINATE_LIST;
-  mIpmiInstance->PeiIpmiBmcDataDesc.Guid  = &gPeiIpmiTransportPpiGuid;
-  mIpmiInstance->PeiIpmiBmcDataDesc.Ppi   = &mIpmiInstance->IpmiTransportPpi;
+  gPeiIpmiBmcDataDesc.Flags = EFI_PEI_PPI_DESCRIPTOR_PPI | EFI_PEI_PPI_DESCRIPTOR_TERMINATE_LIST;
+  gPeiIpmiBmcDataDesc.Guid  = &gPeiIpmiTransportPpiGuid;
+  gPeiIpmiBmcDataDesc.Ppi   = &mIpmiInstance->IpmiTransport;
 
   //
   // Initialize the transport layer.
@@ -77,6 +80,7 @@ PeiInitializeIpmiPhysicalLayer (
   Status = InitializeIpmiTransportHardware ();
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "IPMI: InitializeIpmiTransportHardware failed - %r!\n", Status));
+    return Status;
   }
 
   //
@@ -85,6 +89,7 @@ PeiInitializeIpmiPhysicalLayer (
   Status = GetDeviceId (mIpmiInstance);
   if (EFI_ERROR (Status)) {
     DEBUG ((EFI_D_ERROR, "IPMI Peim:Get BMC Device Id Failed. Status=%r\n", Status));
+    return Status;
   }
 
   //
@@ -97,7 +102,7 @@ PeiInitializeIpmiPhysicalLayer (
   //
   // Just produce PPI
   //
-  Status = PeiServicesInstallPpi (&mIpmiInstance->PeiIpmiBmcDataDesc);
+  Status = PeiServicesInstallPpi (&gPeiIpmiBmcDataDesc);
   if (EFI_ERROR (Status)) {
     return Status;
   }
@@ -173,99 +178,8 @@ PeimIpmiInterfaceInit (
 } // PeimIpmiInterfaceInit()
 
 EFI_STATUS
-EFIAPI
-PeiIpmiSendCommand (
-  IN      PEI_IPMI_TRANSPORT_PPI  *This,
-  IN      UINT8                   NetFunction,
-  IN      UINT8                   Lun,
-  IN      UINT8                   Command,
-  IN      UINT8                   *CommandData,
-  IN      UINT32                  CommandDataSize,
-  IN OUT  UINT8                   *ResponseData,
-  IN OUT  UINT32                  *ResponseDataSize
-  )
-
-/*++
-
-Routine Description:
-
-  Send Ipmi Command in the right mode: HECI or KCS,  to the
-  appropiate device, ME or BMC.
-
-Arguments:
-
-  This              - Pointer to IPMI protocol instance
-  NetFunction       - Net Function of command to send
-  Lun               - LUN of command to send
-  Command           - IPMI command to send
-  CommandData       - Pointer to command data buffer, if needed
-  CommandDataSize   - Size of command data buffer
-  ResponseData      - Pointer to response data buffer
-  ResponseDataSize  - Pointer to response data buffer size
-
-Returns:
-
-  EFI_INVALID_PARAMETER - One of the input values is bad
-  EFI_DEVICE_ERROR      - IPMI command failed
-  EFI_BUFFER_TOO_SMALL  - Response buffer is too small
-  EFI_UNSUPPORTED       - Command is not supported by BMC
-  EFI_SUCCESS           - Command completed successfully
-
---*/
-{
-  //
-  // This Will be unchanged ( BMC/KCS style )
-  //
-  return PeiIpmiSendCommandInternal (
-           This,
-           NetFunction,
-           Lun,
-           Command,
-           CommandData,
-           (UINT8)CommandDataSize,
-           ResponseData,
-           (UINT8 *)ResponseDataSize,
-           NULL
-           );
-} // IpmiSendCommand()
-
-EFI_STATUS
-EFIAPI
-PeiGetIpmiBmcStatus (
-  IN      PEI_IPMI_TRANSPORT_PPI  *This,
-  OUT BMC_STATUS                  *BmcStatus,
-  OUT SM_COM_ADDRESS              *ComAddress
-  )
-
-/*++
-
-Routine Description:
-
-  Updates the BMC status and returns the Com Address
-
-Arguments:
-
-  This        - Pointer to IPMI protocol instance
-  BmcStatus   - BMC status
-  ComAddress  - Com Address
-
-Returns:
-
-  EFI_SUCCESS - Success
-
---*/
-{
-  return PeiIpmiBmcStatus (
-           This,
-           BmcStatus,
-           ComAddress,
-           NULL
-           );
-}
-
-EFI_STATUS
 GetDeviceId (
-  IN      PEI_IPMI_BMC_INSTANCE_DATA  *mIpmiInstance
+  IN      IPMI_BMC_INSTANCE_DATA  *mIpmiInstance
   )
 
 /*++
@@ -300,8 +214,8 @@ Returns:
   //
   DataSize = sizeof (mIpmiInstance->TempData);
   while (EFI_ERROR (
-           Status = PeiIpmiSendCommand (
-                      &mIpmiInstance->IpmiTransportPpi,
+           Status = IpmiSendCommand (
+                      &mIpmiInstance->IpmiTransport,
                       IPMI_NETFN_APP,
                       0,
                       IPMI_APP_GET_DEVICE_ID,
@@ -355,8 +269,8 @@ Returns:
     while (Retries-- != 0) {
       MicroSecondDelay (1*1000*1000); // delay 1 seconds
       DEBUG ((DEBUG_INFO, "[IPMI PEI] UpdateMode Retries:%x \n", Retries));
-      Status = PeiIpmiSendCommand (
-                 &mIpmiInstance->IpmiTransportPpi,
+      Status = IpmiSendCommand (
+                 &mIpmiInstance->IpmiTransport,
                  IPMI_NETFN_APP,
                  0,
                  IPMI_APP_GET_DEVICE_ID,

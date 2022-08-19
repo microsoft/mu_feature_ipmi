@@ -11,7 +11,7 @@
   INF_VERSION                    = 1.26
   BASE_NAME                      = KcsIpmiTransportLib
   FILE_GUID                      = E8DB0064-694B-4FA1-8FAA-61FEB2E34AEB
-  MODULE_TYPE                    = UEFI_DRIVER
+  MODULE_TYPE                    = BASE
   VERSION_STRING                 = 1.0
   LIBRARY_CLASS                  = IpmiTransportLib
   CONSTRUCTOR                    = BmcKcsConstructor

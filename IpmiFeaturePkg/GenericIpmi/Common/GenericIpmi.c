@@ -7,6 +7,7 @@
 **/
 
 #include "GenericIpmi.h"
+#include <IndustryStandard/Ipmi.h>
 
 EFI_STATUS
 UpdateErrorStatus (
@@ -101,9 +102,10 @@ Returns:
   EFI_STATUS              Status;
   IPMI_COMMAND            *IpmiCommand;
   IPMI_RESPONSE           *IpmiResponse;
-  UINT8                   RetryCnt = IPMI_SEND_COMMAND_MAX_RETRY;
+  UINT8                   RetryCnt;
   UINT8                   Index;
 
+  RetryCnt     = PcdGet8 (PcdIpmiCommandMaxReties);
   IpmiInstance = INSTANCE_FROM_SM_IPMI_BMC_THIS (This);
   DEBUG ((DEBUG_VERBOSE, "[IPMI] Generic - Sending IPMI Command. Fun: %d Cmd: %d\n", NetFunction, Command));
 
@@ -147,6 +149,7 @@ Returns:
                );
 
     if (Status != EFI_SUCCESS) {
+      DEBUG ((DEBUG_ERROR, "[IPMI] Generic - Softfail! (%r)\n", Status));
       IpmiInstance->BmcStatus = BMC_SOFTFAIL;
       IpmiInstance->SoftErrorCount++;
       return Status;
@@ -180,7 +183,7 @@ Returns:
       return EFI_DEVICE_ERROR;
     }
 
-    if ((IpmiResponse->CompletionCode != COMP_CODE_NORMAL) &&
+    if ((IpmiResponse->CompletionCode != IPMI_COMP_CODE_NORMAL) &&
         (IpmiInstance->BmcStatus == BMC_UPDATE_IN_PROGRESS))
     {
       //
@@ -192,7 +195,7 @@ Returns:
         IpmiInstance
         );
       return EFI_UNSUPPORTED;
-    } else if (IpmiResponse->CompletionCode != COMP_CODE_NORMAL) {
+    } else if (IpmiResponse->CompletionCode != IPMI_COMP_CODE_NORMAL) {
       //
       // Otherwise if the BMC is in normal mode, but the completion code
       // is not normal, then update the error status and return device error.
@@ -206,11 +209,19 @@ Returns:
       // D4h C Insufficient privilege, in KCS channel this indicates KCS Policy Control Mode is Deny All.
       // In authenticated channels this indicates invalid authentication/privilege.
       //
-      if (IpmiResponse->CompletionCode == COMP_INSUFFICIENT_PRIVILEGE) {
+      if (IpmiResponse->CompletionCode == IPMI_COMP_CODE_INSUFFICIENT_PRIVILEGE) {
         return EFI_SECURITY_VIOLATION;
       } else {
         return EFI_DEVICE_ERROR;
       }
+    }
+
+    //
+    // If we got this far without any error codes, but the DataSize is 0 then the
+    // command response failed, so do not continue.
+    //
+    if (DataSize < IPMI_RESPONSE_HEADER_SIZE) {
+      return EFI_DEVICE_ERROR;
     }
 
     //
