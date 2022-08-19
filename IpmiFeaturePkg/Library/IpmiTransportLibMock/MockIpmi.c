@@ -62,7 +62,7 @@ MockIpmiGetDeviceId (
 {
   IPMI_GET_DEVICE_ID_RESPONSE  *DeviceId;
 
-  ASSERT (*ResponseSize < sizeof (IPMI_GET_DEVICE_ID_RESPONSE));
+  ASSERT (*ResponseSize >= sizeof (IPMI_GET_DEVICE_ID_RESPONSE));
 
   DeviceId                       = Response;
   DeviceId->CompletionCode       = IPMI_COMP_CODE_NORMAL;
