@@ -15,30 +15,30 @@
 #include <Library/BaseMemoryLib.h>
 #include <IndustryStandard/Ipmi.h>
 
-#define MAX_TEMP_DATA  255
+#define MOCK_IPMI_BUFFER_SIZE  250
 
 //
 // Structure of IPMI Command buffer
 //
-#define IPMI_COMMAND_HEADER_SIZE  2
-typedef struct {
+typedef struct _IPMI_COMMAND {
   UINT8    Lun         : 2;
   UINT8    NetFunction : 6;
   UINT8    Command;
-  UINT8    CommandData[MAX_TEMP_DATA - IPMI_COMMAND_HEADER_SIZE];
 } IPMI_COMMAND;
 
 //
 // Structure of IPMI Command response buffer
 //
-#define IPMI_RESPONSE_HEADER_SIZE  3
-typedef struct {
+typedef struct _IPMI_RESPONSE {
   UINT8    Lun         : 2;
   UINT8    NetFunction : 6;
   UINT8    Command;
-  UINT8    CompletionCode;
-  UINT8    ResponseData[MAX_TEMP_DATA - IPMI_RESPONSE_HEADER_SIZE];
 } IPMI_RESPONSE;
+
+typedef struct _IPMI_RESPONSE_DATA {
+  IPMI_RESPONSE    Header;
+  UINT8            ResponseData[MOCK_IPMI_BUFFER_SIZE];
+} IPMI_RESPONSE_DATA;
 
 //
 // Definitions for registering new handlers.

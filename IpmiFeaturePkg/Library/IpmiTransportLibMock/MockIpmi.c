@@ -10,9 +10,9 @@
 
 #include "MockIpmi.h"
 
-BOOLEAN        gResponseValid;
-IPMI_RESPONSE  gResponse;
-UINT8          gResponseSize;
+BOOLEAN             gResponseValid;
+IPMI_RESPONSE_DATA  gResponse;
+UINT8               gResponseSize;
 
 /**
   Mocks the result of IPMI_APP_GET_SELFTEST_RESULTS.
@@ -62,7 +62,7 @@ MockIpmiGetDeviceId (
 {
   IPMI_GET_DEVICE_ID_RESPONSE  *DeviceId;
 
-  ASSERT (*ResponseSize >= sizeof (IPMI_GET_DEVICE_ID_RESPONSE));
+  ASSERT (*ResponseSize < sizeof (IPMI_GET_DEVICE_ID_RESPONSE));
 
   DeviceId                       = Response;
   DeviceId->CompletionCode       = IPMI_COMP_CODE_NORMAL;
@@ -112,15 +112,18 @@ MockIpmiCommand (
   UINT8   ResponseDataSize;
 
   ASSERT (Command->Lun == 0);
+  ASSERT (Command != NULL);
+  ASSERT (Size >= sizeof (IPMI_COMMAND));
 
   //
   // Generic response handling. Add the 0 bit value to indicate this is a
   // response.
   //
 
-  gResponse.NetFunction = Command->NetFunction | 0x1;
-  gResponse.Command     = Command->Command;
-  gResponseSize         = IPMI_RESPONSE_HEADER_SIZE;
+  gResponse.Header.NetFunction = Command->NetFunction | 0x1;
+  gResponse.Header.Command     = Command->Command;
+  gResponse.ResponseData[0]    = IPMI_COMP_CODE_INVALID_COMMAND;
+  gResponseSize                = sizeof (IPMI_RESPONSE);
 
   //
   // Search for a specific handler.
@@ -130,15 +133,15 @@ MockIpmiCommand (
     if ((MockHandlers[Index].NetFunction == Command->NetFunction) &&
         (MockHandlers[Index].Command == Command->Command))
     {
-      ResponseDataSize = sizeof (gResponse) - 2;
+      ResponseDataSize = sizeof (gResponse.ResponseData);
       MockHandlers[Index].Handler (
-                            &Command->CommandData[0],
-                            (Size - IPMI_COMMAND_HEADER_SIZE),
-                            &gResponse.CompletionCode,
+                            (VOID *)((&Command) + 1),
+                            (Size - sizeof (IPMI_COMMAND)),
+                            &gResponse.ResponseData[0],
                             &ResponseDataSize
                             );
 
-      gResponseSize  = ResponseDataSize + 2;
+      gResponseSize  = sizeof (IPMI_RESPONSE) + ResponseDataSize;
       gResponseValid = TRUE;
       return EFI_SUCCESS;
     }
@@ -148,8 +151,9 @@ MockIpmiCommand (
   // No handler was found, responded that this is not supported.
   //
 
-  gResponse.CompletionCode = IPMI_COMP_CODE_INVALID_COMMAND;
-  gResponseValid           = TRUE;
+  gResponse.ResponseData[0] = IPMI_COMP_CODE_INVALID_COMMAND;
+  gResponseSize             = sizeof (IPMI_RESPONSE) + sizeof (gResponse.ResponseData[0]);
+  gResponseValid            = TRUE;
   return EFI_SUCCESS;
 }
 
@@ -169,10 +173,11 @@ MockIpmiResponse (
 {
   ASSERT (gResponseValid);
   ASSERT (gResponseSize != 0);
+  ASSERT (gResponseSize <= sizeof (IPMI_RESPONSE_DATA));
   ASSERT (*Size > gResponseSize);
 
-  *Response = gResponse;
-  *Size     = gResponseSize;
+  CopyMem (Response, &gResponse, gResponseSize);
+  *Size = gResponseSize;
 
   ZeroMem (&gResponse, sizeof (gResponse));
   gResponseValid = FALSE;
