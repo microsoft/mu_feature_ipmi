@@ -310,6 +310,7 @@ Returns:
       //
       // Updatemode = 1 mean BMC is not ready, continue waiting.
       //
+      Retries = PcdGet8 (PcdIpmiBmcReadyDelayTimer);
       while (Retries-- != 0) {
         MicroSecondDelay (1*1000*1000); // delay 1 seconds
         DEBUG ((DEBUG_ERROR, "[IPMI] UpdateMode Retries: %d \n", Retries));
