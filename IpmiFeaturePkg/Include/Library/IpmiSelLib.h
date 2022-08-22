@@ -6,4 +6,90 @@
 
 **/
 
+/**
+  Adds a system event to the SEL.
 
+  @param[in,out]  RecordId      If provided, receives the record ID of the entry.
+  @param[in]      SensorType    The Sensor type for the event.
+  @param[in]      SensorNumber  The sensor number for the event.
+  @param[in]      EventDirType  The event Dir and Type values
+  @param[in]      Data0         OEM defined data part 0.
+  @param[in]      Data1         OEM defined data part 1.
+  @param[in]      Data2         OEM defined data part 2.
+
+  @retval   EFI_SUCCESS     Event was successfully added to the SEL.
+  @retval   Other           And error was returned by IpmiAddSelEntry.
+**/
+EFI_STATUS
+EFIAPI
+SelAddSystemEntry (
+  IN OUT UINT16  *RecordId OPTIONAL,
+  IN UINT8       SensorType,
+  IN UINT8       SensorNumber,
+  IN UINT8       EventDirType,
+  IN UINT8       Data0,
+  IN UINT8       Data1,
+  IN UINT8       Data2
+  );
+
+/**
+  Adds an OEM timestamped event to the SEL.
+
+  @param[in,out]  RecordId      If provided, receives the record ID of the entry.
+  @param[in]      RecordType    The record type code. But be between 0xC0-0xDF.
+  @param[in]      Data          Array of OEM defined event data.
+
+  @retval   EFI_SUCCESS             Event was successfully added to the SEL.
+  @retval   EFI_INVALID_PARAMETER   Invalid RecordType was given.
+  @retval   Other                   And error was returned by IpmiAddSelEntry.
+**/
+EFI_STATUS
+EFIAPI
+SelAddOemEntry (
+  IN OUT UINT16  *RecordId OPTIONAL,
+  IN UINT8       RecordType,
+  IN UINT8       Data[6]
+  );
+
+/**
+  Clears the SEL.
+
+  @param[in]  AwaitClear  Indicates the routine should wait for the SEL clear to
+                          complete before returning.
+
+  @retval   EFI_SUCCESS   The SEL clear command was successfully sent.
+  @retval   Other         The IPMI base library returned an error.
+**/
+EFI_STATUS
+EFIAPI
+SelClear (
+  BOOLEAN  AwaitClear
+  );
+
+/**
+  Gets the SEL time.
+
+  @param[out]   Time    Receives the SEL time.
+
+  @retval   EFI_SUCCESS   The SEL time was retrieved.
+  @retval   Other         The IPMI base library returned an error.
+**/
+EFI_STATUS
+EFIAPI
+SelGetTime (
+  OUT UINT32  *Time
+  );
+
+/**
+  Sets the SEL time.
+
+  @param[in]   Time     The value to set the SEL time to.
+
+  @retval   EFI_SUCCESS   The SEL time was set.
+  @retval   Other         The IPMI base library returned an error.
+**/
+EFI_STATUS
+EFIAPI
+SelSetTime (
+  IN UINT32  Time
+  );

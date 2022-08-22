@@ -25,4 +25,10 @@
 [LibraryClasses]
   BaseLib
   DebugLib
-  IpmiCommandLib
+  TimerLib
+  IpmiBaseLib
+
+[Pcd]
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiSelOemManufacturerId0
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiSelOemManufacturerId1
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiSelOemManufacturerId2
