@@ -55,13 +55,25 @@ IpmiCompCodeToEfiStatus (
 
     case IPMI_COMP_CODE_INVALID_COMMAND:
     case IPMI_COMP_CODE_INVALID_FOR_GIVEN_LUN:
+    case IPMI_COMP_CODE_INVALID_DATA_FIELD:
+    case IPMI_COMP_CODE_COMMAND_ILLEGAL:
       return EFI_INVALID_PARAMETER;
+
+    case IPMI_COMP_CODE_INVALID_REQUEST_DATA_LENGTH:
+      return EFI_BAD_BUFFER_SIZE;
+
+    case IPMI_COMP_CODE_NOT_PRESENT:
+    case IPMI_COMP_CODE_OUT_OF_RANGE:
+      return EFI_NOT_FOUND;
 
     case IPMI_COMP_CODE_TIMEOUT:
       return EFI_TIMEOUT;
 
     case IPMI_COMP_CODE_OUT_OF_SPACE:
       return EFI_OUT_OF_RESOURCES;
+
+    case IPMI_COMP_CODE_BMC_INIT_IN_PROGRESS:
+      return EFI_NOT_READY;
 
     case IPMI_COMP_CODE_INSUFFICIENT_PRIVILEGE:
       return EFI_SECURITY_VIOLATION;
@@ -109,6 +121,7 @@ IpmiAddSelEntry (
              );
 
   if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a: Add SEL entry failed. %r\n", __FUNCTION__, Status));
     return Status;
   }
 
@@ -119,6 +132,14 @@ IpmiAddSelEntry (
 
   Status = IpmiCompCodeToEfiStatus (Response.CompletionCode);
   if (EFI_ERROR (Status)) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a: Add SEL event returned failing completion code. (0x%x) %r\n",
+      __FUNCTION__,
+      Response.CompletionCode,
+      Status
+      ));
+
     return Status;
   }
 
@@ -265,11 +286,26 @@ SelClear (
                );
 
     if (EFI_ERROR (Status)) {
+      DEBUG ((
+        DEBUG_ERROR,
+        "%a: Failed to send SEL clear command. %r\n",
+        __FUNCTION__,
+        Status
+        ));
+
       return Status;
     }
 
     Status = IpmiCompCodeToEfiStatus (Response.CompletionCode);
     if (EFI_ERROR (Status)) {
+      DEBUG ((
+        DEBUG_ERROR,
+        "%a: SEL clear returned failing completion code. (0x%x) %r\n",
+        __FUNCTION__,
+        Response.CompletionCode,
+        Status
+        ));
+
       return Status;
     }
 
@@ -324,11 +360,20 @@ SelGetTime (
                );
 
   if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a: Failed to send get SEL time command. %r\n", __FUNCTION__, Status));
     return Status;
   }
 
   Status = IpmiCompCodeToEfiStatus (Response.CompletionCode);
   if (EFI_ERROR (Status)) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a: Get SEL time returned failing completion code. (0x%x) %r\n",
+      __FUNCTION__,
+      Response.CompletionCode,
+      Status
+      ));
+
     return Status;
   }
 
@@ -368,11 +413,20 @@ SelSetTime (
              );
 
   if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a: Failed to send set SEL time command. %r\n", __FUNCTION__, Status));
     return Status;
   }
 
   Status = IpmiCompCodeToEfiStatus (CompletionCode);
   if (EFI_ERROR (Status)) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a: Get SEL time returned failing completion code. (0x%x) %r\n",
+      __FUNCTION__,
+      CompletionCode,
+      Status
+      ));
+
     return Status;
   }
 
