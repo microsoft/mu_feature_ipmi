@@ -114,12 +114,14 @@ TestSelTime (
   EFI_STATUS  Status;
   UINT32      Time;
 
-  Time   = 0;
+  Time   = 100;
   Status = SelSetTime (Time);
   UT_ASSERT_STATUS_EQUAL (Status, EFI_SUCCESS);
 
+  Time   = 0;
   Status = SelGetTime (&Time);
   UT_ASSERT_STATUS_EQUAL (Status, EFI_SUCCESS);
+  UT_ASSERT_TRUE (Time >= 100);
 
   return UNIT_TEST_PASSED;
 }

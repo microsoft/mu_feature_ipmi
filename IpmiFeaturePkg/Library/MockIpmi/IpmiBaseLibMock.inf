@@ -18,6 +18,7 @@
 [sources]
   IpmiBaseLibMock.c
   MockIpmi.c
+  MockSel.c
   MockIpmi.h
 
 [Packages]

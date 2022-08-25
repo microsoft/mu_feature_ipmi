@@ -91,4 +91,127 @@ MockIpmiResponse (
   IN OUT UINT8       *Size
   );
 
+//
+// Mock IPMI routines.
+//
+
+/**
+  Mocks the result of IPMI_APP_GET_SELFTEST_RESULTS.
+
+  @param[in]       Data           The IPMI request data.
+  @param[in]       DataSize       The size of the IPMI request data.
+  @param[out]      Response       The response data buffer.
+  @param[in, out]  ResponseSize   On input, the available size of buffer.
+                                  On output, the size of written data in the buffer.
+**/
+VOID
+MockIpmiGetSelfTest (
+  IN VOID       *Data,
+  IN UINT8      DataSize,
+  OUT VOID      *Response,
+  IN OUT UINT8  *ResponseSize
+  );
+
+/**
+  Mocks the result of IPMI_APP_GET_DEVICE_ID.
+
+  @param[in]       Data           The IPMI request data.
+  @param[in]       DataSize       The size of the IPMI request data.
+  @param[out]      Response       The response data buffer.
+  @param[in, out]  ResponseSize   On input, the available size of buffer.
+                                  On output, the size of written data in the buffer.
+**/
+VOID
+MockIpmiGetDeviceId (
+  IN VOID       *Data,
+  IN UINT8      DataSize,
+  OUT VOID      *Response,
+  IN OUT UINT8  *ResponseSize
+  );
+
+/**
+  Mocks the result of IPMI_STORAGE_GET_SEL_INFO.
+
+  @param[in]       Data           The IPMI request data.
+  @param[in]       DataSize       The size of the IPMI request data.
+  @param[out]      Response       The response data buffer.
+  @param[in, out]  ResponseSize   On input, the available size of buffer.
+                                  On output, the size of written data in the buffer.
+**/
+VOID
+MockIpmiSelGetInfo (
+  IN VOID       *Data,
+  IN UINT8      DataSize,
+  OUT VOID      *Response,
+  IN OUT UINT8  *ResponseSize
+  );
+
+/**
+  Mocks the result of IPMI_STORAGE_ADD_SEL_ENTRY.
+
+  @param[in]       Data           The IPMI request data.
+  @param[in]       DataSize       The size of the IPMI request data.
+  @param[out]      Response       The response data buffer.
+  @param[in, out]  ResponseSize   On input, the available size of buffer.
+                                  On output, the size of written data in the buffer.
+**/
+VOID
+MockIpmiSelAddEntry (
+  IN VOID       *Data,
+  IN UINT8      DataSize,
+  OUT VOID      *Response,
+  IN OUT UINT8  *ResponseSize
+  );
+
+/**
+  Mocks the result of IPMI_STORAGE_GET_SEL_TIME.
+
+  @param[in]       Data           The IPMI request data.
+  @param[in]       DataSize       The size of the IPMI request data.
+  @param[out]      Response       The response data buffer.
+  @param[in, out]  ResponseSize   On input, the available size of buffer.
+                                  On output, the size of written data in the buffer.
+**/
+VOID
+MockIpmiSelGetTime (
+  IN VOID       *Data,
+  IN UINT8      DataSize,
+  OUT VOID      *Response,
+  IN OUT UINT8  *ResponseSize
+  );
+
+/**
+  Mocks the result of IPMI_STORAGE_SET_SEL_TIME.
+
+  @param[in]       Data           The IPMI request data.
+  @param[in]       DataSize       The size of the IPMI request data.
+  @param[out]      Response       The response data buffer.
+  @param[in, out]  ResponseSize   On input, the available size of buffer.
+                                  On output, the size of written data in the buffer.
+**/
+VOID
+MockIpmiSelSetTime (
+  IN VOID       *Data,
+  IN UINT8      DataSize,
+  OUT VOID      *Response,
+  IN OUT UINT8  *ResponseSize
+  );
+
+/**
+  Mocks the result of IPMI_STORAGE_CLEAR_SEL.
+
+  @param[in]       Data           The IPMI request data.
+  @param[in]       DataSize       The size of the IPMI request data.
+  @param[out]      Response       The response data buffer.
+  @param[in, out]  ResponseSize   On input, the available size of buffer.
+                                  On output, the size of written data in the buffer.
+**/
+VOID
+MockIpmiSelClear (
+  IN VOID       *Data,
+  IN UINT8      DataSize,
+  OUT VOID      *Response,
+  IN OUT UINT8  *ResponseSize
+  );
+
 #endif
