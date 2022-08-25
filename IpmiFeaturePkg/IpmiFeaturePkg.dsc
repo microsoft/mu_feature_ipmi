@@ -113,12 +113,15 @@
 
   # Transport Libraries
   IpmiFeaturePkg/Library/IpmiTransportLibNull/IpmiTransportLibNull.inf
-  IpmiFeaturePkg/Library/IpmiTransportLibMock/IpmiTransportLibMock.inf
   IpmiFeaturePkg/Library/IpmiTransportLibKcs/KcsIpmiTransportLib.inf
   IpmiFeaturePkg/Library/IpmiTransportLibSsif/SsifIpmiTransportLib.inf {
     <LibraryClasses>
       BmcSmbusLib|IpmiFeaturePkg/Library/BmcSmbusLibNull/BmcSmbusLibNull.inf
   }
+
+  # Mock Libraries
+  IpmiFeaturePkg/Library/MockIpmi/IpmiTransportLibMock.inf
+  IpmiFeaturePkg/Library/MockIpmi/IpmiBaseLibMock.inf
 
   # Functional Tests
   IpmiFeaturePkg/Test/FunctionalTest/IpmiShellTest/IpmiShellTest.inf {

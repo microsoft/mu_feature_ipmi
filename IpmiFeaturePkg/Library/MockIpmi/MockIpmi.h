@@ -17,6 +17,8 @@
 
 #define MOCK_IPMI_BUFFER_SIZE  250
 
+#pragma pack(1)
+
 //
 // Structure of IPMI Command buffer
 //
@@ -39,6 +41,8 @@ typedef struct _IPMI_RESPONSE_DATA {
   IPMI_RESPONSE    Header;
   UINT8            ResponseData[MOCK_IPMI_BUFFER_SIZE];
 } IPMI_RESPONSE_DATA;
+
+#pragma pack()
 
 //
 // Definitions for registering new handlers.

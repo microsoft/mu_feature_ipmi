@@ -54,6 +54,8 @@ IpmiCompCodeToEfiStatus (
       return EFI_SUCCESS;
 
     case IPMI_COMP_CODE_INVALID_COMMAND:
+      return EFI_UNSUPPORTED;
+
     case IPMI_COMP_CODE_INVALID_FOR_GIVEN_LUN:
     case IPMI_COMP_CODE_INVALID_DATA_FIELD:
     case IPMI_COMP_CODE_COMMAND_ILLEGAL:
@@ -230,7 +232,6 @@ SelAddOemEntry (
       RecordType
       ));
 
-    ASSERT (FALSE);
     return EFI_INVALID_PARAMETER;
   }
 
@@ -319,6 +320,7 @@ SelClear (
     // Delay 10 milliseconds and try again.
     //
 
+    Request.Erase = IPMI_CLEAR_SEL_REQUEST_GET_ERASE_STATUS;
     DEBUG ((DEBUG_INFO, "Waiting for SEL clear.\n"));
     MicroSecondDelay (10 * 1000);
   }
@@ -429,6 +431,69 @@ SelSetTime (
 
     return Status;
   }
+
+  return Status;
+}
+
+/**
+  Gets information about the SEL.
+
+  @param[out]   SelInfo     Receives information about the SEL.
+
+  @retval   EFI_SUCCESS             The SEL information was retrieved.
+  @retval   EFI_INVALID_PARAMETER   SelInfo pointer is NULL.
+  @retval   Other                   The IPMI base library returned an error.
+**/
+EFI_STATUS
+EFIAPI
+SelGetInfo (
+  OUT SEL_INFO  *SelInfo
+  )
+{
+  IPMI_GET_SEL_INFO_RESPONSE  IpmiSelInfo;
+  EFI_STATUS                  Status;
+  UINT32                      DataSize;
+
+  if (SelInfo == NULL) {
+    DEBUG ((DEBUG_ERROR, "%a: SelInfo parameter is NULL!\n", __FUNCTION__));
+    ASSERT (FALSE);
+    return EFI_INVALID_PARAMETER;
+  }
+
+  DataSize = sizeof (IpmiSelInfo);
+  Status   = IpmiSubmitCommand (
+               IPMI_NETFN_STORAGE,
+               IPMI_STORAGE_GET_SEL_INFO,
+               NULL,
+               0,
+               (VOID *)&IpmiSelInfo,
+               &DataSize
+               );
+
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a: Failed to send get SEL info command. %r\n", __FUNCTION__, Status));
+    return Status;
+  }
+
+  Status = IpmiCompCodeToEfiStatus (IpmiSelInfo.CompletionCode);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a: Get SEL info returned failing completion code. (0x%x) %r\n",
+      __FUNCTION__,
+      IpmiSelInfo.CompletionCode,
+      Status
+      ));
+
+    return Status;
+  }
+
+  SelInfo->Version                    = IpmiSelInfo.Version;
+  SelInfo->NumberOfEntries            = IpmiSelInfo.NoOfEntries;
+  SelInfo->FreeSpace                  = IpmiSelInfo.FreeSpace;
+  SelInfo->LastAddTimeStamp           = IpmiSelInfo.RecentAddTimeStamp;
+  SelInfo->LastEraseTimeStamp         = IpmiSelInfo.RecentEraseTimeStamp;
+  SelInfo->OperationSupported.AsUint8 = IpmiSelInfo.OperationSupport;
 
   return Status;
 }

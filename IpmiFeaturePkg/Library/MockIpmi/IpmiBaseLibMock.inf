@@ -1,0 +1,29 @@
+## @file
+#  Null IPMI transport library
+#
+#  Copyright (c) Microsoft Corporation.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.26
+  BASE_NAME                      = IpmiBaseLibMock
+  FILE_GUID                      = 826B38AC-571C-4892-B88B-DB7AE8C0D7B0
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = IpmiBaseLib
+
+[sources]
+  IpmiBaseLibMock.c
+  MockIpmi.c
+  MockIpmi.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  DebugLib
+  BaseMemoryLib

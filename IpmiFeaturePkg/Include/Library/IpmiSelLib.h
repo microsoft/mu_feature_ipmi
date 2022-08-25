@@ -6,6 +6,37 @@
 
 **/
 
+#ifndef _IPMI_SEL_LIB_H
+#define _IPMI_SEL_LIB_H
+
+//
+// Structure used for get info results.
+//
+
+#pragma pack(1)
+
+typedef struct _SEL_INFO {
+  UINT8     Version;
+  UINT16    NumberOfEntries;
+  UINT16    FreeSpace;
+  UINT32    LastAddTimeStamp;
+  UINT32    LastEraseTimeStamp;
+  union {
+    struct {
+      UINT8    GetSelAllocationInfo : 1;
+      UINT8    ReserveSel           : 1;
+      UINT8    PartialAddSelEntry   : 1;
+      UINT8    DeleteSel            : 1;
+      UINT8    Reserved             : 3;
+      UINT8    Overflow             : 1;
+    } Bits;
+
+    UINT8    AsUint8;
+  } OperationSupported;
+} SEL_INFO;
+
+#pragma pack()
+
 /**
   Adds a system event to the SEL.
 
@@ -93,3 +124,20 @@ EFIAPI
 SelSetTime (
   IN UINT32  Time
   );
+
+/**
+  Gets information about the SEL.
+
+  @param[out]   SelInfo     Receives information about the SEL.
+
+  @retval   EFI_SUCCESS             The SEL information was retrieved.
+  @retval   EFI_INVALID_PARAMETER   SelInfo pointer is NULL.
+  @retval   Other                   The IPMI base library returned an error.
+**/
+EFI_STATUS
+EFIAPI
+SelGetInfo (
+  OUT SEL_INFO  *SelInfo
+  );
+
+#endif

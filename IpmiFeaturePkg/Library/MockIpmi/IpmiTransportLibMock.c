@@ -6,8 +6,8 @@
 
 **/
 
-#include <Uefi.h>
 #include "MockIpmi.h"
+#include <Library/IpmiTransportLib.h>
 
 /**
   Mock implementation of SendDataToBmcPort.
