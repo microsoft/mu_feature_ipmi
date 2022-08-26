@@ -36,6 +36,11 @@ STATIC_ASSERT (
   "Unexpected SEL entry size!"
   );
 
+STATIC_ASSERT (
+  sizeof (SEL_RECORD) == SEL_ENTRY_SIZE,
+  "Unexpected SEL entry size!"
+  );
+
 /**
   Converts a IPMI completion code to a EFI status code.
 
@@ -494,6 +499,79 @@ SelGetInfo (
   SelInfo->LastAddTimeStamp           = IpmiSelInfo.RecentAddTimeStamp;
   SelInfo->LastEraseTimeStamp         = IpmiSelInfo.RecentEraseTimeStamp;
   SelInfo->OperationSupported.AsUint8 = IpmiSelInfo.OperationSupport;
+
+  return Status;
+}
+
+/**
+  Gets information about the SEL.
+
+  @param[in]    RecordId        The record ID of the entry to retrieve.
+  @param[out]   Record          Receives the record if found.
+  @param[out]   NextRecordId    If provided, receives the next record ID.
+
+  @retval   EFI_SUCCESS             The SEL entry was retrieved.
+  @retval   EFI_INVALID_PARAMETER   Record pointer is NULL.
+  @retval   Other                   The IPMI base library returned an error.
+**/
+EFI_STATUS
+EFIAPI
+SelGetEntry (
+  IN UINT16       RecordId,
+  OUT SEL_RECORD  *Record,
+  OUT UINT16      *NextRecordId OPTIONAL
+  )
+{
+  EFI_STATUS                   Status;
+  IPMI_GET_SEL_ENTRY_REQUEST   Request;
+  IPMI_GET_SEL_ENTRY_RESPONSE  Response;
+  UINT32                       Size;
+
+  if (Record == NULL) {
+    DEBUG ((DEBUG_ERROR, "%a: Record parameter is NULL!\n", __FUNCTION__));
+    ASSERT (FALSE);
+    return EFI_INVALID_PARAMETER;
+  }
+
+  ZeroMem (&Request, sizeof (Request));
+  ZeroMem (&Response, sizeof (Response));
+
+  Request.SelRecID[0] = (UINT8)(RecordId & 0xFF);
+  Request.SelRecID[1] = (UINT8)((RecordId >> 8) & 0xFF);
+  Request.BytesToRead = 0xFF;
+
+  Size   = sizeof (Response);
+  Status = IpmiSubmitCommand (
+             IPMI_NETFN_STORAGE,
+             IPMI_STORAGE_GET_SEL_ENTRY,
+             (VOID *)&Request,
+             sizeof (Request),
+             (VOID *)&Response,
+             &Size
+             );
+
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a: Failed to send get SEL entry command. %r\n", __FUNCTION__, Status));
+    return Status;
+  }
+
+  Status = IpmiCompCodeToEfiStatus (Response.CompletionCode);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a: Get SEL entry returned failing completion code. (0x%x) %r\n",
+      __FUNCTION__,
+      Response.CompletionCode,
+      Status
+      ));
+
+    return Status;
+  }
+
+  CopyMem (Record, &Response.RecordData, sizeof (SEL_RECORD));
+  if (NextRecordId != NULL) {
+    *NextRecordId = Response.NextSelRecordId;
+  }
 
   return Status;
 }

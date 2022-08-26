@@ -27,12 +27,10 @@ STATIC_ASSERT (sizeof (SEL_GENERIC_EVENT) == 16, "Bad generic SEL event size");
 
 #define SEL_COUNT  (100)
 STATIC SEL_GENERIC_EVENT  mSel[SEL_COUNT];
-STATIC UINT16             mNextSelIndex;
-STATIC UINT32             mSelTime = 0;
+STATIC UINT16             mNextRecordId = 0;
+STATIC UINT32             mSelTime      = 0;
 
 #define CURRENT_SEL_TIME  (++mSelTime)
-#define SEL_RECORD_ID_TO_INDEX(_id)     (_id - 1)
-#define SEL_INDEX_TO_RECORD_ID(_index)  (_index + 1)
 
 /**
   Mocks the result of IPMI_STORAGE_GET_SEL_INFO.
@@ -58,11 +56,15 @@ MockIpmiSelGetInfo (
   SelInfo                       = Response;
   SelInfo->CompletionCode       = IPMI_COMP_CODE_NORMAL;
   SelInfo->Version              = 0x51; // Per IPMI v2
-  SelInfo->NoOfEntries          = mNextSelIndex;
-  SelInfo->FreeSpace            = (UINT16)(sizeof (mSel) - (sizeof (mSel[0]) + mNextSelIndex));
+  SelInfo->NoOfEntries          = mNextRecordId;
+  SelInfo->FreeSpace            = (UINT16)(sizeof (mSel) - (sizeof (mSel[0]) * mNextRecordId));
   SelInfo->RecentAddTimeStamp   = 0;
   SelInfo->RecentEraseTimeStamp = 0;
   SelInfo->OperationSupport     = 0;
+
+  if (mNextRecordId >= SEL_COUNT) {
+    SelInfo->OperationSupport |= IPMI_GET_SEL_INFO_OPERATION_SUPPORT_OVERFLOW_FLAG;
+  }
 
   *ResponseSize = sizeof (IPMI_GET_SEL_INFO_RESPONSE);
 }
@@ -94,15 +96,15 @@ MockIpmiSelAddEntry (
   DEBUG ((DEBUG_INFO, "[SEL ENTRY] RecordType: 0x%x\n", SelEntry->RecordData.RecordType));
 
   SelResponse = Response;
-  if (mNextSelIndex < SEL_COUNT) {
-    CopyMem (&mSel[mNextSelIndex], &SelEntry->RecordData, sizeof (SEL_GENERIC_EVENT));
-    mSel[mNextSelIndex].RecordId = SEL_INDEX_TO_RECORD_ID (mNextSelIndex);
-    SelResponse->RecordId        = mSel[mNextSelIndex].RecordId;
-    if (mSel[mNextSelIndex].RecordType < IPMI_SEL_OEM_NO_TIME_STAMP_RECORD_START) {
-      mSel[mNextSelIndex].TimeStamp = CURRENT_SEL_TIME;
+  if (mNextRecordId < SEL_COUNT) {
+    CopyMem (&mSel[mNextRecordId], &SelEntry->RecordData, sizeof (SEL_GENERIC_EVENT));
+    mSel[mNextRecordId].RecordId = mNextRecordId;
+    SelResponse->RecordId        = mNextRecordId;
+    if (mSel[mNextRecordId].RecordType < IPMI_SEL_OEM_NO_TIME_STAMP_RECORD_START) {
+      mSel[mNextRecordId].TimeStamp = CURRENT_SEL_TIME;
     }
 
-    mNextSelIndex++;
+    mNextRecordId++;
     SelResponse->CompletionCode = IPMI_COMP_CODE_NORMAL;
   } else {
     DEBUG ((DEBUG_ERROR, "Mock SEL is full!\n"));
@@ -203,7 +205,7 @@ MockIpmiSelClear (
 
   ClearResponse                 = Response;
   ClearResponse->CompletionCode = IPMI_COMP_CODE_NORMAL;
-  mNextSelIndex                 = 0;
+  mNextRecordId                 = 0;
   if (ClearRequest->Erase == IPMI_CLEAR_SEL_REQUEST_INITIALIZE_ERASE) {
     ClearResponse->ErasureProgress = IPMI_CLEAR_SEL_RESPONSE_ERASURE_IN_PROGRESS;
   } else if (ClearRequest->Erase == IPMI_CLEAR_SEL_REQUEST_GET_ERASE_STATUS) {
@@ -213,4 +215,61 @@ MockIpmiSelClear (
   }
 
   *ResponseSize = sizeof (IPMI_CLEAR_SEL_RESPONSE);
+}
+
+/**
+  Mocks the result of IPMI_STORAGE_GET_SEL_ENTRY.
+
+  @param[in]       Data           The IPMI request data.
+  @param[in]       DataSize       The size of the IPMI request data.
+  @param[out]      Response       The response data buffer.
+  @param[in, out]  ResponseSize   On input, the available size of buffer.
+                                  On output, the size of written data in the buffer.
+**/
+VOID
+MockIpmiSelGetEntry (
+  IN VOID       *Data,
+  IN UINT8      DataSize,
+  OUT VOID      *Response,
+  IN OUT UINT8  *ResponseSize
+  )
+{
+  IPMI_GET_SEL_ENTRY_REQUEST   *GetRequest;
+  IPMI_GET_SEL_ENTRY_RESPONSE  *GetResponse;
+  UINT16                       RecordId;
+
+  ASSERT (DataSize >= sizeof (IPMI_GET_SEL_ENTRY_REQUEST));
+  ASSERT (*ResponseSize >= sizeof (IPMI_GET_SEL_ENTRY_RESPONSE));
+
+  GetRequest  = Data;
+  GetResponse = Response;
+  ZeroMem (GetResponse, sizeof (IPMI_GET_SEL_ENTRY_RESPONSE));
+  *ResponseSize = sizeof (IPMI_GET_SEL_ENTRY_RESPONSE);
+
+  if ((GetRequest->ReserveId[0] != 0) ||
+      (GetRequest->ReserveId[1] != 0) ||
+      (GetRequest->Offset != 0) ||
+      (GetRequest->BytesToRead != 0xFF))
+  {
+    DEBUG ((DEBUG_ERROR, "%a: Mock SEL does not support partial entry reads!\n", __FUNCTION__));
+    DEBUG ((DEBUG_INFO, "0x%x 0x%x 0%x 0x%x\n", GetRequest->ReserveId[0], GetRequest->ReserveId[1], GetRequest->Offset, GetRequest->BytesToRead != 0xFF));
+    ASSERT (FALSE);
+    GetResponse->CompletionCode = IPMI_COMP_CODE_INVALID_DATA_FIELD;
+    return;
+  }
+
+  RecordId = GetRequest->SelRecID[0] | (GetRequest->SelRecID[1] << 8);
+  if (RecordId >= mNextRecordId) {
+    GetResponse->CompletionCode = IPMI_COMP_CODE_NOT_PRESENT;
+    return;
+  }
+
+  if (RecordId + 1 < mNextRecordId) {
+    GetResponse->NextSelRecordId = RecordId + 1;
+  } else {
+    GetResponse->NextSelRecordId = 0xFFFF;
+  }
+
+  CopyMem (&GetResponse->RecordData, &mSel[RecordId], sizeof (mSel[0]));
+  GetResponse->CompletionCode = IPMI_COMP_CODE_NORMAL;
 }

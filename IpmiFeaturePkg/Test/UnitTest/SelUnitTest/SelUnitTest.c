@@ -60,9 +60,22 @@ TestSelAddSystemEntry (
 
 {
   EFI_STATUS  Status;
+  SEL_RECORD  Record;
+  UINT16      RecordId;
 
-  Status = SelAddSystemEntry (NULL, 1, 2, 3, 4, 5, 6);
+  Status = SelAddSystemEntry (&RecordId, 1, 2, 3, 4, 5, 6);
   UT_ASSERT_STATUS_EQUAL (Status, EFI_SUCCESS);
+
+  Status = SelGetEntry (RecordId, &Record, NULL);
+  UT_ASSERT_STATUS_EQUAL (Status, EFI_SUCCESS);
+  UT_ASSERT_EQUAL (Record.RecordId, RecordId);
+  UT_ASSERT_EQUAL (Record.RecordType, IPMI_SEL_SYSTEM_RECORD);
+  UT_ASSERT_EQUAL (Record.Record.System.SensorType, 1);
+  UT_ASSERT_EQUAL (Record.Record.System.SensorNumber, 2);
+  UT_ASSERT_EQUAL (Record.Record.System.EventDirType, 3);
+  UT_ASSERT_EQUAL (Record.Record.System.Data[0], 4);
+  UT_ASSERT_EQUAL (Record.Record.System.Data[1], 5);
+  UT_ASSERT_EQUAL (Record.Record.System.Data[2], 6);
 
   return UNIT_TEST_PASSED;
 }
@@ -84,13 +97,21 @@ TestSelAddOemEntry (
 
 {
   EFI_STATUS  Status;
+  SEL_RECORD  Record;
+  UINT16      RecordId;
   UINT8       Data[6] = { 0x10, 0x11, 0x12, 0x13, 0x14, 0x15 };
 
   Status = SelAddOemEntry (NULL, IPMI_SEL_SYSTEM_RECORD, Data);
   UT_ASSERT_STATUS_EQUAL (Status, EFI_INVALID_PARAMETER);
 
-  Status = SelAddOemEntry (NULL, IPMI_SEL_OEM_TIME_STAMP_RECORD_START, Data);
+  Status = SelAddOemEntry (&RecordId, IPMI_SEL_OEM_TIME_STAMP_RECORD_START, Data);
   UT_ASSERT_STATUS_EQUAL (Status, EFI_SUCCESS);
+
+  Status = SelGetEntry (RecordId, &Record, NULL);
+  UT_ASSERT_STATUS_EQUAL (Status, EFI_SUCCESS);
+  UT_ASSERT_EQUAL (Record.RecordId, RecordId);
+  UT_ASSERT_EQUAL (Record.RecordType, IPMI_SEL_OEM_TIME_STAMP_RECORD_START);
+  UT_ASSERT_MEM_EQUAL (Data, Record.Record.Oem.Data, sizeof (Data));
 
   return UNIT_TEST_PASSED;
 }

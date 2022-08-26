@@ -9,11 +9,11 @@
 #ifndef _IPMI_SEL_LIB_H
 #define _IPMI_SEL_LIB_H
 
+#pragma pack(1)
+
 //
 // Structure used for get info results.
 //
-
-#pragma pack(1)
 
 typedef struct _SEL_INFO {
   UINT8     Version;
@@ -34,6 +34,37 @@ typedef struct _SEL_INFO {
     UINT8    AsUint8;
   } OperationSupported;
 } SEL_INFO;
+
+//
+// Generic structure for SEL events.
+//
+
+typedef struct _SEL_RECORD {
+  UINT16    RecordId;
+  UINT8     RecordType;
+
+  union {
+    struct {
+      UINT32    TimeStamp;
+      UINT16    GeneratorId;
+      UINT8     EvMRevision;
+      UINT8     SensorType;
+      UINT8     SensorNumber;
+      UINT8     EventDirType;
+      UINT8     Data[3];
+    } System;
+
+    struct {
+      UINT32    TimeStamp;
+      UINT8     ManufacturerId[3];
+      UINT8     Data[6];
+    } Oem;
+
+    struct {
+      UINT8    Data[13];
+    } OemNonTimestamped;
+  } Record;
+} SEL_RECORD;
 
 #pragma pack()
 
@@ -138,6 +169,25 @@ EFI_STATUS
 EFIAPI
 SelGetInfo (
   OUT SEL_INFO  *SelInfo
+  );
+
+/**
+  Gets information about the SEL.
+
+  @param[in]    RecordId        The record ID of the entry to retrieve.
+  @param[out]   Record          Receives the record if found.
+  @param[out]   NextRecordId    If provided, receives the next record ID.
+
+  @retval   EFI_SUCCESS             The SEL entry was retrieved.
+  @retval   EFI_INVALID_PARAMETER   Record pointer is NULL.
+  @retval   Other                   The IPMI base library returned an error.
+**/
+EFI_STATUS
+EFIAPI
+SelGetEntry (
+  IN UINT16       RecordId,
+  OUT SEL_RECORD  *Record,
+  OUT UINT16      *NextRecordId OPTIONAL
   );
 
 #endif

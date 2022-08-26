@@ -27,6 +27,7 @@ MOCK_IPMI_HANDLER_ENTRY  MockHandlers[] =
   { IPMI_NETFN_STORAGE, IPMI_STORAGE_GET_SEL_TIME,     MockIpmiSelGetTime  },
   { IPMI_NETFN_STORAGE, IPMI_STORAGE_SET_SEL_TIME,     MockIpmiSelSetTime  },
   { IPMI_NETFN_STORAGE, IPMI_STORAGE_CLEAR_SEL,        MockIpmiSelClear    },
+  { IPMI_NETFN_STORAGE, IPMI_STORAGE_GET_SEL_ENTRY,    MockIpmiSelGetEntry },
 };
 
 //
@@ -74,7 +75,7 @@ MockIpmiCommand (
     {
       ResponseDataSize = sizeof (gResponse.ResponseData);
       MockHandlers[Index].Handler (
-                            (VOID *)((&Command) + 1),
+                            (VOID *)(Command + 1),
                             (Size - sizeof (IPMI_COMMAND)),
                             &gResponse.ResponseData[0],
                             &ResponseDataSize
