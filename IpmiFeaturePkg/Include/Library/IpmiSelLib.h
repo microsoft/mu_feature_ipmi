@@ -98,7 +98,7 @@ SelAddSystemEntry (
   Adds an OEM timestamped event to the SEL.
 
   @param[in,out]  RecordId      If provided, receives the record ID of the entry.
-  @param[in]      RecordType    The record type code. But be between 0xC0-0xDF.
+  @param[in]      RecordType    The record type code. Must be between 0xC0-0xDF.
   @param[in]      Data          Array of OEM defined event data.
 
   @retval   EFI_SUCCESS             Event was successfully added to the SEL.
@@ -108,6 +108,25 @@ SelAddSystemEntry (
 EFI_STATUS
 EFIAPI
 SelAddOemEntry (
+  IN OUT UINT16  *RecordId OPTIONAL,
+  IN UINT8       RecordType,
+  IN UINT8       Data[6]
+  );
+
+/**
+  Adds an OEM non-timestamped event to the SEL.
+
+  @param[in,out]  RecordId      If provided, receives the record ID of the entry.
+  @param[in]      RecordType    The record type code. Must be between 0xE0-0xFF.
+  @param[in]      Data          Array of OEM defined event data.
+
+  @retval   EFI_SUCCESS             Event was successfully added to the SEL.
+  @retval   EFI_INVALID_PARAMETER   Invalid RecordType was given.
+  @retval   Other                   And error was returned by IpmiAddSelEntry.
+**/
+EFI_STATUS
+EFIAPI
+SelAddOemEntryNoTimestamp (
   IN OUT UINT16  *RecordId OPTIONAL,
   IN UINT8       RecordType,
   IN UINT8       Data[6]

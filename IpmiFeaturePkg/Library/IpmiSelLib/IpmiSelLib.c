@@ -255,6 +255,49 @@ SelAddOemEntry (
 }
 
 /**
+  Adds an OEM non-timestamped event to the SEL.
+
+  @param[in,out]  RecordId      If provided, receives the record ID of the entry.
+  @param[in]      RecordType    The record type code. Must be between 0xE0-0xFF.
+  @param[in]      Data          Array of OEM defined event data.
+
+  @retval   EFI_SUCCESS             Event was successfully added to the SEL.
+  @retval   EFI_INVALID_PARAMETER   Invalid RecordType was given.
+  @retval   Other                   And error was returned by IpmiAddSelEntry.
+**/
+EFI_STATUS
+EFIAPI
+SelAddOemEntryNoTimestamp (
+  IN OUT UINT16  *RecordId OPTIONAL,
+  IN UINT8       RecordType,
+  IN UINT8       Data[13]
+  )
+{
+  SEL_RECORD  Entry;
+
+  if (RecordType < IPMI_SEL_OEM_NO_TIME_STAMP_RECORD_START) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a: Invalid Record ID for OEM non-timestamped entry! 0x%x\n",
+      __FUNCTION__,
+      RecordType
+      ));
+
+    return EFI_INVALID_PARAMETER;
+  }
+
+  Entry.RecordId   = 0;
+  Entry.RecordType = RecordType;
+  CopyMem (
+    &Entry.Record.OemNonTimestamped.Data[0],
+    &Data[0],
+    sizeof (Entry.Record.OemNonTimestamped.Data)
+    );
+
+  return IpmiAddSelEntry (&Entry, RecordId);
+}
+
+/**
   Clears the SEL.
 
   @param[in]  AwaitClear  Indicates the routine should wait for the SEL clear to

@@ -117,6 +117,46 @@ TestSelAddOemEntry (
 }
 
 /**
+  Tests adding a OEM non-timestamped SEL entry.
+
+  @param[in]  Context             UNUSED
+
+  @retval  UNIT_TEST_PASSED             The Unit test has completed and the test
+                                        case was successful.
+  @retval  UNIT_TEST_ERROR_TEST_FAILED  A test case assertion has failed.
+**/
+UNIT_TEST_STATUS
+EFIAPI
+TestSelAddOemNoTimestampEntry (
+  IN UNIT_TEST_CONTEXT  Context
+  )
+
+{
+  EFI_STATUS  Status;
+  SEL_RECORD  Record;
+  UINT16      RecordId;
+  UINT8       Data[13] = {
+    0x10, 0x11, 0x12, 0x13, 0x14,
+    0x15, 0x16, 0x17, 0x18, 0x19,
+    0x1A, 0x1B, 0x1C
+  };
+
+  Status = SelAddOemEntryNoTimestamp (NULL, IPMI_SEL_SYSTEM_RECORD, Data);
+  UT_ASSERT_STATUS_EQUAL (Status, EFI_INVALID_PARAMETER);
+
+  Status = SelAddOemEntryNoTimestamp (&RecordId, IPMI_SEL_OEM_NO_TIME_STAMP_RECORD_START, Data);
+  UT_ASSERT_STATUS_EQUAL (Status, EFI_SUCCESS);
+
+  Status = SelGetEntry (RecordId, &Record, NULL);
+  UT_ASSERT_STATUS_EQUAL (Status, EFI_SUCCESS);
+  UT_ASSERT_EQUAL (Record.RecordId, RecordId);
+  UT_ASSERT_EQUAL (Record.RecordType, IPMI_SEL_OEM_NO_TIME_STAMP_RECORD_START);
+  UT_ASSERT_MEM_EQUAL (Data, Record.Record.OemNonTimestamped.Data, sizeof (Data));
+
+  return UNIT_TEST_PASSED;
+}
+
+/**
   Tests getting/setting SEL time.
 
   @param[in]  Context             UNUSED
@@ -189,7 +229,8 @@ SelTestMain (
 
   AddTestCase (SelTests, "Tests retrieving the SEL information", "TestSelGetInfo", TestSelGetInfo, NULL, NULL, NULL);
   AddTestCase (SelTests, "Tests adding a system event to the SEL", "TestSelAddSystemEntry", TestSelAddSystemEntry, NULL, NULL, NULL);
-  AddTestCase (SelTests, "Tests adding an OEM even to the SEL", "TestSelAddOemEntry", TestSelAddOemEntry, NULL, NULL, NULL);
+  AddTestCase (SelTests, "Tests adding an OEM event to the SEL", "TestSelAddOemEntry", TestSelAddOemEntry, NULL, NULL, NULL);
+  AddTestCase (SelTests, "Tests adding an OEM non-timestamped event to the SEL", "TestSelAddOemNoTimestampEntry", TestSelAddOemNoTimestampEntry, NULL, NULL, NULL);
   AddTestCase (SelTests, "Tests setting/getting SEL time", "TestSelTime", TestSelTime, NULL, NULL, NULL);
 
   Status = RunAllTestSuites (Framework);
