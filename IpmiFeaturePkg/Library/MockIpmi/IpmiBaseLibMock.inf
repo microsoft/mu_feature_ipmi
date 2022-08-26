@@ -1,5 +1,5 @@
 ## @file
-#  Null IPMI transport library
+#  Mock IPMI base library
 #
 #  Copyright (c) Microsoft Corporation.
 #

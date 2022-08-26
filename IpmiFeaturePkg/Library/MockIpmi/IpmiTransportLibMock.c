@@ -6,7 +6,7 @@
 
 **/
 
-#include "MockIpmi.h"
+#include <MockIpmi.h>
 #include <Library/IpmiTransportLib.h>
 
 /**

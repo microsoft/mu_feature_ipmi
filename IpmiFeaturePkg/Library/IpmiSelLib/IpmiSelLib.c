@@ -86,6 +86,12 @@ IpmiCompCodeToEfiStatus (
       return EFI_SECURITY_VIOLATION;
 
     default:
+
+      //
+      // There are many completion codes not specified above. For all others
+      // return a default value.
+      //
+
       return EFI_PROTOCOL_ERROR;
   }
 }
@@ -104,8 +110,7 @@ IpmiCompCodeToEfiStatus (
 EFI_STATUS
 EFIAPI
 IpmiAddSelEntry (
-  IN VOID        *Entry,
-  IN UINT32      EntrySize,
+  IN SEL_RECORD  *Entry,
   IN OUT UINT16  *RecordId OPTIONAL
   )
 {
@@ -113,16 +118,14 @@ IpmiAddSelEntry (
   UINT32                       DataSize;
   IPMI_ADD_SEL_ENTRY_RESPONSE  Response;
 
-  ASSERT (EntrySize == SEL_ENTRY_SIZE);
-
   DataSize                = sizeof (Response);
   Response.CompletionCode = IPMI_COMP_CODE_UNSPECIFIED;
 
   Status = IpmiSubmitCommand (
              IPMI_NETFN_STORAGE,
              IPMI_STORAGE_ADD_SEL_ENTRY,
-             Entry,
-             EntrySize,
+             (UINT8 *)Entry,
+             sizeof (*Entry),
              (VOID *)&Response,
              &DataSize
              );
@@ -188,21 +191,21 @@ SelAddSystemEntry (
   IN UINT8       Data2
   )
 {
-  IPMI_SEL_EVENT_RECORD_DATA  Entry;
+  SEL_RECORD  Entry;
 
-  Entry.RecordId     = 0;
-  Entry.RecordType   = IPMI_SEL_SYSTEM_RECORD;
-  Entry.TimeStamp    = 0;
-  Entry.GeneratorId  = IPMI_SOFTWARE_ID;
-  Entry.EvMRevision  = IPMI_EVM_REVISION;
-  Entry.SensorType   = SensorType;
-  Entry.SensorNumber = SensorNumber;
-  Entry.EventDirType = EventDirType;
-  Entry.OEMEvData1   = Data0;
-  Entry.OEMEvData2   = Data1;
-  Entry.OEMEvData3   = Data2;
+  Entry.RecordId                   = 0;
+  Entry.RecordType                 = IPMI_SEL_SYSTEM_RECORD;
+  Entry.Record.System.TimeStamp    = 0;
+  Entry.Record.System.GeneratorId  = IPMI_SOFTWARE_ID;
+  Entry.Record.System.EvMRevision  = IPMI_EVM_REVISION;
+  Entry.Record.System.SensorType   = SensorType;
+  Entry.Record.System.SensorNumber = SensorNumber;
+  Entry.Record.System.EventDirType = EventDirType;
+  Entry.Record.System.Data[0]      = Data0;
+  Entry.Record.System.Data[1]      = Data1;
+  Entry.Record.System.Data[2]      = Data2;
 
-  return IpmiAddSelEntry (&Entry, sizeof (Entry), RecordId);
+  return IpmiAddSelEntry (&Entry, RecordId);
 }
 
 /**
@@ -225,7 +228,7 @@ SelAddOemEntry (
   )
 
 {
-  IPMI_TIMESTAMPED_OEM_SEL_RECORD_DATA  Entry;
+  SEL_RECORD  Entry;
 
   if ((RecordType < IPMI_SEL_OEM_TIME_STAMP_RECORD_START) ||
       (RecordType > IPMI_SEL_OEM_TIME_STAMP_RECORD_END))
@@ -240,15 +243,15 @@ SelAddOemEntry (
     return EFI_INVALID_PARAMETER;
   }
 
-  Entry.RecordId          = 0;
-  Entry.RecordType        = RecordType;
-  Entry.TimeStamp         = 0;
-  Entry.ManufacturerId[0] = PcdGet8 (PcdIpmiSelOemManufacturerId0);
-  Entry.ManufacturerId[1] = PcdGet8 (PcdIpmiSelOemManufacturerId1);
-  Entry.ManufacturerId[2] = PcdGet8 (PcdIpmiSelOemManufacturerId2);
-  CopyMem (&Entry.OEMDefined[0], &Data[0], sizeof (Entry.OEMDefined));
+  Entry.RecordId                     = 0;
+  Entry.RecordType                   = RecordType;
+  Entry.Record.Oem.TimeStamp         = 0;
+  Entry.Record.Oem.ManufacturerId[0] = PcdGet8 (PcdIpmiSelOemManufacturerId0);
+  Entry.Record.Oem.ManufacturerId[1] = PcdGet8 (PcdIpmiSelOemManufacturerId1);
+  Entry.Record.Oem.ManufacturerId[2] = PcdGet8 (PcdIpmiSelOemManufacturerId2);
+  CopyMem (&Entry.Record.Oem.Data[0], &Data[0], sizeof (Entry.Record.Oem.Data));
 
-  return IpmiAddSelEntry (&Entry, sizeof (Entry), RecordId);
+  return IpmiAddSelEntry (&Entry, RecordId);
 }
 
 /**
