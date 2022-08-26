@@ -129,7 +129,7 @@ EFIAPI
 SelAddOemEntryNoTimestamp (
   IN OUT UINT16  *RecordId OPTIONAL,
   IN UINT8       RecordType,
-  IN UINT8       Data[6]
+  IN UINT8       Data[13]
   );
 
 /**
