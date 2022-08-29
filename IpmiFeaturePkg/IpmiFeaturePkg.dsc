@@ -48,6 +48,7 @@
   IpmiPlatformHookLib|IpmiFeaturePkg/Library/IpmiPlatformHookLibNull/IpmiPlatformHookLibNull.inf
   IpmiTransportLib|IpmiFeaturePkg/Library/IpmiTransportLibNull/IpmiTransportLibNull.inf
   BmcSelfTestPlatformLib|IpmiFeaturePkg/Library/BmcSelfTestPlatformLibNull/BmcSelfTestPlatformLibNull.inf
+  IpmiSelLib|IpmiFeaturePkg/Library/IpmiSelLib/IpmiSelLib.inf
 
 [LibraryClasses.common.PEI_CORE,LibraryClasses.common.PEIM]
   #######################################
@@ -108,15 +109,19 @@
   IpmiFeaturePkg/OsWdt/OsWdt.inf
   IpmiFeaturePkg/SolStatus/SolStatus.inf
   IpmiFeaturePkg/Library/BmcSelfTestPlatformLibNull/BmcSelfTestPlatformLibNull.inf
+  IpmiFeaturePkg/Library/IpmiSelLib/IpmiSelLib.inf
 
   # Transport Libraries
   IpmiFeaturePkg/Library/IpmiTransportLibNull/IpmiTransportLibNull.inf
-  IpmiFeaturePkg/Library/IpmiTransportLibMock/IpmiTransportLibMock.inf
   IpmiFeaturePkg/Library/IpmiTransportLibKcs/KcsIpmiTransportLib.inf
   IpmiFeaturePkg/Library/IpmiTransportLibSsif/SsifIpmiTransportLib.inf {
     <LibraryClasses>
       BmcSmbusLib|IpmiFeaturePkg/Library/BmcSmbusLibNull/BmcSmbusLibNull.inf
   }
+
+  # Mock Libraries
+  IpmiFeaturePkg/Library/MockIpmi/IpmiTransportLibMock.inf
+  IpmiFeaturePkg/Library/MockIpmi/IpmiBaseLibMock.inf
 
   # Functional Tests
   IpmiFeaturePkg/Test/FunctionalTest/IpmiShellTest/IpmiShellTest.inf {

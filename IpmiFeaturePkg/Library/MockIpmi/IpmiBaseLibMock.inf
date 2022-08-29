@@ -1,5 +1,5 @@
 ## @file
-#  Null IPMI transport library
+#  Mock IPMI base library
 #
 #  Copyright (c) Microsoft Corporation.
 #
@@ -9,15 +9,16 @@
 
 [Defines]
   INF_VERSION                    = 1.26
-  BASE_NAME                      = IpmiTransportLibMock
-  FILE_GUID                      = B2BB6C98-ED97-442E-A73F-6D41BEE6DA77
+  BASE_NAME                      = IpmiBaseLibMock
+  FILE_GUID                      = 826B38AC-571C-4892-B88B-DB7AE8C0D7B0
   MODULE_TYPE                    = BASE
   VERSION_STRING                 = 1.0
-  LIBRARY_CLASS                  = IpmiTransportLib
+  LIBRARY_CLASS                  = IpmiBaseLib
 
 [sources]
-  IpmiTransportLibMock.c
+  IpmiBaseLibMock.c
   MockIpmi.c
+  MockSel.c
   MockIpmi.h
 
 [Packages]

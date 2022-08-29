@@ -20,12 +20,19 @@
 
 [LibraryClasses]
   BmcSmbusLib|IpmiFeaturePkg/Test/UnitTest/SsifUnitTest/BmcSmbusLibTest.inf
+  IpmiSelLib|IpmiFeaturePkg/Library/IpmiSelLib/IpmiSelLib.inf
+  TimerLib|MdePkg/Library/BaseTimerLibNullTemplate/BaseTimerLibNullTemplate.inf
 
 [Components]
   IpmiFeaturePkg/Test/UnitTest/SsifUnitTest/BmcSmbusLibTest.inf
   IpmiFeaturePkg/Test/UnitTest/SsifUnitTest/SsifUnitTestHost.inf {
     <LibraryClasses>
       IpmiTransportLib|IpmiFeaturePkg/Library/IpmiTransportLibSsif/SsifIpmiTransportLib.inf
+  }
+
+  IpmiFeaturePkg/Test/UnitTest/SelUnitTest/SelUnitTest.inf {
+    <LibraryClasses>
+      IpmiBaseLib|IpmiFeaturePkg/Library/MockIpmi/IpmiBaseLibMock.inf
   }
 
   #

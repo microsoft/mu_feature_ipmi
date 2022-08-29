@@ -14,6 +14,121 @@ BOOLEAN             gResponseValid;
 IPMI_RESPONSE_DATA  gResponse;
 UINT8               gResponseSize;
 
+//
+// Registered handlers.
+//
+
+MOCK_IPMI_HANDLER_ENTRY  MockHandlers[] =
+{
+  { IPMI_NETFN_APP,     IPMI_APP_GET_DEVICE_ID,        MockIpmiGetDeviceId },
+  { IPMI_NETFN_APP,     IPMI_APP_GET_SELFTEST_RESULTS, MockIpmiGetSelfTest },
+  { IPMI_NETFN_STORAGE, IPMI_STORAGE_GET_SEL_INFO,     MockIpmiSelGetInfo  },
+  { IPMI_NETFN_STORAGE, IPMI_STORAGE_ADD_SEL_ENTRY,    MockIpmiSelAddEntry },
+  { IPMI_NETFN_STORAGE, IPMI_STORAGE_GET_SEL_TIME,     MockIpmiSelGetTime  },
+  { IPMI_NETFN_STORAGE, IPMI_STORAGE_SET_SEL_TIME,     MockIpmiSelSetTime  },
+  { IPMI_NETFN_STORAGE, IPMI_STORAGE_CLEAR_SEL,        MockIpmiSelClear    },
+  { IPMI_NETFN_STORAGE, IPMI_STORAGE_GET_SEL_ENTRY,    MockIpmiSelGetEntry },
+};
+
+//
+// Generic routines for handling top level IPMI commands and responses.
+//
+
+/**
+  Processes a IPMI request and prepared the next response.
+
+  @param[in]  Command       The IPMI request to mock.
+  @param[in]  Size          The size of the IPMI request.
+
+  @retval   EFI_SUCCESS     Always
+**/
+EFI_STATUS
+MockIpmiCommand (
+  IN IPMI_COMMAND  *Command,
+  IN UINT8         Size
+  )
+{
+  UINT32  Index;
+  UINT8   ResponseDataSize;
+
+  ASSERT (Command->Lun == 0);
+  ASSERT (Command != NULL);
+  ASSERT (Size >= sizeof (IPMI_COMMAND));
+
+  //
+  // Generic response handling. Add the 0 bit value to indicate this is a
+  // response.
+  //
+
+  gResponse.Header.NetFunction = Command->NetFunction | 0x1;
+  gResponse.Header.Command     = Command->Command;
+  gResponse.ResponseData[0]    = IPMI_COMP_CODE_INVALID_COMMAND;
+  gResponseSize                = sizeof (IPMI_RESPONSE);
+
+  //
+  // Search for a specific handler.
+  //
+
+  for (Index = 0; Index < (sizeof (MockHandlers) / sizeof (MockHandlers[0])); Index++) {
+    if ((MockHandlers[Index].NetFunction == Command->NetFunction) &&
+        (MockHandlers[Index].Command == Command->Command))
+    {
+      ResponseDataSize = sizeof (gResponse.ResponseData);
+      MockHandlers[Index].Handler (
+                            (VOID *)(Command + 1),
+                            (Size - sizeof (IPMI_COMMAND)),
+                            &gResponse.ResponseData[0],
+                            &ResponseDataSize
+                            );
+
+      gResponseSize  = sizeof (IPMI_RESPONSE) + ResponseDataSize;
+      gResponseValid = TRUE;
+      return EFI_SUCCESS;
+    }
+  }
+
+  //
+  // No handler was found, responded that this is not supported.
+  //
+
+  gResponse.ResponseData[0] = IPMI_COMP_CODE_INVALID_COMMAND;
+  gResponseSize             = sizeof (IPMI_RESPONSE) + sizeof (gResponse.ResponseData[0]);
+  gResponseValid            = TRUE;
+  return EFI_SUCCESS;
+}
+
+/**
+  Provides the prepared response to the last IPMI request.
+
+  @param[out]     Response    The mocked response.
+  @param[in,out]  Size        The size of the mocked response.
+
+  @retval   EFI_SUCCESS       Always.
+**/
+EFI_STATUS
+MockIpmiResponse (
+  OUT IPMI_RESPONSE  *Response,
+  IN OUT UINT8       *Size
+  )
+{
+  ASSERT (gResponseValid);
+  ASSERT (gResponseSize != 0);
+  ASSERT (gResponseSize <= sizeof (IPMI_RESPONSE_DATA));
+  ASSERT (*Size > gResponseSize);
+
+  CopyMem (Response, &gResponse, gResponseSize);
+  *Size = gResponseSize;
+
+  ZeroMem (&gResponse, sizeof (gResponse));
+  gResponseValid = FALSE;
+
+  return EFI_SUCCESS;
+}
+
+//
+// Basic mock handler routines.
+//
+
 /**
   Mocks the result of IPMI_APP_GET_SELFTEST_RESULTS.
 
@@ -79,108 +194,4 @@ MockIpmiGetDeviceId (
   DeviceId->AuxFirmwareRevInfo   = 0;
 
   *ResponseSize = sizeof (IPMI_GET_DEVICE_ID_RESPONSE);
-}
-
-//
-// Registered handlers.
-//
-
-MOCK_IPMI_HANDLER_ENTRY  MockHandlers[] = {
-  { IPMI_NETFN_APP, IPMI_APP_GET_DEVICE_ID,        MockIpmiGetDeviceId },
-  { IPMI_NETFN_APP, IPMI_APP_GET_SELFTEST_RESULTS, MockIpmiGetSelfTest },
-};
-
-//
-// Generic routines for handling top level IPMI commands and responses.
-//
-
-/**
-  Processes a IPMI request and prepared the next response.
-
-  @param[in]  Command       The IPMI request to mock.
-  @param[in]  Size          The size of the IPMI request.
-
-  @retval   EFI_SUCCESS     Always
-**/
-EFI_STATUS
-MockIpmiCommand (
-  IN IPMI_COMMAND  *Command,
-  IN UINT8         Size
-  )
-{
-  UINT32  Index;
-  UINT8   ResponseDataSize;
-
-  ASSERT (Command->Lun == 0);
-  ASSERT (Command != NULL);
-  ASSERT (Size >= sizeof (IPMI_COMMAND));
-
-  //
-  // Generic response handling. Add the 0 bit value to indicate this is a
-  // response.
-  //
-
-  gResponse.Header.NetFunction = Command->NetFunction | 0x1;
-  gResponse.Header.Command     = Command->Command;
-  gResponse.ResponseData[0]    = IPMI_COMP_CODE_INVALID_COMMAND;
-  gResponseSize                = sizeof (IPMI_RESPONSE);
-
-  //
-  // Search for a specific handler.
-  //
-
-  for (Index = 0; Index < (sizeof (MockHandlers) / sizeof (MockHandlers[0])); Index++) {
-    if ((MockHandlers[Index].NetFunction == Command->NetFunction) &&
-        (MockHandlers[Index].Command == Command->Command))
-    {
-      ResponseDataSize = sizeof (gResponse.ResponseData);
-      MockHandlers[Index].Handler (
-                            (VOID *)((&Command) + 1),
-                            (Size - sizeof (IPMI_COMMAND)),
-                            &gResponse.ResponseData[0],
-                            &ResponseDataSize
-                            );
-
-      gResponseSize  = sizeof (IPMI_RESPONSE) + ResponseDataSize;
-      gResponseValid = TRUE;
-      return EFI_SUCCESS;
-    }
-  }
-
-  //
-  // No handler was found, responded that this is not supported.
-  //
-
-  gResponse.ResponseData[0] = IPMI_COMP_CODE_INVALID_COMMAND;
-  gResponseSize             = sizeof (IPMI_RESPONSE) + sizeof (gResponse.ResponseData[0]);
-  gResponseValid            = TRUE;
-  return EFI_SUCCESS;
-}
-
-/**
-  Provides the prepared response to the last IPMI request.
-
-  @param[out]     Response    The mocked response.
-  @param[in,out]  Size        The size of the mocked response.
-
-  @retval   EFI_SUCCESS       Always.
-**/
-EFI_STATUS
-MockIpmiResponse (
-  OUT IPMI_RESPONSE  *Response,
-  IN OUT UINT8       *Size
-  )
-{
-  ASSERT (gResponseValid);
-  ASSERT (gResponseSize != 0);
-  ASSERT (gResponseSize <= sizeof (IPMI_RESPONSE_DATA));
-  ASSERT (*Size > gResponseSize);
-
-  CopyMem (Response, &gResponse, gResponseSize);
-  *Size = gResponseSize;
-
-  ZeroMem (&gResponse, sizeof (gResponse));
-  gResponseValid = FALSE;
-
-  return EFI_SUCCESS;
 }
