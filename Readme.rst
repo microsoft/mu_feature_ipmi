@@ -42,17 +42,19 @@ desired.
     {
       "scope": "global",
 
-      "type": "git",
+      "type": "web",
 
-      "name": "FEATURE_IPMI",
+      "type": "nuget",
 
-      "var_name": "FEATURE_IPMI_PATH",
+      "name": "mu-feature-ipmi",
 
-      "source": "https://github.com/microsoft/mu_feature_ipmi.git",
+      "source": "https://api.nuget.org/v3/index.json",
 
-      "version": "<RELEASE HASH>",
+      "version": "<release version>",
 
-      "flags": ["set_build_var"]
+      "flags": ["set_shell_var"],
+
+      "var_name": "IPMI_FEATURE_PATH"
     }
 
 Setting the the var_name and the set_build_var flags will allow the build scripts
@@ -62,9 +64,6 @@ configurations GetPackagesPath list.
 
     shell_environment.GetBuildVars().GetValue("FEATURE_IPMI_PATH", "")
 
-*Note: If using pytool extensions older then version 0.17.0 you will need to
-append the root path to the build variable string.*
-
 After this the package should be discoverable to can be used in the build like
 any other dependency.
 
@@ -72,7 +71,7 @@ More Info
 =========
 
 Please see the Project Mu docs (<https://github.com/Microsoft/mu>) for more
-information.  
+information.
 
 This project has adopted the [Microsoft Open Source Code of
 Conduct](https://opensource.microsoft.com/codeofconduct/).
@@ -105,7 +104,7 @@ testing. [More Details](https://microsoft.github.io/mu/CodeDevelopment/compile/)
 Copyright & License
 ===================
 
-Copyright (C) Microsoft Corporation  
+Copyright (C) Microsoft Corporation
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
 Upstream License (TianoCore)
