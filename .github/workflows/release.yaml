@@ -32,7 +32,7 @@ jobs:
           cp -R ${{ env.PACKAGE }} ${{ env.PACKAGE_DIR }}
       - name: Create Release Log
         run: |
-          echo --------------------------------------------           > ${{ env.RELEASE_LOG}}
+          echo --------------------------------------------            > ${{ env.RELEASE_LOG}}
           echo "Copyright (C) Microsoft Corporation"                  >> ${{ env.RELEASE_LOG}}
           echo "SPDX-License-Identifier: BSD-2-Clause-Patent"         >> ${{ env.RELEASE_LOG}}
           echo --------------------------------------------           >> ${{ env.RELEASE_LOG}}
@@ -44,7 +44,7 @@ jobs:
           echo "${{ github.event.release.body }}"                     >> ${{ env.RELEASE_LOG}}
       - name: Create Nuspec File
         run: |
-          echo '<package>'                                                                                         > ${{ env.NUSPEC_FILE }}
+          echo '<package>'                                                                                          > ${{ env.NUSPEC_FILE }}
           echo '  <metadata>'                                                                                      >> ${{ env.NUSPEC_FILE }}
           echo '      <id>mu-feature-ipmi</id>'                                                                    >> ${{ env.NUSPEC_FILE }}
           echo '      <version>${{ github.event.release.tag_name }}</version>'                                     >> ${{ env.NUSPEC_FILE }}
