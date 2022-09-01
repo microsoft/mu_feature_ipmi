@@ -72,7 +72,7 @@ More Info
 =========
 
 Please see the Project Mu docs (<https://github.com/Microsoft/mu>) for more
-information.  
+information.
 
 This project has adopted the [Microsoft Open Source Code of
 Conduct](https://opensource.microsoft.com/codeofconduct/).
@@ -105,7 +105,7 @@ testing. [More Details](https://microsoft.github.io/mu/CodeDevelopment/compile/)
 Copyright & License
 ===================
 
-Copyright (C) Microsoft Corporation  
+Copyright (C) Microsoft Corporation
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
 Upstream License (TianoCore)
@@ -168,11 +168,11 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 .. CoreCI
 
 .. _Windows_VS2022: https://dev.azure.com/projectmu/mu/_build/latest?definitionId=99&&branchName=main
-.. |WindowsCiBuild| image:: https://dev.azure.com/projectmu/mu/_apis/build/status/CI/feature_ipmi/Windows%20VS2022%20CI?branchName=main
+.. |WindowsCiBuild| image:: https://dev.azure.com/projectmu/mu/_apis/build/status/CI/Feature%20IPMI/Mu%20Feature%20IPMI%20-%20CI%20-%20Windows%20VS?repoName=microsoft%2Fmu_feature_ipmi&branchName=main
 .. |WindowsCiTest| image:: https://img.shields.io/azure-devops/tests/projectmu/mu/99.svg
 .. |WindowsCiCoverage| image:: https://img.shields.io/badge/coverage-coming_soon-blue
 
 .. _Ubuntu_GCC5: https://dev.azure.com/projectmu/mu/_build/latest?definitionId=98&branchName=main
-.. |UbuntuCiBuild| image:: https://dev.azure.com/projectmu/mu/_apis/build/status/CI/feature_ipmi/Ubuntu%20GCC5%20CI?branchName=main
+.. |UbuntuCiBuild| image:: https://dev.azure.com/projectmu/mu/_apis/build/status/CI/Feature%20IPMI/Mu%20Feature%20IPMI%20-%20CI%20-%20GCC5?repoName=microsoft%2Fmu_feature_ipmi&branchName=main
 .. |UbuntuCiTest| image:: https://img.shields.io/azure-devops/tests/projectmu/mu/98.svg
 .. |UbuntuCiCoverage| image:: https://img.shields.io/badge/coverage-coming_soon-blue
