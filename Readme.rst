@@ -9,7 +9,7 @@ Windows_VS2022_               |WindowsCiBuild|  |WindowsCiTest| |WindowsCiCovera
 Ubuntu_GCC5_                  |UbuntuCiBuild|   |UbuntuCiTest|  |UbuntuCiCoverage|
 ============================= ================= =============== ===================
 
-This repository is part of Project Mu. Please see `Project Mu<https://microsoft.github.io/mu>`_ for details.
+This repository is part of Project Mu. Please see `Project Mu <https://microsoft.github.io/mu>`_ for details.
 
 This IPMI feature repo contains the generic IPMI code from TianoCore's
 edk2-platforms repo which has been refactored to support more general use and
@@ -71,7 +71,7 @@ Releases Versions
 =================
 
 Releases of this repository will follow the `Nuget versioning
-model<https://docs.microsoft.com/en-us/nuget/concepts/package-versioning>`_. This
+model <https://docs.microsoft.com/en-us/nuget/concepts/package-versioning>`_. This
 will directly correspond to the version of the associated nuget package.
 
 More Info
@@ -81,32 +81,32 @@ Please see the `Project Mu docs <https://github.com/Microsoft/mu>`_ for more
 information.
 
 This project has adopted the `Microsoft Open Source Code of
-Conduct<https://opensource.microsoft.com/codeofconduct/>`_.
+Conduct <https://opensource.microsoft.com/codeofconduct/>`_.
 
 For more information see the `Code of Conduct
-FAQ<https://opensource.microsoft.com/codeofconduct/faq/>`_ or contact
-`opencode@microsoft.com<mailto:opencode@microsoft.com>`_ with any additional
+FAQ <https://opensource.microsoft.com/codeofconduct/faq/>`_ or contact
+`opencode@microsoft.com <mailto:opencode@microsoft.com>`_ with any additional
 questions or comments.
 
 Issues
 ======
 
 Please open any issues in the Project Mu GitHub tracker. `More
-Details<https://microsoft.github.io/mu/How/contributing/>`_
+Details <https://microsoft.github.io/mu/How/contributing/>`_
 
 ## Contributing Code or Docs
 
 Please follow the general Project Mu Pull Request process.  `More
-Details<https://microsoft.github.io/mu/How/contributing/>`_
+Details <https://microsoft.github.io/mu/How/contributing/>`_
 
-* `Code Requirements<https://microsoft.github.io/mu/CodeDevelopment/requirements/>`_
-* `Doc Requirements<https://microsoft.github.io/mu/DeveloperDocs/requirements/>`_
+* `Code Requirements <https://microsoft.github.io/mu/CodeDevelopment/requirements/>`_
+* `Doc Requirements <https://microsoft.github.io/mu/DeveloperDocs/requirements/>`_
 
 Builds
 ======
 
 Please follow the steps in the Project Mu docs to build for CI and local
-testing. `More Details<https://microsoft.github.io/mu/CodeDevelopment/compile/>`_
+testing. `More Details <https://microsoft.github.io/mu/CodeDevelopment/compile/>`_
 
 Copyright & License
 ===================
