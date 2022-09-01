@@ -67,6 +67,13 @@ configurations GetPackagesPath list.
 After this the package should be discoverable to can be used in the build like
 any other dependency.
 
+Releases Versions
+=================
+
+Releases of this repository will follow the [Nuget versioning
+model](https://docs.microsoft.com/en-us/nuget/concepts/package-versioning). This
+will directly correspond to the version of the associated nuget package.
+
 More Info
 =========
 
