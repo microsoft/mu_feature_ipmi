@@ -31,6 +31,7 @@ jobs:
       - name: Prepare Release Files
         run: |
           mkdir -p ${{ env.PACKAGE_DIR }}
+          cp License.txt ${{ env.PACKAGE_DIR }}
           cp -R ${{ env.PACKAGE }} ${{ env.PACKAGE_DIR }}
       - name: Create Release Log
         run: |
