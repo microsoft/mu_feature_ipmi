@@ -2,6 +2,8 @@
 Project Mu IPMI Feature Repository
 =================================
 
+|NugetBuild| |NugetVersion|
+
 ============================= ================= =============== ===================
  Host Type & Toolchain        Build Status      Test Status     Code Coverage
 ============================= ================= =============== ===================
@@ -9,7 +11,8 @@ Windows_VS2022_               |WindowsCiBuild|  |WindowsCiTest| |WindowsCiCovera
 Ubuntu_GCC5_                  |UbuntuCiBuild|   |UbuntuCiTest|  |UbuntuCiCoverage|
 ============================= ================= =============== ===================
 
-This repository is part of Project Mu. Please see [Project Mu](https://microsoft.github.io/mu) for details.
+
+This repository is part of Project Mu. Please see `Project Mu <https://microsoft.github.io/mu>`_ for details.
 
 This IPMI feature repo contains the generic IPMI code from TianoCore's
 edk2-platforms repo which has been refactored to support more general use and
@@ -42,17 +45,19 @@ desired.
     {
       "scope": "global",
 
-      "type": "git",
+      "type": "web",
 
-      "name": "FEATURE_IPMI",
+      "type": "nuget",
 
-      "var_name": "FEATURE_IPMI_PATH",
+      "name": "mu-feature-ipmi",
 
-      "source": "https://github.com/microsoft/mu_feature_ipmi.git",
+      "source": "https://api.nuget.org/v3/index.json",
 
-      "version": "<RELEASE HASH>",
+      "version": "<release version>",
 
-      "flags": ["set_build_var"]
+      "flags": ["set_build_var"],
+
+      "var_name": "IPMI_FEATURE_PATH"
     }
 
 Setting the the var_name and the set_build_var flags will allow the build scripts
@@ -62,45 +67,49 @@ configurations GetPackagesPath list.
 
     shell_environment.GetBuildVars().GetValue("FEATURE_IPMI_PATH", "")
 
-*Note: If using pytool extensions older then version 0.17.0 you will need to
-append the root path to the build variable string.*
-
 After this the package should be discoverable to can be used in the build like
 any other dependency.
+
+Releases Versions
+=================
+
+Releases of this repository will follow the `Nuget versioning
+model <https://docs.microsoft.com/en-us/nuget/concepts/package-versioning>`_. This
+will directly correspond to the version of the associated nuget package.
 
 More Info
 =========
 
-Please see the Project Mu docs (<https://github.com/Microsoft/mu>) for more
+Please see the `Project Mu docs <https://github.com/Microsoft/mu>`_ for more
 information.
 
-This project has adopted the [Microsoft Open Source Code of
-Conduct](https://opensource.microsoft.com/codeofconduct/).
+This project has adopted the `Microsoft Open Source Code of
+Conduct <https://opensource.microsoft.com/codeofconduct/>`_.
 
-For more information see the [Code of Conduct
-FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact
-[opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional
+For more information see the `Code of Conduct
+FAQ <https://opensource.microsoft.com/codeofconduct/faq/>`_ or contact
+`opencode@microsoft.com <mailto:opencode@microsoft.com>`_ with any additional
 questions or comments.
 
 Issues
 ======
 
-Please open any issues in the Project Mu GitHub tracker. [More
-Details](https://microsoft.github.io/mu/How/contributing/)
+Please open any issues in the Project Mu GitHub tracker. `More
+Details <https://microsoft.github.io/mu/How/contributing/>`_
 
 ## Contributing Code or Docs
 
-Please follow the general Project Mu Pull Request process.  [More
-Details](https://microsoft.github.io/mu/How/contributing/)
+Please follow the general Project Mu Pull Request process.  `More
+Details <https://microsoft.github.io/mu/How/contributing/>`_
 
-* [Code Requirements](https://microsoft.github.io/mu/CodeDevelopment/requirements/)
-* [Doc Requirements](https://microsoft.github.io/mu/DeveloperDocs/requirements/)
+* `Code Requirements <https://microsoft.github.io/mu/CodeDevelopment/requirements/>`_
+* `Doc Requirements <https://microsoft.github.io/mu/DeveloperDocs/requirements/>`_
 
 Builds
 ======
 
 Please follow the steps in the Project Mu docs to build for CI and local
-testing. [More Details](https://microsoft.github.io/mu/CodeDevelopment/compile/)
+testing. `More Details <https://microsoft.github.io/mu/CodeDevelopment/compile/>`_
 
 Copyright & License
 ===================
@@ -176,3 +185,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 .. |UbuntuCiBuild| image:: https://dev.azure.com/projectmu/mu/_apis/build/status/CI/Feature%20IPMI/Mu%20Feature%20IPMI%20-%20CI%20-%20GCC5?repoName=microsoft%2Fmu_feature_ipmi&branchName=main
 .. |UbuntuCiTest| image:: https://img.shields.io/azure-devops/tests/projectmu/mu/98.svg
 .. |UbuntuCiCoverage| image:: https://img.shields.io/badge/coverage-coming_soon-blue
+
+.. |NugetBuild| image:: https://github.com/microsoft/mu_feature_ipmi/actions/workflows/release.yaml/badge.svg
+.. |NugetVersion| image:: https://img.shields.io/nuget/v/mu-feature-ipmi

@@ -1,0 +1,52 @@
+## @file
+# Release Package Action.
+#
+# Copyright (c) Microsoft Corporation
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+name: Build Release Package
+
+on:
+  release:
+    types:
+      - published
+
+env:
+  PACKAGE: IpmiFeaturePkg/
+  PACKAGE_DIR: _package/
+  NUSPEC_FILE: _package.nuspec
+  RELEASE_LOG: _package/release_log.txt
+
+jobs:
+  build:
+    name: Build Release Package
+    runs-on: ubuntu-latest
+    environment: release
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Install Python Tools
+        run: pip install --upgrade -r pip-requirements.txt
+      - name: Prepare Release Files
+        run: |
+          mkdir -p ${{ env.PACKAGE_DIR }}
+          cp License.txt ${{ env.PACKAGE_DIR }}
+          cp -R ${{ env.PACKAGE }} ${{ env.PACKAGE_DIR }}
+      - name: Create Release Log
+        run: |
+          echo --------------------------------------------            > ${{ env.RELEASE_LOG}}
+          echo "Copyright (C) Microsoft Corporation"                  >> ${{ env.RELEASE_LOG}}
+          echo "SPDX-License-Identifier: BSD-2-Clause-Patent"         >> ${{ env.RELEASE_LOG}}
+          echo --------------------------------------------           >> ${{ env.RELEASE_LOG}}
+          echo "Release:   ${{ github.event.release.name }}"          >> ${{ env.RELEASE_LOG}}
+          echo "Tag:       ${{ github.event.release.tag_name }}"      >> ${{ env.RELEASE_LOG}}
+          echo "Published: ${{ github.event.release.published_at }}"  >> ${{ env.RELEASE_LOG}}
+          echo "URL:       ${{ github.event.release.html_url }}"      >> ${{ env.RELEASE_LOG}}
+          echo --------------------------------------------           >> ${{ env.RELEASE_LOG}}
+          echo "${{ github.event.release.body }}"                     >> ${{ env.RELEASE_LOG}}
+      - uses: nuget/setup-nuget@v1
+        with:
+          nuget-version: '6.x'
+      - name: Pack & Push Nuget Package
+        run: nuget-publish --Operation PackAndPush --ConfigFilePath nuget.config.yaml --Version ${{ github.event.release.tag_name }} --InputFolderPath ${{ env.PACKAGE_DIR }} --ApiKey ${{ secrets.NUGET_KEY }}
