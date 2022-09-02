@@ -8,8 +8,6 @@
 
 #include "KcsBmc.h"
 
-UINT16  KcsPort;
-
 /**
   Initializing hardware for the IPMI transport.
 
@@ -28,7 +26,7 @@ InitializeIpmiTransportHardware (
   // Enable OEM specific southbridge SIO KCS I/O address range 0xCA0 to 0xCAF at here
   // if the the I/O address range has not been enabled.
   //
-  Status = PlatformIpmiIoRangeSet (KcsPort);
+  Status = PlatformIpmiIoRangeSet (PcdGet16 (PcdIpmiIoBaseAddress));
   DEBUG ((DEBUG_INFO, "IPMI: PlatformIpmiIoRangeSet - %r!\n", Status));
   return Status;
 }
@@ -45,7 +43,6 @@ BmcKcsConstructor (
   VOID
   )
 {
-  KcsPort = PcdGet16 (PcdIpmiIoBaseAddress);
   return EFI_SUCCESS;
 }
 
@@ -55,7 +52,7 @@ KcsErrorExit (
   VOID    *Context
   )
 
-/*++
+/**
 
 Routine Description:
 
@@ -63,23 +60,24 @@ Routine Description:
 
 Arguments:
 
-  IpmiInstance     - The pointer of IPMI_BMC_INSTANCE_DATA
-  Context          - The Context for this operation
+  IpmiTimeoutPeriod     - The period wait before timeout
+  Context               - The Context for this operation
 
 Returns:
 
-  EFI_DEVICE_ERROR - The device error happened
-  EFI_SUCCESS      - Successfully check the KCS error status
+  @retval EFI_DEVICE_ERROR      - The device error happened
+  @retval EFI_SUCCESS           - Successfully check the KCS error status
 
---*/
+**/
 {
   EFI_STATUS  Status;
   UINT8       KcsData;
   KCS_STATUS  KcsStatus;
-  // UINT8           BmcStatus;   // MU_CHANGE
-  UINT8   RetryCount;
-  UINT64  TimeOut;
+  UINT16      KcsPort;
+  UINT8       RetryCount;
+  UINT64      TimeOut;
 
+  KcsPort    = PcdGet16 (PcdIpmiIoBaseAddress);
   TimeOut    = 0;
   RetryCount = 0;
   while (RetryCount < KCS_ABORT_RETRY_COUNT) {
@@ -206,7 +204,7 @@ KcsCheckStatus (
   VOID       *Context
   )
 
-/*++
+/**
 
 Routine Description:
 
@@ -214,22 +212,21 @@ Routine Description:
 
 Arguments:
 
-  IpmiInstance  - The pointer of IPMI_BMC_INSTANCE_DATA
-  KcsPort       - The base port of KCS
-  KcsState      - The state of KCS to be checked
-  Idle          - If the KCS is idle
-  Context       - The context for this operation
+  IpmiTimeoutPeriod  - The period to wait before timeout
+  KcsState           - The state of KCS to be checked
+  Idle               - If the KCS is idle
+  Context            - The context for this operation
 
 Returns:
 
-  EFI_SUCCESS   - Checked the KCS status successfully
+  @retval EFI_SUCCESS   - Checked the KCS status successfully
 
---*/
+**/
 {
   EFI_STATUS  Status;
   KCS_STATUS  KcsStatus;
-  // UINT8           KcsData;  // MU_CHANGE - Unused.
-  UINT64  TimeOut;
+  UINT16      KcsPort;
+  UINT64      TimeOut;
 
   if (Idle == NULL) {
     return EFI_INVALID_PARAMETER;
@@ -238,6 +235,7 @@ Returns:
   *Idle = FALSE;
 
   TimeOut = 0;
+  KcsPort = PcdGet16 (PcdIpmiIoBaseAddress);
   do {
     MicroSecondDelay (IPMI_DELAY_UNIT);
     KcsStatus.RawData = IoRead8 (KcsPort + 1);
@@ -296,7 +294,7 @@ SendDataToBmc (
   UINT8   DataSize
   )
 
-/*++
+/**
 
 Routine Description:
 
@@ -304,16 +302,16 @@ Routine Description:
 
 Arguments:
 
-  IpmiInstance  - The pointer of IPMI_BMC_INSTANCE_DATA
-  Context       - The context of this operation
-  Data          - The data pointer to be sent
-  DataSize      - The data size
+  IpmiTimeoutPeriod  - The period to wait before timeout
+  Context            - The context of this operation
+  Data               - The data pointer to be sent
+  DataSize           - The data size
 
 Returns:
 
-  EFI_SUCCESS   - Send out the data successfully
+  @retval EFI_SUCCESS   - Send out the data successfully
 
---*/
+**/
 {
   KCS_STATUS  KcsStatus;
   UINT8       KcsData;
@@ -323,7 +321,7 @@ Returns:
   BOOLEAN     Idle;
   UINT64      TimeOut;
 
-  KcsIoBase = KcsPort;
+  KcsIoBase = PcdGet16 (PcdIpmiIoBaseAddress);
 
   TimeOut = 0;
 
@@ -374,7 +372,7 @@ ReceiveBmcData (
   UINT8   *DataSize
   )
 
-/*++
+/**
 
 Routine Description:
 
@@ -384,16 +382,16 @@ Routine Description:
 
 Arguments:
 
-  IpmiInstance  - The pointer of IPMI_BMC_INSTANCE_DATA
-  Context       - The context of this operation
-  Data          - The buffer pointer
-  DataSize      - The buffer size
+  IpmiTimeoutPeriod  - The period to wait before timeout
+  Context            - The context of this operation
+  Data               - The buffer pointer
+  DataSize           - The buffer size
 
 Returns:
 
-  EFI_SUCCESS   - Received data successfully
+  @retval EFI_SUCCESS   - Received data successfully
 
---*/
+**/
 {
   UINT8       KcsData;
   UINT16      KcsIoBase;
@@ -402,7 +400,7 @@ Returns:
   UINT8       Count;
 
   Count     = 0;
-  KcsIoBase = KcsPort;
+  KcsIoBase = PcdGet16 (PcdIpmiIoBaseAddress);
 
   while (TRUE) {
     if ((Status = KcsCheckStatus (IpmiTimeoutPeriod, KcsReadState, &Idle, Context)) != EFI_SUCCESS) {
@@ -440,7 +438,7 @@ ReceiveBmcDataFromPort (
   UINT8   *DataSize
   )
 
-/*++
+/**
 
 Routine Description:
 
@@ -448,16 +446,16 @@ Routine Description:
 
 Arguments:
 
-  IpmiInstance  - The pointer of IPMI_BMC_INSTANCE_DATA
-  Context       - The context of this operation
-  Data          - The buffer pointer to receive data
-  DataSize      - The buffer size
+  IpmiTimeoutPeriod  - The period to wait before timeout
+  Context            - The context of this operation
+  Data               - The buffer pointer to receive data
+  DataSize           - The buffer size
 
 Returns:
 
-  EFI_SUCCESS   - Received the data successfully
+  @retval EFI_SUCCESS   - Received the data successfully
 
---*/
+**/
 {
   EFI_STATUS  Status;
   UINT8       i;
@@ -489,7 +487,7 @@ SendDataToBmcPort (
   UINT8   DataSize
   )
 
-/*++
+/**
 
 Routine Description:
 
@@ -497,16 +495,16 @@ Routine Description:
 
 Arguments:
 
-  IpmiInstance  - The pointer of IPMI_BMC_INSTANCE_DATA
-  Context       - The context of this operation
-  Data          - The data pointer to be sent
-  DataSize      - The data size
+  IpmiTimeoutPeriod  - The period to wait before timeout
+  Context            - The context of this operation
+  Data               - The data pointer to be sent
+  DataSize           - The data size
 
 Returns:
 
-  EFI_SUCCESS   - Send out the data successfully
+  @retval EFI_SUCCESS   - Send out the data successfully
 
---*/
+**/
 {
   EFI_STATUS  Status;
   UINT8       i;

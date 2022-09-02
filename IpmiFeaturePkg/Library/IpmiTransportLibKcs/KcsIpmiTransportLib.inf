@@ -26,6 +26,7 @@
 
 [LibraryClasses]
   DebugLib
+  IpmiPlatformHookLib
 
 [Pcd]
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress
