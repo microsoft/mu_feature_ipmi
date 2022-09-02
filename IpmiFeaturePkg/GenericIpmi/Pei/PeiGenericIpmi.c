@@ -12,8 +12,6 @@
 #include <Library/ReportStatusCodeLib.h>
 #include <Library/IpmiPlatformHookLib.h>
 
-STATIC EFI_PEI_PPI_DESCRIPTOR  gPeiIpmiBmcDataDesc;
-
 ///////////////////////////////////////////////////////////////////////////////
 // Function Implementations
 //
@@ -34,6 +32,7 @@ PeiInitializeIpmiPhysicalLayer (
 {
   EFI_STATUS              Status;
   IPMI_BMC_INSTANCE_DATA  *mIpmiInstance;
+  EFI_PEI_PPI_DESCRIPTOR  *mPeiIpmiBmcDataDesc;
 
   mIpmiInstance = NULL;
 
@@ -47,11 +46,16 @@ PeiInitializeIpmiPhysicalLayer (
     }
   }
 
-  mIpmiInstance = AllocateZeroPool (sizeof (IPMI_BMC_INSTANCE_DATA));
+  //
+  // Make one allocation for both the PPI descriptor and the Bmc Instance data
+  //
+  mIpmiInstance = AllocateZeroPool (sizeof (IPMI_BMC_INSTANCE_DATA) + sizeof (EFI_PEI_PPI_DESCRIPTOR));
   if (mIpmiInstance == NULL) {
     DEBUG ((EFI_D_ERROR, "IPMI Peim:EFI_OUT_OF_RESOURCES of memory allocation\n"));
     return EFI_OUT_OF_RESOURCES;
   }
+
+  mPeiIpmiBmcDataDesc = (EFI_PEI_PPI_DESCRIPTOR *)((UINT8 *)mIpmiInstance + sizeof (IPMI_BMC_INSTANCE_DATA));
 
   //
   // Calibrate TSC Counter.  Stall for 10ms, then multiply the resulting number of
@@ -70,9 +74,12 @@ PeiInitializeIpmiPhysicalLayer (
   mIpmiInstance->IpmiTransport.IpmiSubmitCommand = IpmiSendCommand;
   mIpmiInstance->IpmiTransport.GetBmcStatus      = IpmiGetBmcStatus;
 
-  gPeiIpmiBmcDataDesc.Flags = EFI_PEI_PPI_DESCRIPTOR_PPI | EFI_PEI_PPI_DESCRIPTOR_TERMINATE_LIST;
-  gPeiIpmiBmcDataDesc.Guid  = &gPeiIpmiTransportPpiGuid;
-  gPeiIpmiBmcDataDesc.Ppi   = &mIpmiInstance->IpmiTransport;
+  //
+  // Initialize the Ppi descriptor
+  //
+  mPeiIpmiBmcDataDesc->Flags = EFI_PEI_PPI_DESCRIPTOR_PPI | EFI_PEI_PPI_DESCRIPTOR_TERMINATE_LIST;
+  mPeiIpmiBmcDataDesc->Guid  = &gPeiIpmiTransportPpiGuid;
+  mPeiIpmiBmcDataDesc->Ppi   = &mIpmiInstance->IpmiTransport;
 
   //
   // Initialize the transport layer.
@@ -102,7 +109,7 @@ PeiInitializeIpmiPhysicalLayer (
   //
   // Just produce PPI
   //
-  Status = PeiServicesInstallPpi (&gPeiIpmiBmcDataDesc);
+  Status = PeiServicesInstallPpi (mPeiIpmiBmcDataDesc);
   if (EFI_ERROR (Status)) {
     return Status;
   }
