@@ -1,7 +1,7 @@
 author_string: Microsoft
-copyright_string: Copyright (c) Microsoft Corporation 2022
+copyright_string: Copyright (c) Microsoft Corporation
 description_string: Project Mu IPMI Feature Package.
-license_url: https://opensource.org/licenses/BSD-2-Clause
+license_url: https://spdx.org/licenses/BSD-2-Clause-Patent.html
 name: mu-feature-ipmi
 project_url: https://github.com/microsoft/mu_feature_ipmi
 server_url: https://api.nuget.org/v3/index.json
