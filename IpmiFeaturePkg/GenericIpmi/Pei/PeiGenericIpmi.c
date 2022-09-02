@@ -12,7 +12,6 @@
 #include <Library/ReportStatusCodeLib.h>
 #include <Library/IpmiPlatformHookLib.h>
 
-
 ///////////////////////////////////////////////////////////////////////////////
 // Function Implementations
 //
@@ -46,16 +45,17 @@ PeiInitializeIpmiPhysicalLayer (
       return Status;
     }
   }
+
   //
   // Make one allocation for both the PPI descriptor and the Bmc Instance data
   //
-  mIpmiInstance = AllocateZeroPool (sizeof (IPMI_BMC_INSTANCE_DATA) + sizeof(EFI_PEI_PPI_DESCRIPTOR) );
+  mIpmiInstance = AllocateZeroPool (sizeof (IPMI_BMC_INSTANCE_DATA) + sizeof (EFI_PEI_PPI_DESCRIPTOR));
   if (mIpmiInstance == NULL) {
     DEBUG ((EFI_D_ERROR, "IPMI Peim:EFI_OUT_OF_RESOURCES of memory allocation\n"));
     return EFI_OUT_OF_RESOURCES;
   }
 
-  mPeiIpmiBmcDataDesc = (EFI_PEI_PPI_DESCRIPTOR*)( (UINT8*)mIpmiInstance + sizeof(IPMI_BMC_INSTANCE_DATA));
+  mPeiIpmiBmcDataDesc = (EFI_PEI_PPI_DESCRIPTOR *)((UINT8 *)mIpmiInstance + sizeof (IPMI_BMC_INSTANCE_DATA));
 
   //
   // Calibrate TSC Counter.  Stall for 10ms, then multiply the resulting number of
