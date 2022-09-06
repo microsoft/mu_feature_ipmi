@@ -103,7 +103,6 @@
   IpmiFeaturePkg/Frb/FrbPei.inf
   IpmiFeaturePkg/GenericIpmi/Dxe/DxeGenericIpmi.inf
   IpmiFeaturePkg/BmcAcpi/BmcAcpi.inf
-  IpmiFeaturePkg/BmcElog/BmcElog.inf
   IpmiFeaturePkg/Frb/FrbDxe.inf
   IpmiFeaturePkg/IpmiFru/IpmiFru.inf
   IpmiFeaturePkg/OsWdt/OsWdt.inf
