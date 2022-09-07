@@ -16,7 +16,7 @@
 
 #include <IndustryStandard/Ipmi.h>
 
-VOID
+EFI_STATUS
 EnableFrb2WatchDogTimer (
   )
 {
@@ -35,4 +35,39 @@ EnableFrb2WatchDogTimer (
   // Set BMC watchdog timer
   Status = IpmiSetWatchdogTimer (&FrbTimer, &CompletionCode);
   Status = IpmiResetWatchdogTimer (&CompletionCode);
+}
+
+EFI_STATUS
+EfiDisableFrb (
+  VOID
+  )
+{
+  EFI_STATUS                        Status;
+  IPMI_SET_WATCHDOG_TIMER_REQUEST   SetWatchdogTimer;
+  UINT8                             CompletionCode;
+  IPMI_GET_WATCHDOG_TIMER_RESPONSE  GetWatchdogTimer;
+
+  Status = IpmiGetWatchdogTimer (&GetWatchdogTimer);
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
+
+  //
+  // Check if timer is still running, if not abort disable routine.
+  //
+  if (GetWatchdogTimer.TimerUse.Bits.TimerRunning == 0) {
+    return EFI_ABORTED;
+  }
+
+  ZeroMem (&SetWatchdogTimer, sizeof (SetWatchdogTimer));
+  //
+  // Just flip the Timer Use bit. This should release the timer.
+  //
+  SetWatchdogTimer.TimerUse.Bits.TimerRunning    = 0;
+  SetWatchdogTimer.TimerUse.Bits.TimerUse        = IPMI_WATCHDOG_TIMER_BIOS_FRB2;
+  SetWatchdogTimer.TimerUseExpirationFlagsClear &= ~BIT2;
+  SetWatchdogTimer.TimerUseExpirationFlagsClear |= BIT1 | BIT4;
+
+  Status = IpmiSetWatchdogTimer (&SetWatchdogTimer, &CompletionCode);
+  return Status;
 }
