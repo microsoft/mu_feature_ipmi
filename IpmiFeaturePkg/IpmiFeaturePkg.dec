@@ -44,7 +44,6 @@
 
 [PcdsFeatureFlag]
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiFeatureEnable|FALSE|BOOLEAN|0xA0000001
-  gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2EnabledFlag|TRUE|BOOLEAN|0xA0000002
 
 [PcdsFixedAtBuild]
   gIpmiFeaturePkgTokenSpaceGuid.PcdMaxSOLChannels|3|UINT8|0xF0000001
@@ -58,7 +57,13 @@
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiSelOemManufacturerId0|0|UINT8|0xF0000008
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiSelOemManufacturerId1|0|UINT8|0xF0000009
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiSelOemManufacturerId2|0|UINT8|0xF000000A
-  gIpmiFeaturePkgTokenSpaceGuid.PcdFRB2EnabledFlag|TRUE|BOOLEAN|0xF000000B
-  gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2TimeoutSeconds|360|UINT16|0xF000000C
+  gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2EnabledFlag|TRUE|BOOLEAN|0xF000000B
+  gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2TimeoutSeconds|600|UINT16|0xF000000C
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress|0xCA2|UINT16|0xF000000D
   gIpmiFeaturePkgTokenSpaceGuid.PcdSioMailboxBaseAddress|0x600|UINT32|0xF000000E
+  gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2TimeoutAction|0|UINT8|0xF000000F
+
+[PcdsDynamic, PcdsDynamicEx]
+  gIpmiFeaturePkgTokenSpaceGuid.PcdOsWatchdogEnabled|FALSE|BOOLEAN|0xD0000001
+  gIpmiFeaturePkgTokenSpaceGuid.PcdOsWatchdogTimeoutSeconds|600|UINT16|0xD0000002
+  gIpmiFeaturePkgTokenSpaceGuid.PcdOsWatchdogAction|0|UINT8|0xD0000003

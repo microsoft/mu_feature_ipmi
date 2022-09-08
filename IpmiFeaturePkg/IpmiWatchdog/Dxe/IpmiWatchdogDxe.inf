@@ -1,0 +1,45 @@
+### @file
+# Component description file for IPMI Watchdog DXE driver.
+#
+# Copyright (c) Microsoft Corporation
+# Copyright (c) 2018 - 2019, Intel Corporation. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+###
+
+[defines]
+  INF_VERSION          = 0x00010005
+  BASE_NAME            = IpmiWatchdogDxe
+  FILE_GUID            = 4CEA8088-BC84-4D75-A654-19C832F8B581
+  MODULE_TYPE          = DXE_DRIVER
+  VERSION_STRING       = 1.0
+  ENTRY_POINT          = IpmiWatchdogDxeEntryPoint
+
+[Sources]
+  WatchdogDxe.c
+  ../IpmiWatchdog.c
+  ../IpmiWatchdog.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  MemoryAllocationLib
+  UefiLib
+  DebugLib
+  BaseMemoryLib
+  IpmiCommandLib
+  PcdLib
+
+[Pcd]
+  gIpmiFeaturePkgTokenSpaceGuid.PcdOsWatchdogEnabled
+  gIpmiFeaturePkgTokenSpaceGuid.PcdOsWatchdogTimeoutSeconds
+  gIpmiFeaturePkgTokenSpaceGuid.PcdOsWatchdogAction
+
+[Depex]
+  gIpmiTransportProtocolGuid

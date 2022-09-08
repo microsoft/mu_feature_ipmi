@@ -100,15 +100,14 @@
   IpmiFeaturePkg/Library/BmcSmbusLibNull/BmcSmbusLibNull.inf
   IpmiFeaturePkg/Library/IpmiPlatformHookLibNull/IpmiPlatformHookLibNull.inf
   IpmiFeaturePkg/GenericIpmi/Pei/PeiGenericIpmi.inf
-  IpmiFeaturePkg/Frb/FrbPei.inf
   IpmiFeaturePkg/GenericIpmi/Dxe/DxeGenericIpmi.inf
   IpmiFeaturePkg/BmcAcpi/BmcAcpi.inf
-  IpmiFeaturePkg/Frb/FrbDxe.inf
   IpmiFeaturePkg/IpmiFru/IpmiFru.inf
-  IpmiFeaturePkg/OsWdt/OsWdt.inf
   IpmiFeaturePkg/SolStatus/SolStatus.inf
   IpmiFeaturePkg/Library/BmcSelfTestPlatformLibNull/BmcSelfTestPlatformLibNull.inf
   IpmiFeaturePkg/Library/IpmiSelLib/IpmiSelLib.inf
+  IpmiFeaturePkg/IpmiWatchdog/Pei/IpmiWatchdogPei.inf
+  IpmiFeaturePkg/IpmiWatchdog/Dxe/IpmiWatchdogDxe.inf
 
   # Transport Libraries
   IpmiFeaturePkg/Library/IpmiTransportLibNull/IpmiTransportLibNull.inf

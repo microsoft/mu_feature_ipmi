@@ -1,0 +1,41 @@
+### @file
+# Component description file for IPMI Watchdog PEIM.
+#
+# Copyright (c) Microsoft Corporation
+# Copyright (c) 2018 - 2019, Intel Corporation. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+###
+
+[defines]
+  INF_VERSION          = 0x00010005
+  BASE_NAME            = IpmiWatchdogPei
+  FILE_GUID            = 3BF5E969-A8B3-43D4-BDFC-6FF8AED748BC
+  MODULE_TYPE          = PEIM
+  VERSION_STRING       = 1.0
+  ENTRY_POINT          = InitializeWatchdogPei
+
+[Sources]
+  WatchdogPei.c
+  ../IpmiWatchdog.c
+  ../IpmiWatchdog.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  PeimEntryPoint
+  DebugLib
+  BaseMemoryLib
+  PcdLib
+  IpmiCommandLib
+
+[Pcd]
+  gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2EnabledFlag
+  gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2TimeoutSeconds
+  gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2TimeoutAction
+
+[Depex]
+  gPeiIpmiTransportPpiGuid
