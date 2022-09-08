@@ -35,12 +35,22 @@ DisableFrb2WatchdogTimer (
   IN VOID       *Context
   )
 {
+  EFI_STATUS  Status;
+
   DEBUG ((DEBUG_INFO, "Disabling IPMI FBR2 watchdog timer.\n"));
 
-  IpmiDisableWatchdogTimer (
-    IPMI_WATCHDOG_TIMER_BIOS_FRB2,
-    IPMI_WATCHDOG_TIMER_EXPIRATION_FLAG_BIOS_FRB2
-    );
+  Status = IpmiDisableWatchdogTimer (
+             IPMI_WATCHDOG_TIMER_BIOS_FRB2,
+             IPMI_WATCHDOG_TIMER_EXPIRATION_FLAG_BIOS_FRB2
+             );
+
+  //
+  // Make sure this doesn't get called again if it succeeded.
+  //
+
+  if (!EFI_ERROR (Status)) {
+    gBS->CloseEvent (Event);
+  }
 }
 
 /**
@@ -66,6 +76,8 @@ EnableOsWatchdogTimer (
       PcdGet16 (PcdOsWatchdogTimeoutSeconds)
       );
   }
+
+  gBS->CloseEvent (Event);
 }
 
 /**

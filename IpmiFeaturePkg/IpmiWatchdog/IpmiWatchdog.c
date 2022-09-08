@@ -69,7 +69,7 @@ IpmiEnableWatchdogTimer (
   WatchdogTimer.TimerUse.Bits.TimerUse          = TimerUse;
   WatchdogTimer.TimerActions.Bits.TimeoutAction = TimerAction;
   WatchdogTimer.TimerUseExpirationFlagsClear    = FlagsClear;
-  WatchdogTimer.InitialCountdownValue           = CountdownValue;
+  WatchdogTimer.InitialCountdownValue           = CountdownValue * 10; // Convert from 100ms to seconds.
 
   //
   // Set the watchdog information.
@@ -131,7 +131,7 @@ IpmiDisableWatchdogTimer (
   //
   if (GetWatchdogTimer.TimerUse.Bits.TimerRunning == 0) {
     DEBUG ((DEBUG_WARN, "%a: Watchdog timer is not currently running.\n", __FUNCTION__));
-    return EFI_ABORTED;
+    return EFI_SUCCESS;
   }
 
   //
