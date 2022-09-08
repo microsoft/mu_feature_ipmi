@@ -53,8 +53,10 @@ IpmiEnableWatchdogTimer (
     CountdownValue
     ));
 
-  ASSERT (TimerUse != 0);
-  ASSERT (CountdownValue != 0);
+  if ((TimerUse == 0) || (CountdownValue == 0)) {
+    DEBUG ((DEBUG_ERROR, "%a: Invalid input for enabling watchdog timer!\n", __FUNCTION__));
+    return EFI_INVALID_PARAMETER;
+  }
 
   Status = IpmiGetWatchdogTimer (&GetWatchdogTimer);
   if (EFI_ERROR (Status)) {
@@ -69,7 +71,7 @@ IpmiEnableWatchdogTimer (
   WatchdogTimer.TimerUse.Bits.TimerUse          = TimerUse;
   WatchdogTimer.TimerActions.Bits.TimeoutAction = TimerAction;
   WatchdogTimer.TimerUseExpirationFlagsClear    = FlagsClear;
-  WatchdogTimer.InitialCountdownValue           = CountdownValue * 10; // Convert from 100ms to seconds.
+  WatchdogTimer.InitialCountdownValue           = CountdownValue * 10; // Convert from seconds to 100ms.
 
   //
   // Set the watchdog information.
