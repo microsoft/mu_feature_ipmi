@@ -55,6 +55,53 @@ Returns:
   return EFI_SUCCESS;
 }
 
+/**
+  Prints out the IPMI command and it's data for debugging purposes.
+
+  @param[in]  Response          Indicates this is a response.
+  @param[in]  NetFunction       The net function of the command.
+  @param[in]  Command           The command being sent.
+  @param[in]  CompletionCode    The completion code when this is a response.
+  @param[in]  Data              The pointer to the data being sent.
+  @param[in]  DataSize          The size of the data.
+**/
+VOID
+EFIAPI
+IpmiPrintCommand (
+  IN CONST BOOLEAN  Response,
+  IN CONST UINT8    NetFunction,
+  IN CONST UINT8    Command,
+  IN CONST UINT8    CompletionCode,
+  IN CONST UINT8    *Data,
+  IN CONST UINT8    DataSize
+  )
+{
+  CONST UINT32  DebugLevel = DEBUG_VERBOSE;
+  UINT8         Index;
+  CHAR16        *TypeString;
+
+  TypeString = Response ? L"Response" : L"Command";
+
+  DEBUG ((DebugLevel, "*************** IPMI %ls Start ***************\n", TypeString));
+  DEBUG ((DebugLevel, "NetFunction:       0x%02x\n", NetFunction));
+  DEBUG ((DebugLevel, "Command:           0x%02x\n", Command));
+  if (Response) {
+    DEBUG ((DebugLevel, "Completion Code:   0x%02x\n", CompletionCode));
+  }
+
+  DEBUG ((DebugLevel, "DataSize:          0x%02x\n", DataSize));
+  for (Index = 0; Index < DataSize; Index++) {
+    if (Index % 16 == 0) {
+      DEBUG ((DebugLevel, "\n"));
+    }
+
+    DEBUG ((DebugLevel, "%02x ", Data[Index]));
+  }
+
+  DEBUG ((DebugLevel, "\n"));
+  DEBUG ((DebugLevel, "**************** IPMI %ls End ****************\n", TypeString));
+}
+
 EFI_STATUS
 EFIAPI
 IpmiSendCommandInternal (
@@ -107,7 +154,12 @@ Returns:
 
   RetryCnt     = PcdGet8 (PcdIpmiCommandMaxReties);
   IpmiInstance = INSTANCE_FROM_SM_IPMI_BMC_THIS (This);
-  DEBUG ((DEBUG_VERBOSE, "[IPMI] Generic - Sending IPMI Command. Fun: %d Cmd: %d\n", NetFunction, Command));
+
+  //
+  // Print out the command being sent for debugging.
+  //
+
+  IpmiPrintCommand (FALSE, NetFunction, Command, 0, CommandData, CommandDataSize);
 
   while (RetryCnt--) {
     //
@@ -182,6 +234,19 @@ Returns:
       DEBUG ((DEBUG_ERROR, "[IPMI] Generic - DataSize too small! (%d)\n", DataSize));
       return EFI_DEVICE_ERROR;
     }
+
+    //
+    // Print out the response for debugging purposes.
+    //
+
+    IpmiPrintCommand (
+      TRUE,
+      IpmiResponse->NetFunction,
+      IpmiResponse->Command,
+      IpmiResponse->CompletionCode,
+      IpmiResponse->ResponseData,
+      DataSize - IPMI_RESPONSE_HEADER_SIZE
+      );
 
     if ((IpmiResponse->CompletionCode != IPMI_COMP_CODE_NORMAL) &&
         (IpmiInstance->BmcStatus == BMC_UPDATE_IN_PROGRESS))
