@@ -46,7 +46,7 @@
   ReportStatusCodeLib
   TimerLib
   IpmiTransportLib
-  BmcSelfTestPlatformLib
+  IpmiPlatformLib
 
 [Protocols]
   gIpmiTransportProtocolGuid               # PROTOCOL ALWAYS_PRODUCED

@@ -14,7 +14,7 @@
 #include <Library/IoLib.h>
 #include <Library/DebugLib.h>
 #include <Library/TimerLib.h>
-#include <Library/IpmiPlatformHookLib.h>
+#include <Library/IpmiPlatformLib.h>
 
 #define KCS_WRITE_START  0x61
 #define KCS_WRITE_END    0x62

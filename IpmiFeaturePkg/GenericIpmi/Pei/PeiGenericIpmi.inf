@@ -41,7 +41,7 @@
   IoLib
   ReportStatusCodeLib
   TimerLib
-  IpmiPlatformHookLib
+  IpmiPlatformLib
   IpmiTransportLib
 
 [Guids]

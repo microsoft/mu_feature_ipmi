@@ -24,7 +24,7 @@
 #include "IpmiHooks.h"
 #include "GenericIpmiCommon.h"
 #include "GenericIpmi.h"
-#include "Library/BmcSelfTestPlatformLib.h"
+#include "Library/IpmiPlatformLib.h"
 
 //
 // Global state for the IPMI instance.

@@ -10,7 +10,7 @@
 #include <IndustryStandard/Ipmi.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/ReportStatusCodeLib.h>
-#include <Library/IpmiPlatformHookLib.h>
+#include <Library/IpmiPlatformLib.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 // Function Implementations
