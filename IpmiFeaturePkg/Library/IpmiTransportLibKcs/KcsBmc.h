@@ -57,8 +57,7 @@ EFI_STATUS
 KcsCheckStatus (
   UINT64     IpmiTimeoutPeriod,
   KCS_STATE  KcsState,
-  BOOLEAN    *Idle,
-  VOID       *Context
+  BOOLEAN    *Idle
   )
 
 /*++
@@ -72,7 +71,6 @@ Arguments:
   IpmiInstance  - The pointer of IPMI_BMC_INSTANCE_DATA
   KcsState      - The state of KCS to be checked
   Idle          - If the KCS is idle
-  Context       - The context for this operation
 
 Returns:
 
@@ -83,8 +81,7 @@ Returns:
 
 EFI_STATUS
 KcsErrorExit (
-  UINT64  IpmiTimeoutPeriod,
-  VOID    *Context
+  UINT64  IpmiTimeoutPeriod
   )
 
 /*++
@@ -96,7 +93,6 @@ Routine Description:
 Arguments:
 
   IpmiInstance     - The pointer of IPMI_BMC_INSTANCE_DATA
-  Context          - The Context for this operation
 
 Returns:
 
@@ -109,7 +105,6 @@ Returns:
 EFI_STATUS
 SendDataToBmc (
   UINT64  IpmiTimeoutPeriod,
-  VOID    *Context,
   UINT8   *Data,
   UINT8   DataSize
   )
@@ -123,7 +118,6 @@ Routine Description:
 Arguments:
 
   IpmiInstance  - The pointer of IPMI_BMC_INSTANCE_DATA
-  Context       - The context of this operation
   Data          - The data pointer to be sent
   DataSize      - The data size
 
@@ -137,7 +131,6 @@ Returns:
 EFI_STATUS
 ReceiveBmcData (
   UINT64  IpmiTimeoutPeriod,
-  VOID    *Context,
   UINT8   *Data,
   UINT8   *DataSize
   )
@@ -153,7 +146,6 @@ Routine Description:
 Arguments:
 
   IpmiInstance  - The pointer of IPMI_BMC_INSTANCE_DATA
-  Context       - The context of this operation
   Data          - The buffer pointer
   DataSize      - The buffer size
 

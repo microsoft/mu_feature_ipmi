@@ -60,8 +60,7 @@ Returns:
            CommandData,
            (UINT8)CommandDataSize,
            ResponseData,
-           (UINT8 *)ResponseDataSize,
-           NULL
+           (UINT8 *)ResponseDataSize
            );
 } // IpmiSendCommand()
 
@@ -94,7 +93,6 @@ Returns:
   return IpmiBmcStatus (
            This,
            BmcStatus,
-           ComAddress,
-           NULL
+           ComAddress
            );
 }

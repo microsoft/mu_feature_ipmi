@@ -112,8 +112,7 @@ IpmiSendCommandInternal (
   IN      UINT8           *CommandData,
   IN      UINT8           CommandDataSize,
   IN OUT  UINT8           *ResponseData,
-  IN OUT  UINT8           *ResponseDataSize,
-  IN      VOID            *Context
+  IN OUT  UINT8           *ResponseDataSize
   )
 
 /*++
@@ -132,7 +131,6 @@ Arguments:
   CommandDataSize   - Size of command data buffer
   ResponseData      - Pointer to response data buffer
   ResponseDataSize  - Pointer to response data buffer size
-  Context           - Context
 
 Returns:
 
@@ -195,7 +193,6 @@ Returns:
 
     Status = SendDataToBmcPort (
                IpmiInstance->IpmiTimeoutPeriod,
-               Context,
                (UINT8 *)IpmiCommand,
                (CommandDataSize + IPMI_COMMAND_HEADER_SIZE)
                );
@@ -214,7 +211,6 @@ Returns:
     DataSize = MAX_TEMP_DATA - 1;
     Status   = ReceiveBmcDataFromPort (
                  IpmiInstance->IpmiTimeoutPeriod,
-                 Context,
                  (UINT8 *)IpmiResponse,
                  &DataSize
                  );
@@ -339,8 +335,7 @@ EFIAPI
 IpmiBmcStatus (
   IN  IPMI_TRANSPORT  *This,
   OUT BMC_STATUS      *BmcStatus,
-  OUT SM_COM_ADDRESS  *ComAddress,
-  IN  VOID            *Context
+  OUT SM_COM_ADDRESS  *ComAddress
   )
 
 /*++
@@ -354,7 +349,6 @@ Arguments:
   This        - Pointer to IPMI protocol instance
   BmcStatus   - BMC status
   ComAddress  - Com Address
-  Context     - Context
 
 Returns:
 

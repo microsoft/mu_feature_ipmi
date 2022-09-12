@@ -13,7 +13,6 @@
   Mock implementation of SendDataToBmcPort.
 
   @param[in]  IpmiTimeoutPeriod     UNUSED.
-  @param[in]  Context               UNUSED.
   @param[in]  Command               The data to send to the mock BMC.
   @param[in]  DataSize              The size of the data.
 
@@ -22,7 +21,6 @@
 EFI_STATUS
 SendDataToBmcPort (
   UINT64  IpmiTimeoutPeriod,
-  VOID    *Context,
   UINT8   *Data,
   UINT8   DataSize
   )
@@ -34,7 +32,6 @@ SendDataToBmcPort (
   Mock implementation of ReceiveBmcDataFromPort.
 
   @param[in]  IpmiTimeoutPeriod     UNUSED.
-  @param[in]  Context               UNUSED.
   @param[out] Response              The data received from the mock BMC.
   @param[out] DataSize              The size of the data.
 
@@ -43,7 +40,6 @@ SendDataToBmcPort (
 EFI_STATUS
 ReceiveBmcDataFromPort (
   UINT64  IpmiTimeoutPeriod,
-  VOID    *Context,
   UINT8   *Data,
   UINT8   *DataSize
   )

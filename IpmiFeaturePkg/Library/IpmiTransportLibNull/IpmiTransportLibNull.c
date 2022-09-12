@@ -12,7 +12,6 @@
   Null implementation of SendDataToBmcPort.
 
   @param[in]  IpmiTimeoutPeriod     UNUSED.
-  @param[in]  Context               UNUSED.
   @param[in]  Command               UNUSED.
   @param[in]  DataSize              UNUSED.
 
@@ -21,7 +20,6 @@
 EFI_STATUS
 SendDataToBmcPort (
   UINT64  IpmiTimeoutPeriod,
-  VOID    *Context,
   UINT8   *Data,
   UINT8   DataSize
   )
@@ -33,7 +31,6 @@ SendDataToBmcPort (
   Null implementation of ReceiveBmcDataFromPort.
 
   @param[in]  IpmiTimeoutPeriod     UNUSED.
-  @param[in]  Context               UNUSED.
   @param[out] Response              UNUSED.
   @param[out] DataSize              UNUSED.
 
@@ -42,7 +39,6 @@ SendDataToBmcPort (
 EFI_STATUS
 ReceiveBmcDataFromPort (
   UINT64  IpmiTimeoutPeriod,
-  VOID    *Context,
   UINT8   *Data,
   UINT8   *DataSize
   )
