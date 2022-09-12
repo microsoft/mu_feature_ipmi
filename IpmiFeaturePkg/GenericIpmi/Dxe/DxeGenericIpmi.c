@@ -83,6 +83,16 @@ DxeGenericIpmiEntry (
   mIpmiInstance->IpmiTransport.GetBmcStatus      = IpmiGetBmcStatus;
 
   //
+  // Initialize the transport layer.
+  //
+
+  Status = InitializeIpmiTransportHardware ();
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "[IPMI] InitializeIpmiTransportHardware failed - %r!\n", Status));
+    return Status;
+  }
+
+  //
   // Check if PEI already initialized the BMC connection.
   //
 

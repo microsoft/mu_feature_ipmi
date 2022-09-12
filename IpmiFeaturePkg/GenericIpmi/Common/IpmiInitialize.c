@@ -7,23 +7,20 @@
 
 **/
 
-#include <Library/UefiLib.h>
+#include <Uefi.h>
 #include <Library/BaseLib.h>
 #include <Library/DebugLib.h>
 #include <Library/BaseMemoryLib.h>
-#include <Library/UefiDriverEntryPoint.h>
-#include <Library/UefiBootServicesTableLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/PcdLib.h>
 #include <Library/TimerLib.h>
 #include <Library/ReportStatusCodeLib.h>
+#include <Library/IpmiPlatformLib.h>
+
 #include <IndustryStandard/Ipmi.h>
 #include <SmStatusCodes.h>
 
-#include "IpmiHooks.h"
-#include "GenericIpmiCommon.h"
-#include "GenericIpmi.h"
-#include "Library/IpmiPlatformLib.h"
+#include <GenericIpmi.h>
 
 EFI_STATUS
 GetSelfTest (
@@ -294,8 +291,8 @@ Returns:
 
     pBmcExecContext = (IPMI_MSG_GET_BMC_EXEC_RSP *)&IpmiInstance->TempData[0];
     DEBUG ((DEBUG_INFO, "[IPMI] Operational status of BMC: 0x%x\n", pBmcExecContext->CurrentExecutionContext));
-    if ((pBmcExecContext->CurrentExecutionContext == IPMI_BMC_IN_FORCED_UPDATE_MODE) &&
-        !EFI_ERROR (Status))
+    if (!EFI_ERROR (Status) &&
+        (pBmcExecContext->CurrentExecutionContext == IPMI_BMC_IN_FORCED_UPDATE_MODE))
     {
       DEBUG ((DEBUG_WARN, "[IPMI] BMC in Forced Update mode, skip waiting for BMC_READY.\n"));
       IpmiInstance->BmcStatus = BMC_UPDATE_IN_PROGRESS;

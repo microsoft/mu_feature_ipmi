@@ -23,8 +23,6 @@
 #include <Library/PeiServicesTablePointerLib.h>
 #include <Library/TimerLib.h>
 
-#include "IpmiHooks.h"
-#include "GenericIpmiCommon.h"
 #include "GenericIpmi.h"
 
 //
@@ -53,31 +51,6 @@ PeiServices           - General purpose services available to every PEIM.
 
 Returns:
 EFI_SUCCESS           - Success
---*/
-;
-
-//
-// internal function list
-//
-EFI_STATUS
-GetDeviceId (
-  IN      IPMI_BMC_INSTANCE_DATA  *mIpmiInstance
-  )
-
-/*++
-
-Routine Description:
-  Execute the Get Device ID command to determine whether or not the BMC is in Force Update
-  Mode.  If it is, then report it to the error manager.
-
-Arguments:
-  mIpmiInstance   - Data structure describing BMC variables and used for sending commands
-  StatusCodeValue - An array used to accumulate error codes for later reporting.
-  ErrorCount      - Counter used to keep track of error codes in StatusCodeValue
-
-Returns:
-  Status
-
 --*/
 ;
 

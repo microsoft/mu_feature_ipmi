@@ -9,6 +9,7 @@
 #include "PeiGenericIpmi.h"
 #include <IndustryStandard/Ipmi.h>
 #include <Library/MemoryAllocationLib.h>
+#include <Library/HobLib.h>
 #include <Library/ReportStatusCodeLib.h>
 #include <Library/IpmiPlatformLib.h>
 
@@ -33,6 +34,7 @@ PeiInitializeIpmiPhysicalLayer (
   EFI_STATUS              Status;
   IPMI_BMC_INSTANCE_DATA  *mIpmiInstance;
   EFI_PEI_PPI_DESCRIPTOR  *mPeiIpmiBmcDataDesc;
+  IPMI_BMC_HOB            *BmcHob;
 
   mIpmiInstance = NULL;
 
@@ -51,7 +53,7 @@ PeiInitializeIpmiPhysicalLayer (
   //
   mIpmiInstance = AllocateZeroPool (sizeof (IPMI_BMC_INSTANCE_DATA) + sizeof (EFI_PEI_PPI_DESCRIPTOR));
   if (mIpmiInstance == NULL) {
-    DEBUG ((EFI_D_ERROR, "IPMI Peim:EFI_OUT_OF_RESOURCES of memory allocation\n"));
+    DEBUG ((EFI_D_ERROR, "[IPMI] EFI_OUT_OF_RESOURCES of memory allocation\n"));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -61,9 +63,9 @@ PeiInitializeIpmiPhysicalLayer (
   // Calibrate TSC Counter.  Stall for 10ms, then multiply the resulting number of
   // ticks in that period by 100 to get the number of ticks in a 1 second timeout
   //
-  DEBUG ((DEBUG_INFO, "IPMI Peim:IPMI STACK Initialization\n"));
+  DEBUG ((DEBUG_INFO, "[IPMI] IPMI STACK Initialization\n"));
   mIpmiInstance->IpmiTimeoutPeriod = (BMC_IPMI_TIMEOUT_PEI *1000*1000) / IPMI_DELAY_UNIT_PEI;
-  DEBUG ((EFI_D_INFO, "IPMI Peim:IpmiTimeoutPeriod = 0x%x\n", mIpmiInstance->IpmiTimeoutPeriod));
+  DEBUG ((DEBUG_INFO, "[IPMI] IpmiTimeoutPeriod = 0x%x\n", mIpmiInstance->IpmiTimeoutPeriod));
 
   //
   // Initialize IPMI IO Base.
@@ -84,20 +86,33 @@ PeiInitializeIpmiPhysicalLayer (
   //
   // Initialize the transport layer.
   //
+
   Status = InitializeIpmiTransportHardware ();
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "IPMI: InitializeIpmiTransportHardware failed - %r!\n", Status));
+    DEBUG ((DEBUG_ERROR, "[IPMI] InitializeIpmiTransportHardware failed - %r!\n", Status));
     return Status;
   }
 
   //
-  // Get the Device ID and check if the system is in Force Update mode.
+  // Initialize the BMC state.
   //
-  Status = GetDeviceId (mIpmiInstance);
+  Status = IpmiInitializeBmc (mIpmiInstance);
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "IPMI Peim:Get BMC Device Id Failed. Status=%r\n", Status));
+    DEBUG ((DEBUG_ERROR, "[IPMI] Failed to initialize BMC state. %r\n", Status));
     return Status;
   }
+
+  //
+  // Initialize the HOB for the DXE phase.
+  //
+
+  BmcHob = BuildGuidHob (&gIpmiBmcHobGuid, sizeof (*BmcHob));
+  if (BmcHob == NULL) {
+    DEBUG ((DEBUG_ERROR, "[IPMI] Failed to create BMC hob!\n"));
+    return EFI_OUT_OF_RESOURCES;
+  }
+
+  BmcHob->BmcStatus = mIpmiInstance->BmcStatus;
 
   //
   // Do not continue initialization if the BMC is in Force Update Mode.
@@ -183,120 +198,3 @@ PeimIpmiInterfaceInit (
 
   return EFI_SUCCESS;
 } // PeimIpmiInterfaceInit()
-
-EFI_STATUS
-GetDeviceId (
-  IN      IPMI_BMC_INSTANCE_DATA  *mIpmiInstance
-  )
-
-/*++
-
-Routine Description:
-  Execute the Get Device ID command to determine whether or not the BMC is in Force Update
-  Mode.  If it is, then report it to the error manager.
-
-Arguments:
-  mIpmiInstance   - Data structure describing BMC variables and used for sending commands
-  StatusCodeValue - An array used to accumulate error codes for later reporting.
-  ErrorCount      - Counter used to keep track of error codes in StatusCodeValue
-
-Returns:
-  Status
-
---*/
-{
-  EFI_STATUS    Status;
-  UINT32        DataSize;
-  SM_CTRL_INFO  *pBmcInfo;
-  UINTN         Retries;
-
-  //
-  // Set up a loop to retry for up to PcdIpmiBmcReadyDelayTimer seconds. Calculate retries not timeout
-  // so that in case KCS is not enabled and IpmiSendCommand() returns
-  // immediately we will not wait all the PcdIpmiBmcReadyDelayTimer seconds.
-  //
-  Retries = PcdGet8 (PcdIpmiBmcReadyDelayTimer);
-  //
-  // Get the device ID information for the BMC.
-  //
-  DataSize = sizeof (mIpmiInstance->TempData);
-  while (EFI_ERROR (
-           Status = IpmiSendCommand (
-                      &mIpmiInstance->IpmiTransport,
-                      IPMI_NETFN_APP,
-                      0,
-                      IPMI_APP_GET_DEVICE_ID,
-                      NULL,
-                      0,
-                      mIpmiInstance->TempData,
-                      &DataSize
-                      )
-           ))
-  {
-    DEBUG ((
-      EFI_D_ERROR,
-      "[IPMI] BMC does not respond (status: %r), %d retries left\n",
-      Status,
-      Retries
-      ));
-
-    if (Retries-- == 0) {
-      ReportStatusCode (EFI_ERROR_CODE | EFI_ERROR_MAJOR, EFI_COMPUTING_UNIT_FIRMWARE_PROCESSOR | EFI_CU_FP_EC_COMM_ERROR);
-      mIpmiInstance->BmcStatus = BMC_HARDFAIL;
-      return Status;
-    }
-
-    //
-    // Handle the case that BMC FW still not enable KCS channel after AC cycle. just stall 1 second
-    //
-    MicroSecondDelay (1*1000*1000);
-  }
-
-  pBmcInfo = (SM_CTRL_INFO *)&mIpmiInstance->TempData[0];
-  DEBUG ((
-    DEBUG_INFO,
-    "[IPMI PEI] BMC Device ID: 0x%02X, firmware version: %d.%02X UpdateMode:%x\n",
-    pBmcInfo->DeviceId,
-    pBmcInfo->MajorFirmwareRev,
-    pBmcInfo->MinorFirmwareRev,
-    pBmcInfo->UpdateMode
-    ));
-  //
-  // In OpenBMC, UpdateMode: the bit 7 of byte 4 in get device id command is used for the BMC status:
-  // 0 means BMC is ready, 1 means BMC is not ready.
-  // At the very beginning of BMC power on, the status is 1 means BMC is in booting process and not ready. It is not the flag for force update mode.
-  //
-  if (pBmcInfo->UpdateMode == BMC_READY) {
-    mIpmiInstance->BmcStatus = BMC_OK;
-    return EFI_SUCCESS;
-  } else {
-    //
-    // Updatemode = 1 mean BMC is not ready, continue waiting.
-    //
-    while (Retries-- != 0) {
-      MicroSecondDelay (1*1000*1000); // delay 1 seconds
-      DEBUG ((DEBUG_INFO, "[IPMI PEI] UpdateMode Retries:%x \n", Retries));
-      Status = IpmiSendCommand (
-                 &mIpmiInstance->IpmiTransport,
-                 IPMI_NETFN_APP,
-                 0,
-                 IPMI_APP_GET_DEVICE_ID,
-                 NULL,
-                 0,
-                 mIpmiInstance->TempData,
-                 &DataSize
-                 );
-      if (!EFI_ERROR (Status)) {
-        pBmcInfo = (SM_CTRL_INFO *)&mIpmiInstance->TempData[0];
-        DEBUG ((DEBUG_INFO, "[IPMI PEI] UpdateMode Retries:%x   pBmcInfo->UpdateMode:%x\n", Retries, pBmcInfo->UpdateMode));
-        if (pBmcInfo->UpdateMode == BMC_READY) {
-          mIpmiInstance->BmcStatus = BMC_OK;
-          return EFI_SUCCESS;
-        }
-      }
-    }
-  }
-
-  mIpmiInstance->BmcStatus = BMC_HARDFAIL;
-  return Status;
-} // GetDeviceId()
