@@ -6,8 +6,8 @@
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
-#ifndef _IPMI_BMC_H_
-#define _IPMI_BMC_H_
+#ifndef _GENERIC_IPMI_H_
+#define _GENERIC_IPMI_H_
 
 #include <Uefi.h>
 #include <IndustryStandard/Ipmi.h>
@@ -16,7 +16,8 @@
 #include <Library/IpmiTransportLib.h>
 #include <IpmiInterface.h>
 
-#include "GenericIpmiCommon.h"
+#include <IpmiHooks.h>
+#include <GenericIpmiCommon.h>
 
 #define IPMI_DELAY_UNIT  50   // Unit is microseconds.
 
@@ -32,4 +33,22 @@
   SM_IPMI_BMC_SIGNATURE \
   )
 
-#endif // _IPMI_BMC_H_
+#pragma pack(1)
+
+//
+// Structure to communicate BMC state from PEI to DXE.
+//
+
+typedef struct _IPMI_BMC_HOB {
+  BMC_STATUS    BmcStatus;
+} IPMI_BMC_HOB;
+
+#pragma pack()
+
+EFI_STATUS
+EFIAPI
+IpmiInitializeBmc (
+  IN IPMI_BMC_INSTANCE_DATA  *IpmiInstance
+  );
+
+#endif

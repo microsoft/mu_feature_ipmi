@@ -28,6 +28,7 @@
   ../Common/GenericIpmiCommon.h
   ../Common/GenericIpmi.h
   ../Common/GenericIpmi.c
+  ../Common/IpmiInitialize.c
   DxeGenericIpmi.c
 
 [Packages]
@@ -47,11 +48,13 @@
   TimerLib
   IpmiTransportLib
   IpmiPlatformLib
+  HobLib
 
 [Protocols]
   gIpmiTransportProtocolGuid               # PROTOCOL ALWAYS_PRODUCED
 
 [Guids]
+  gIpmiBmcHobGuid
 
 [Pcd]
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress

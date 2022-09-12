@@ -85,6 +85,7 @@
 
 [LibraryClasses.common.DXE_DRIVER]
   ReportStatusCodeLib|MdeModulePkg/Library/DxeReportStatusCodeLib/DxeReportStatusCodeLib.inf
+  HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
 
 [LibraryClasses.common.DXE_SMM_DRIVER]
   MemoryAllocationLib|MdePkg/Library/SmmMemoryAllocationLib/SmmMemoryAllocationLib.inf
