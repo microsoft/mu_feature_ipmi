@@ -347,6 +347,16 @@ IpmiInitializeBmc (
   ErrorCount = 0;
 
   //
+  // Perform and platform specific BMC initialization that must be done before
+  // beginning communication.
+  //
+  Status = PlatformIpmiInitialize ();
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a: Failed to initialize platform IPMI. %r\n", __FUNCTION__, Status));
+    return Status;
+  }
+
+  //
   // Get the Device ID and check if the system is in Force Update mode.
   //
 
