@@ -227,20 +227,22 @@ GetDeviceId (
   //
   DataSize = sizeof (IpmiInstance->TempData);
   DEBUG ((DEBUG_INFO, "[IPMI] Getting BMC Device ID. DataSize: 0x%x Retries: %d\n", DataSize, Retries));
-  while (EFI_ERROR (
-           Status = IpmiSendCommand (
-                      &IpmiInstance->IpmiTransport,
-                      IPMI_NETFN_APP,
-                      0,
-                      IPMI_APP_GET_DEVICE_ID,
-                      NULL,
-                      0,
-                      IpmiInstance->TempData,
-                      &DataSize
-                      )
-           )
-         )
-  {
+  while (TRUE) {
+    Status = IpmiSendCommand (
+               &IpmiInstance->IpmiTransport,
+               IPMI_NETFN_APP,
+               0,
+               IPMI_APP_GET_DEVICE_ID,
+               NULL,
+               0,
+               IpmiInstance->TempData,
+               &DataSize
+               );
+
+    if (!EFI_ERROR (Status)) {
+      break;
+    }
+
     DEBUG ((
       DEBUG_ERROR,
       "[IPMI] BMC does not respond by Get BMC DID (status: %r), %d retries left.\n",

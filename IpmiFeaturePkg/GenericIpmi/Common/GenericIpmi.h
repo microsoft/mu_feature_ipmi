@@ -6,8 +6,8 @@
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
-#ifndef _GENERIC_IPMI_H_
-#define _GENERIC_IPMI_H_
+#ifndef GENERIC_IPMI_H_
+#define GENERIC_IPMI_H_
 
 #include <Uefi.h>
 #include <IndustryStandard/Ipmi.h>

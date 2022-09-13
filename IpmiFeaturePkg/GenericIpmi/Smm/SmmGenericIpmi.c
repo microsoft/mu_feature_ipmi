@@ -68,7 +68,7 @@ InitializeSmmGenericIpmi (
   // Initialize the KCS transaction timeout. Assume delay unit is 1000 us.
   //
   mIpmiInstance->IpmiTimeoutPeriod =
-    (PcdGet8 (PcdIpmiCommandTimeoutSeconds) * 1000*1000) / IPMI_DELAY_UNIT;
+    (PcdGet8 (PcdIpmiCommandTimeoutSeconds) * 1000 * 1000) / IPMI_DELAY_UNIT;
 
   //
   // Initialize IPMI IO Base, we still use SMS IO base to get device ID and
