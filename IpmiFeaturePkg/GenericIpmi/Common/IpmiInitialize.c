@@ -22,32 +22,27 @@
 
 #include <GenericIpmi.h>
 
+/**
+  Execute the Get Self Test results command to determine whether or not the BMC
+  self tests have passed.
+
+  @param[in]      IpmiInstance      Data structure describing BMC variables and
+                                    used for sending commands.
+  @param[in]      StatusCodeValue   An array used to accumulate error codes for
+                                    later reporting.
+  @param[in,out]  ErrorCount        Counter used to keep track of error codes in
+                                    StatusCodeValue.
+
+  @retval   EFI_SUCCESS         BMC Self test results are retrieved and saved
+                                into BmcStatus.
+  @retval   EFI_DEVICE_ERROR    BMC failed to return self test results.
+**/
 EFI_STATUS
 GetSelfTest (
   IN      IPMI_BMC_INSTANCE_DATA  *IpmiInstance,
   IN      EFI_STATUS_CODE_VALUE   StatusCodeValue[],
   IN OUT  UINT8                   *ErrorCount
   )
-
-/*++
-
-Routine Description:
-
-  Execute the Get Self Test results command to determine whether or not the BMC self tests
-  have passed
-
-Arguments:
-
-  IpmiInstance    - Data structure describing BMC variables and used for sending commands
-  StatusCodeValue - An array used to accumulate error codes for later reporting.
-  ErrorCount      - Counter used to keep track of error codes in StatusCodeValue
-
-Returns:
-
-  EFI_SUCCESS       - BMC Self test results are retrieved and saved into BmcStatus
-  EFI_DEVICE_ERROR  - BMC failed to return self test results.
-
---*/
 {
   EFI_STATUS                      Status;
   UINT32                          DataSize;
@@ -193,30 +188,27 @@ Returns:
   }
 
   return EFI_SUCCESS;
-} // GetSelfTest()
+}
 
+/**
+  Execute the Get Device ID command to determine whether or not the BMC is in
+  Force Update Mode.  If it is, then report it to the error manager.
+
+  @param[in]      IpmiInstance      Data structure describing BMC variables and
+                                    used for sending commands
+  @param[in]      StatusCodeValue   An array used to accumulate error codes for
+                                    later reporting.
+  @param[in,out]  ErrorCount        Counter used to keep track of error codes in
+                                    StatusCodeValue
+
+  @retval   EFI_SUCCESS             Successfully retrieved device ID.
+**/
 EFI_STATUS
 GetDeviceId (
   IN      IPMI_BMC_INSTANCE_DATA  *IpmiInstance,
   IN      EFI_STATUS_CODE_VALUE   StatusCodeValue[],
   IN OUT  UINT8                   *ErrorCount
   )
-
-/*++
-
-Routine Description:
-  Execute the Get Device ID command to determine whether or not the BMC is in Force Update
-  Mode.  If it is, then report it to the error manager.
-
-Arguments:
-  IpmiInstance    - Data structure describing BMC variables and used for sending commands
-  StatusCodeValue - An array used to accumulate error codes for later reporting.
-  ErrorCount      - Counter used to keep track of error codes in StatusCodeValue
-
-Returns:
-  Status
-
---*/
 {
   EFI_STATUS                 Status;
   UINT32                     DataSize;
@@ -339,7 +331,7 @@ Returns:
   @param[in,out]  IpmiInstance    The IPMI instance being initialized.
 
   @retval         EFI_SUCCESS     The BMC state was successfully initialized.
-  @retval         Othewr          An error was returned by a subroutine.
+  @retval         Other          An error was returned by a subroutine.
 **/
 EFI_STATUS
 EFIAPI
