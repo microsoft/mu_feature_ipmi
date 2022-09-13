@@ -29,7 +29,6 @@
   ../Common/GenericIpmi.c
   ../Common/IpmiInitialize.c
   PeiGenericIpmi.c
-  PeiGenericIpmi.h
 
 [Packages]
   MdePkg/MdePkg.dec

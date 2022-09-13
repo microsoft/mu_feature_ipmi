@@ -6,29 +6,93 @@
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
-#include "PeiGenericIpmi.h"
-#include <IndustryStandard/Ipmi.h>
+#include <PiPei.h>
+#include <Uefi.h>
+
+#include <Ppi/IpmiTransportPpi.h>
+
+#include <Library/BaseLib.h>
+#include <Library/DebugLib.h>
+#include <Library/IoLib.h>
+#include <Library/BaseMemoryLib.h>
+#include <Library/PcdLib.h>
+#include <Library/PeiServicesLib.h>
+#include <Library/PeiServicesTablePointerLib.h>
 #include <Library/MemoryAllocationLib.h>
+#include <Library/TimerLib.h>
 #include <Library/HobLib.h>
 #include <Library/ReportStatusCodeLib.h>
 #include <Library/IpmiPlatformLib.h>
 
-///////////////////////////////////////////////////////////////////////////////
-// Function Implementations
+#include <IndustryStandard/Ipmi.h>
+
+#include <GenericIpmi.h>
+
+//
+// Static definitions for the IPMI PEIM
 //
 
-/*****************************************************************************
- @brief
-  Internal function
+#define MBXDAT_B              0x0B
+#define BMC_IPMI_TIMEOUT_PEI  5         // [s] Single IPMI request timeout
+#define IPMI_DELAY_UNIT_PEI   1000      // [s] Each KSC IO delay
+#define IPMI_DEFAULT_IO_BASE  0xCA2
 
- @param[in] PeiServices          General purpose services available to every PEIM.
+/**
+  Sends a pre-boot signal to the BMC. Signal will be sent in very early PEI
+  phase, to enable necessary IPMI access for host boot.
 
- @retval EFI_SUCCESS             Always return EFI_SUCCESS
+  @param[in]  PeiServices     The PEI services structure.
+
+  @retval     EFI_SUCCESS     Indicates that the signal is sent successfully.
+**/
+EFI_STATUS
+SendPreBootSignaltoBmc (
+  IN CONST EFI_PEI_SERVICES  **PeiServices
+  )
+{
+  EFI_STATUS          Status;
+  EFI_PEI_CPU_IO_PPI  *CpuIoPpi;
+  UINT32              ProvisionPort = 0;
+  UINT8               PreBoot       = 0;
+
+  //
+  // Locate CpuIo service
+  //
+  CpuIoPpi      = (**PeiServices).CpuIo;
+  ProvisionPort = PcdGet32 (PcdSioMailboxBaseAddress) + MBXDAT_B;
+  PreBoot       = 0x01;// PRE-BOOT
+
+  Status = CpuIoPpi->Io.Write (
+                          PeiServices,
+                          CpuIoPpi,
+                          EfiPeiCpuIoWidthUint8,
+                          ProvisionPort,
+                          1,
+                          &PreBoot
+                          );
+
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "SendPreBootSignaltoBmc () Write PRE-BOOT Status=%r\n", Status));
+    return Status;
+  }
+
+  return EFI_SUCCESS;
+}
+
+/**
+  The entry point of the Ipmi PEIM. Installs Ipmi PPI interface.
+
+  @param[in]  FileHandle    Handle of the file being invoked.
+  @param[in]  PeiServices   Describes the list of possible PEI Services.
+
+  @retval EFI_SUCCESS       Indicates that Ipmi initialization completed
+                            successfully.
 **/
 EFI_STATUS
 EFIAPI
-PeiInitializeIpmiPhysicalLayer (
-  IN CONST EFI_PEI_SERVICES  **PeiServices
+PeimIpmiInterfaceInit (
+  IN       EFI_PEI_FILE_HANDLE  FileHandle,
+  IN CONST EFI_PEI_SERVICES     **PeiServices
   )
 {
   EFI_STATUS              Status;
@@ -131,70 +195,3 @@ PeiInitializeIpmiPhysicalLayer (
 
   return EFI_SUCCESS;
 }
-
-/*****************************************************************************
- @bref
-  PRE-BOOT signal will be sent in very early PEI phase, to enable necessary KCS access for host boot.
-
-  @param[in] PeiServices          General purpose services available to every PEIM.
-
-  @retval EFI_SUCCESS   Indicates that the signal is sent successfully.
-**/
-EFI_STATUS
-SendPreBootSignaltoBmc (
-  IN CONST EFI_PEI_SERVICES  **PeiServices
-  )
-{
-  EFI_STATUS          Status;
-  EFI_PEI_CPU_IO_PPI  *CpuIoPpi;
-  UINT32              ProvisionPort = 0;
-  UINT8               PreBoot       = 0;
-
-  //
-  // Locate CpuIo service
-  //
-  CpuIoPpi      = (**PeiServices).CpuIo;
-  ProvisionPort = PcdGet32 (PcdSioMailboxBaseAddress) + MBXDAT_B;
-  PreBoot       = 0x01;// PRE-BOOT
-
-  Status = CpuIoPpi->Io.Write (
-                          PeiServices,
-                          CpuIoPpi,
-                          EfiPeiCpuIoWidthUint8,
-                          ProvisionPort,
-                          1,
-                          &PreBoot
-                          );
-  if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "SendPreBootSignaltoBmc () Write PRE-BOOT Status=%r\n", Status));
-    return Status;
-  }
-
-  return EFI_SUCCESS;
-}
-
-/*****************************************************************************
- @bref
-  The entry point of the Ipmi PEIM. Instals Ipmi PPI interface.
-
-  @param  FileHandle  Handle of the file being invoked.
-  @param  PeiServices Describes the list of possible PEI Services.
-
-  @retval EFI_SUCCESS   Indicates that Ipmi initialization completed successfully.
-**/
-EFI_STATUS
-EFIAPI
-PeimIpmiInterfaceInit (
-  IN       EFI_PEI_FILE_HANDLE  FileHandle,
-  IN CONST EFI_PEI_SERVICES     **PeiServices
-  )
-{
-  // EFI_STATUS  Status;    // MU_CHANGE - Unused.
-
-  //
-  // Performing Ipmi physical layer initialization
-  //
-  PeiInitializeIpmiPhysicalLayer (PeiServices);                // MU_CHANGE
-
-  return EFI_SUCCESS;
-} // PeimIpmiInterfaceInit()

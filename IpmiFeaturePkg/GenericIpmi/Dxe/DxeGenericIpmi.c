@@ -110,6 +110,7 @@ DxeGenericIpmiEntry (
   } else {
     BmcHob                   = (IPMI_BMC_HOB *)GET_GUID_HOB_DATA (GuidHob);
     mIpmiInstance->BmcStatus = BmcHob->BmcStatus;
+    DEBUG ((DEBUG_INFO, "[IPMI] Found IPMI BMC HOB. Status = 0x%d\n", BmcHob->BmcStatus));
   }
 
   //
