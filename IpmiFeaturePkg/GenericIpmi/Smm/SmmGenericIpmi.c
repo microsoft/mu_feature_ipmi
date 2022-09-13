@@ -21,7 +21,6 @@
 #include <Library/IpmiBaseLib.h>
 #include <SmStatusCodes.h>
 #include "IpmiHooks.h"
-#include "GenericIpmiCommon.h"
 #include "GenericIpmi.h"
 #include <Library/TimerLib.h>
 

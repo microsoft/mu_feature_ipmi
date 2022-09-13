@@ -102,6 +102,23 @@ IpmiPrintCommand (
   DEBUG ((DebugLevel, "**************** IPMI %ls End ****************\n", TypeString));
 }
 
+/**
+  Send IPMI command to BMC
+
+  @param[in]      This              Pointer to IPMI protocol instance.
+  @param[in]      NetFunction       Net Function of command to send.
+  @param[in]      Lun               LUN of command to send.
+  @param[in]      Command           IPMI command to send.
+  @param[in]      CommandData       Pointer to command data buffer, if needed.
+  @param[in]      CommandDataSize   Size of command data buffer.
+  @param[in,out]  ResponseData      Pointer to response data buffer.
+  @param[in,out]  ResponseDataSize  Pointer to response data buffer size.
+
+  @retval   EFI_INVALID_PARAMETER   One of the input values is bad.
+  @retval   EFI_DEVICE_ERROR        IPMI command failed.
+  @retval   EFI_BUFFER_TOO_SMALL    Response buffer is too small.
+  @retval   EFI_SUCCESS             Command completed successfully.
+**/
 EFI_STATUS
 EFIAPI
 IpmiSendCommandInternal (
@@ -114,33 +131,6 @@ IpmiSendCommandInternal (
   IN OUT  UINT8           *ResponseData,
   IN OUT  UINT8           *ResponseDataSize
   )
-
-/*++
-
-Routine Description:
-
-  Send IPMI command to BMC
-
-Arguments:
-
-  This              - Pointer to IPMI protocol instance
-  NetFunction       - Net Function of command to send
-  Lun               - LUN of command to send
-  Command           - IPMI command to send
-  CommandData       - Pointer to command data buffer, if needed
-  CommandDataSize   - Size of command data buffer
-  ResponseData      - Pointer to response data buffer
-  ResponseDataSize  - Pointer to response data buffer size
-
-Returns:
-
-  EFI_INVALID_PARAMETER - One of the input values is bad
-  EFI_DEVICE_ERROR      - IPMI command failed
-  EFI_BUFFER_TOO_SMALL  - Response buffer is too small
-  EFI_UNSUPPORTED       - Command is not supported by BMC
-  EFI_SUCCESS           - Command completed successfully
-
---*/
 {
   IPMI_BMC_INSTANCE_DATA  *IpmiInstance;
   UINT8                   DataSize;
@@ -330,6 +320,16 @@ Returns:
   return EFI_SUCCESS;
 }
 
+/**
+  Updates the BMC status and returns the Com Address.
+
+  @param[in,out]  <ParameterName>       <Description>
+  @param[in]  This            Pointer to IPMI protocol instance
+  @param[out] BmcStatus       BMC status
+  @param[out] ComAddress      Com Address
+
+  @retval     EFI_SUCCESS     Success
+**/
 EFI_STATUS
 EFIAPI
 IpmiBmcStatus (
@@ -337,24 +337,6 @@ IpmiBmcStatus (
   OUT BMC_STATUS      *BmcStatus,
   OUT SM_COM_ADDRESS  *ComAddress
   )
-
-/*++
-
-Routine Description:
-
-  Updates the BMC status and returns the Com Address
-
-Arguments:
-
-  This        - Pointer to IPMI protocol instance
-  BmcStatus   - BMC status
-  ComAddress  - Com Address
-
-Returns:
-
-  EFI_SUCCESS - Success
-
---*/
 {
   IPMI_BMC_INSTANCE_DATA  *IpmiInstance;
 

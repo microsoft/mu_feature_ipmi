@@ -332,10 +332,19 @@ Returns:
   return Status;
 }
 
+/**
+  Initializes the IPMI state for the BMC. This includes performs platform
+  specific logic, getting the device ID, and checking self-test results.
+
+  @param[in,out]  IpmiInstance    The IPMI instance being initialized.
+
+  @retval         EFI_SUCCESS     The BMC state was successfully initialized.
+  @retval         Othewr          An error was returned by a subroutine.
+**/
 EFI_STATUS
 EFIAPI
 IpmiInitializeBmc (
-  IN IPMI_BMC_INSTANCE_DATA  *IpmiInstance
+  IN OUT  IPMI_BMC_INSTANCE_DATA  *IpmiInstance
   )
 
 {

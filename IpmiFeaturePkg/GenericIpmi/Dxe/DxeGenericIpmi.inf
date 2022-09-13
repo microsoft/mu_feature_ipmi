@@ -25,7 +25,6 @@
 [Sources]
   ../Common/IpmiHooks.h
   ../Common/IpmiHooks.c
-  ../Common/GenericIpmiCommon.h
   ../Common/GenericIpmi.h
   ../Common/GenericIpmi.c
   ../Common/IpmiInitialize.c
