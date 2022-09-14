@@ -102,7 +102,7 @@ typedef struct _IPMI_BMC_HOB {
   @param[in,out]  IpmiInstance    The IPMI instance being initialized.
 
   @retval         EFI_SUCCESS     The BMC state was successfully initialized.
-  @retval         Othewr          An error was returned by a subroutine.
+  @retval         Other          An error was returned by a subroutine.
 **/
 EFI_STATUS
 EFIAPI
@@ -143,7 +143,6 @@ IpmiSendCommandInternal (
 /**
   Updates the BMC status and returns the Com Address.
 
-  @param[in,out]  <ParameterName>       <Description>
   @param[in]  This            Pointer to IPMI protocol instance
   @param[out] BmcStatus       BMC status
   @param[out] ComAddress      Com Address

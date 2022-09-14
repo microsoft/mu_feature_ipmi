@@ -26,7 +26,7 @@
 EFI_STATUS
 EFIAPI
 PlatformIpmiIoRangeSet (
-  UINT16  IpmiIoBase
+  IN UINT16  IpmiIoBase
   );
 
 /**

@@ -57,9 +57,10 @@ GetSelfTest (
   //
   // Get the SELF TEST Results.
   //
+  // Note: If BMC PcdIpmiBmcReadyDelayTimer < BMC_IPMI_TIMEOUT, it need set
+  //       Retries as 1.
   //
-  // Note: If BMC PcdIpmiBmcReadyDelayTimer < BMC_IPMI_TIMEOUT, it need set Retries as 1. Otherwise it will make SELT failure, caused by below condition (EFI_ERROR(Status) || Retries == 0)
-  //
+
   if (PcdGet8 (PcdIpmiBmcReadyDelayTimer) < PcdGet8 (PcdBmcTimeoutSeconds)) {
     Retries = 1;
   } else {
