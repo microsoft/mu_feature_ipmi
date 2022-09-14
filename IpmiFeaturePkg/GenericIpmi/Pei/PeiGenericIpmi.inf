@@ -24,11 +24,10 @@
 [Sources]
   ../Common/IpmiHooks.h
   ../Common/IpmiHooks.c
-  ../Common/GenericIpmiCommon.h
   ../Common/GenericIpmi.h
   ../Common/GenericIpmi.c
+  ../Common/IpmiInitialize.c
   PeiGenericIpmi.c
-  PeiGenericIpmi.h
 
 [Packages]
   MdePkg/MdePkg.dec
@@ -41,10 +40,12 @@
   IoLib
   ReportStatusCodeLib
   TimerLib
-  IpmiPlatformHookLib
+  HobLib
+  IpmiPlatformLib
   IpmiTransportLib
 
 [Guids]
+  gIpmiBmcHobGuid
 
 [Ppis]
   gPeiIpmiTransportPpiGuid       #ALWAYS PRODUCE
@@ -55,6 +56,8 @@
   gIpmiFeaturePkgTokenSpaceGuid.PcdSioMailboxBaseAddress
   gIpmiFeaturePkgTokenSpaceGuid.PcdSignalPreBootToBmc
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCommandMaxReties
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCheckSelfTestResults
+  gIpmiFeaturePkgTokenSpaceGuid.PcdBmcTimeoutSeconds
 
 [Depex]
   TRUE

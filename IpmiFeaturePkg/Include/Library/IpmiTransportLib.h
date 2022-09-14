@@ -20,7 +20,6 @@
 EFI_STATUS
 SendDataToBmcPort (
   UINT64  IpmiTimeoutPeriod,
-  VOID    *Context,
   UINT8   *Data,
   UINT8   DataSize
   )
@@ -34,7 +33,6 @@ Routine Description:
 Arguments:
 
   IpmiInstance  - The pointer of IPMI_BMC_INSTANCE_DATA
-  Context       - The context of this operation
   Data          - The data pointer to be sent
   DataSize      - The data size
 
@@ -48,7 +46,6 @@ Returns:
 EFI_STATUS
 ReceiveBmcDataFromPort (
   UINT64  IpmiTimeoutPeriod,
-  VOID    *Context,
   UINT8   *Data,
   UINT8   *DataSize
   )
@@ -64,7 +61,6 @@ Routine Description:
 Arguments:
 
   IpmiInstance  - The pointer of IPMI_BMC_INSTANCE_DATA
-  Context       - The context of this operation
   Data          - The buffer pointer
   DataSize      - The buffer size
 

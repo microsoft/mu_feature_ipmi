@@ -18,8 +18,8 @@
 [Sources]
   ../Common/IpmiHooks.h
   ../Common/IpmiHooks.c
-  ../Common/GenericIpmiCommon.h
   ../Common/GenericIpmi.c
+  ../Common/IpmiInitialize.c
   ../Common/GenericIpmi.h
   SmmGenericIpmi.c          #GenericIpmi.c+IpmiBmcInitialize.c
 
@@ -37,18 +37,23 @@
   IoLib
   ReportStatusCodeLib
   TimerLib
+  HobLib
   IpmiTransportLib
+  IpmiPlatformLib
 
 [Protocols]
   gSmmIpmiTransportProtocolGuid                     # PROTOCOL ALWAYS_PRODUCED
 
 [Guids]
+  gIpmiBmcHobGuid
 
 [Pcd]
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiBmcReadyDelayTimer
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCommandTimeoutSeconds
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCommandMaxReties
+  gIpmiFeaturePkgTokenSpaceGuid.PcdBmcTimeoutSeconds
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCheckSelfTestResults
 
 [Depex]
  gIpmiTransportProtocolGuid

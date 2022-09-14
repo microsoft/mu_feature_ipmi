@@ -25,9 +25,9 @@
 [Sources]
   ../Common/IpmiHooks.h
   ../Common/IpmiHooks.c
-  ../Common/GenericIpmiCommon.h
   ../Common/GenericIpmi.h
   ../Common/GenericIpmi.c
+  ../Common/IpmiInitialize.c
   DxeGenericIpmi.c
 
 [Packages]
@@ -46,12 +46,14 @@
   ReportStatusCodeLib
   TimerLib
   IpmiTransportLib
-  BmcSelfTestPlatformLib
+  IpmiPlatformLib
+  HobLib
 
 [Protocols]
   gIpmiTransportProtocolGuid               # PROTOCOL ALWAYS_PRODUCED
 
 [Guids]
+  gIpmiBmcHobGuid
 
 [Pcd]
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress
