@@ -290,6 +290,12 @@ IpmiSendCommandInternal (
         }
       }
 
+      //
+      // return the required size. Total size - header size  + 1 byte for
+      // completion code.
+      //
+
+      *ResponseDataSize = DataSize - IPMI_RESPONSE_HEADER_SIZE + 1;
       return EFI_BUFFER_TOO_SMALL;
     }
 

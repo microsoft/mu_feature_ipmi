@@ -26,6 +26,9 @@
   IpmiTransportLib|IpmiFeaturePkg/Library/MockIpmi/IpmiTransportLibMock.inf
   IpmiPlatformLib|IpmiFeaturePkg/Library/IpmiPlatformLibNull/IpmiPlatformLibNull.inf
 
+[PcdsFixedAtBuild]
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCheckSelfTestResults|TRUE
+
 [Components]
   IpmiFeaturePkg/Test/UnitTest/SsifUnitTest/BmcSmbusLibTest.inf
   IpmiFeaturePkg/Test/UnitTest/SsifUnitTest/SsifUnitTestHost.inf {
