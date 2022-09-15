@@ -29,6 +29,4 @@
   IpmiBaseLib
 
 [Pcd]
-  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiSelOemManufacturerId0
-  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiSelOemManufacturerId1
-  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiSelOemManufacturerId2
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiSelOemManufacturerId

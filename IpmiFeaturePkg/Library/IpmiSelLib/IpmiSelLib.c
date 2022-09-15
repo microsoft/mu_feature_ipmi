@@ -229,6 +229,7 @@ SelAddOemEntry (
 
 {
   SEL_RECORD  Entry;
+  UINT8       *ManufacturerId;
 
   if ((RecordType < IPMI_SEL_OEM_TIME_STAMP_RECORD_START) ||
       (RecordType > IPMI_SEL_OEM_TIME_STAMP_RECORD_END))
@@ -243,12 +244,14 @@ SelAddOemEntry (
     return EFI_INVALID_PARAMETER;
   }
 
+  ManufacturerId = (UINT8 *)PcdGetPtr (PcdIpmiSelOemManufacturerId);
+
   Entry.RecordId                     = 0;
   Entry.RecordType                   = RecordType;
   Entry.Record.Oem.TimeStamp         = 0;
-  Entry.Record.Oem.ManufacturerId[0] = PcdGet8 (PcdIpmiSelOemManufacturerId0);
-  Entry.Record.Oem.ManufacturerId[1] = PcdGet8 (PcdIpmiSelOemManufacturerId1);
-  Entry.Record.Oem.ManufacturerId[2] = PcdGet8 (PcdIpmiSelOemManufacturerId2);
+  Entry.Record.Oem.ManufacturerId[0] = ManufacturerId[0];
+  Entry.Record.Oem.ManufacturerId[1] = ManufacturerId[1];
+  Entry.Record.Oem.ManufacturerId[2] = ManufacturerId[2];
   CopyMem (&Entry.Record.Oem.Data[0], &Data[0], sizeof (Entry.Record.Oem.Data));
 
   return IpmiAddSelEntry (&Entry, RecordId);

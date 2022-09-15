@@ -36,18 +36,11 @@ the drivers such as BmcElog which rely on the IPMI command library.
 
 ![IPMI Stack](./Images/IpmiStack_mu.jpg)
 
-## Components
+## Extending the IPMI Command Set
 
-The IPMI layers and functions can be found in these components.
-
-- __BmcAcpi__: Implements ACPI integration for IPMI.
-- __BmcElog__: Implements IPMI event logs.
-- __Frb__: Implements Fault Resilient Boot features.
-- __GenericIpmi__: Implements the drivers for communicating over IPMI.
-- __IpmiFru__: Driver for retrieving device information.
-- __IpmiInit__: Driver for initializing IPMI and running BMC self-tests.
-- __OdWdt__: Driver for OS watch dog timer.
-- __SolStatus__: Driver for IPMI serial over lan.
-- __Test__: Implements host based tests for IPMI components.
-- __Transports__: Implements the platform specific communication transports for
-                  IPMI.
+Platforms may implement custom or specialized IPMI commands and functionality
+that are not implemented in this repo. In this case, the platform should leverage
+the IPMI base library to abstract the interface into a single command which they
+can provide an opaque command and response buffer. Platforms should avoid directly
+calling into the protocol/PPI as this is considered internal and may be subject
+to change.
