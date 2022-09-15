@@ -22,6 +22,9 @@
   BmcSmbusLib|IpmiFeaturePkg/Test/UnitTest/SsifUnitTest/BmcSmbusLibTest.inf
   IpmiSelLib|IpmiFeaturePkg/Library/IpmiSelLib/IpmiSelLib.inf
   TimerLib|MdePkg/Library/BaseTimerLibNullTemplate/BaseTimerLibNullTemplate.inf
+  ReportStatusCodeLib|MdePkg/Library/BaseReportStatusCodeLibNull/BaseReportStatusCodeLibNull.inf
+  IpmiTransportLib|IpmiFeaturePkg/Library/MockIpmi/IpmiTransportLibMock.inf
+  IpmiPlatformLib|IpmiFeaturePkg/Library/IpmiPlatformLibNull/IpmiPlatformLibNull.inf
 
 [Components]
   IpmiFeaturePkg/Test/UnitTest/SsifUnitTest/BmcSmbusLibTest.inf
@@ -34,6 +37,8 @@
     <LibraryClasses>
       IpmiBaseLib|IpmiFeaturePkg/Library/MockIpmi/IpmiBaseLibMock.inf
   }
+
+  IpmiFeaturePkg/GenericIpmi/Test/GenericIpmiUnitTest.inf
 
   #
   # Build HOST_APPLICATION Libraries
