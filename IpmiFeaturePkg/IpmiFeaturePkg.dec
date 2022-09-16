@@ -54,9 +54,7 @@
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCommandMaxReties|3|UINT8|0xF0000005
   gIpmiFeaturePkgTokenSpaceGuid.PcdBmcTimeoutSeconds|30|UINT8|0xF0000006
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiBmcReadyDelayTimer|120|UINT8|0xF0000007
-  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiSelOemManufacturerId0|0|UINT8|0xF0000008
-  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiSelOemManufacturerId1|0|UINT8|0xF0000009
-  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiSelOemManufacturerId2|0|UINT8|0xF000000A
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiSelOemManufacturerId|{0, 0, 0}|VOID*|0xF0000008
   gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2EnabledFlag|TRUE|BOOLEAN|0xF000000B
   gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2TimeoutSeconds|600|UINT16|0xF000000C
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress|0xCA2|UINT16|0xF000000D
