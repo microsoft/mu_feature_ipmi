@@ -7,7 +7,7 @@ Project Mu IPMI Feature Repository
 ============================= ================= =============== ===================
  Host Type & Toolchain        Build Status      Test Status     Code Coverage
 ============================= ================= =============== ===================
-Windows_VS2022_               |WindowsCiBuild|  |WindowsCiTest| |WindowsCiCoverage|
+Windows_VS_                   |WindowsCiBuild|  |WindowsCiTest| |WindowsCiCoverage|
 Ubuntu_GCC5_                  |UbuntuCiBuild|   |UbuntuCiTest|  |UbuntuCiCoverage|
 ============================= ================= =============== ===================
 
