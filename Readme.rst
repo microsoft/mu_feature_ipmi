@@ -176,14 +176,14 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 .. CoreCI
 
-.. _Windows_VS2022: https://dev.azure.com/projectmu/mu/_build/latest?definitionId=99&&branchName=main
+.. _Windows_VS: https://dev.azure.com/projectmu/mu/_build/latest?definitionId=121&&branchName=main
 .. |WindowsCiBuild| image:: https://dev.azure.com/projectmu/mu/_apis/build/status/CI/Feature%20IPMI/Mu%20Feature%20IPMI%20-%20CI%20-%20Windows%20VS?repoName=microsoft%2Fmu_feature_ipmi&branchName=main
-.. |WindowsCiTest| image:: https://img.shields.io/azure-devops/tests/projectmu/mu/99.svg
+.. |WindowsCiTest| image:: https://img.shields.io/azure-devops/tests/projectmu/mu/121.svg
 .. |WindowsCiCoverage| image:: https://img.shields.io/badge/coverage-coming_soon-blue
 
-.. _Ubuntu_GCC5: https://dev.azure.com/projectmu/mu/_build/latest?definitionId=98&branchName=main
+.. _Ubuntu_GCC5: https://dev.azure.com/projectmu/mu/_build/latest?definitionId=120&branchName=main
 .. |UbuntuCiBuild| image:: https://dev.azure.com/projectmu/mu/_apis/build/status/CI/Feature%20IPMI/Mu%20Feature%20IPMI%20-%20CI%20-%20GCC5?repoName=microsoft%2Fmu_feature_ipmi&branchName=main
-.. |UbuntuCiTest| image:: https://img.shields.io/azure-devops/tests/projectmu/mu/98.svg
+.. |UbuntuCiTest| image:: https://img.shields.io/azure-devops/tests/projectmu/mu/120.svg
 .. |UbuntuCiCoverage| image:: https://img.shields.io/badge/coverage-coming_soon-blue
 
 .. |NugetBuild| image:: https://github.com/microsoft/mu_feature_ipmi/actions/workflows/release.yaml/badge.svg
