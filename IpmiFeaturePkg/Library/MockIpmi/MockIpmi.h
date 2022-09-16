@@ -231,4 +231,55 @@ MockIpmiSelGetEntry (
   IN OUT UINT8  *ResponseSize
   );
 
+/**
+  Mocks the result of IPMI_APP_GET_WATCHDOG_TIMER.
+
+  @param[in]       Data           The IPMI request data.
+  @param[in]       DataSize       The size of the IPMI request data.
+  @param[out]      Response       The response data buffer.
+  @param[in, out]  ResponseSize   On input, the available size of buffer.
+                                  On output, the size of written data in the buffer.
+**/
+VOID
+MockIpmiGetWatchdog (
+  IN VOID       *Data,
+  IN UINT8      DataSize,
+  OUT VOID      *Response,
+  IN OUT UINT8  *ResponseSize
+  );
+
+/**
+  Mocks the result of IPMI_APP_SET_WATCHDOG_TIMER.
+
+  @param[in]       Data           The IPMI request data.
+  @param[in]       DataSize       The size of the IPMI request data.
+  @param[out]      Response       The response data buffer.
+  @param[in, out]  ResponseSize   On input, the available size of buffer.
+                                  On output, the size of written data in the buffer.
+**/
+VOID
+MockIpmiSetWatchdog (
+  IN VOID       *Data,
+  IN UINT8      DataSize,
+  OUT VOID      *Response,
+  IN OUT UINT8  *ResponseSize
+  );
+
+/**
+  Mocks the result of IPMI_APP_RESET_WATCHDOG_TIMER.
+
+  @param[in]       Data           The IPMI request data.
+  @param[in]       DataSize       The size of the IPMI request data.
+  @param[out]      Response       The response data buffer.
+  @param[in, out]  ResponseSize   On input, the available size of buffer.
+                                  On output, the size of written data in the buffer.
+**/
+VOID
+MockIpmiResetWatchdog (
+  IN VOID       *Data,
+  IN UINT8      DataSize,
+  OUT VOID      *Response,
+  IN OUT UINT8  *ResponseSize
+  );
+
 #endif

@@ -75,7 +75,7 @@ TestSsifSimpleWrite (
 
   for (Index = 0; Index < (sizeof (TestSizes) / sizeof (TestSizes[0])); Index += 1) {
     PatternBuffer (&TestData[0], TestSizes[Index]);
-    Status = SendDataToBmcPort (0, NULL, (UINT8 *)&TestData[0], TestSizes[Index]);
+    Status = SendDataToBmcPort (0, (UINT8 *)&TestData[0], TestSizes[Index]);
     UT_ASSERT_STATUS_EQUAL (Status, EFI_SUCCESS);
     UT_ASSERT_TRUE (CheckTxBuffer ((UINT8 *)&TestData[0], TestSizes[Index]));
     SmbusTestLibReset ();
@@ -116,7 +116,7 @@ TestSsifSimpleRead (
     PatternBuffer (&TestData[0], TestSizes[Index]);
     SetRxBuffer (&TestData[0], TestSizes[Index]);
     ReadSize = sizeof (ReadData);
-    Status   = ReceiveBmcDataFromPort (0, NULL, (UINT8 *)&ReadData[0], &ReadSize);
+    Status   = ReceiveBmcDataFromPort (0, (UINT8 *)&ReadData[0], &ReadSize);
     UT_ASSERT_STATUS_EQUAL (Status, EFI_SUCCESS);
     UT_ASSERT_EQUAL (ReadSize, TestSizes[Index]);
     UT_ASSERT_MEM_EQUAL (&TestData[0], &ReadData[0], ReadSize);

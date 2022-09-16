@@ -20,14 +20,17 @@ UINT8               gResponseSize;
 
 MOCK_IPMI_HANDLER_ENTRY  MockHandlers[] =
 {
-  { IPMI_NETFN_APP,     IPMI_APP_GET_DEVICE_ID,        MockIpmiGetDeviceId },
-  { IPMI_NETFN_APP,     IPMI_APP_GET_SELFTEST_RESULTS, MockIpmiGetSelfTest },
-  { IPMI_NETFN_STORAGE, IPMI_STORAGE_GET_SEL_INFO,     MockIpmiSelGetInfo  },
-  { IPMI_NETFN_STORAGE, IPMI_STORAGE_ADD_SEL_ENTRY,    MockIpmiSelAddEntry },
-  { IPMI_NETFN_STORAGE, IPMI_STORAGE_GET_SEL_TIME,     MockIpmiSelGetTime  },
-  { IPMI_NETFN_STORAGE, IPMI_STORAGE_SET_SEL_TIME,     MockIpmiSelSetTime  },
-  { IPMI_NETFN_STORAGE, IPMI_STORAGE_CLEAR_SEL,        MockIpmiSelClear    },
-  { IPMI_NETFN_STORAGE, IPMI_STORAGE_GET_SEL_ENTRY,    MockIpmiSelGetEntry },
+  { IPMI_NETFN_APP,     IPMI_APP_GET_DEVICE_ID,        MockIpmiGetDeviceId   },
+  { IPMI_NETFN_APP,     IPMI_APP_GET_SELFTEST_RESULTS, MockIpmiGetSelfTest   },
+  { IPMI_NETFN_STORAGE, IPMI_STORAGE_GET_SEL_INFO,     MockIpmiSelGetInfo    },
+  { IPMI_NETFN_STORAGE, IPMI_STORAGE_ADD_SEL_ENTRY,    MockIpmiSelAddEntry   },
+  { IPMI_NETFN_STORAGE, IPMI_STORAGE_GET_SEL_TIME,     MockIpmiSelGetTime    },
+  { IPMI_NETFN_STORAGE, IPMI_STORAGE_SET_SEL_TIME,     MockIpmiSelSetTime    },
+  { IPMI_NETFN_STORAGE, IPMI_STORAGE_CLEAR_SEL,        MockIpmiSelClear      },
+  { IPMI_NETFN_STORAGE, IPMI_STORAGE_GET_SEL_ENTRY,    MockIpmiSelGetEntry   },
+  { IPMI_NETFN_APP,     IPMI_APP_GET_WATCHDOG_TIMER,   MockIpmiGetWatchdog   },
+  { IPMI_NETFN_APP,     IPMI_APP_SET_WATCHDOG_TIMER,   MockIpmiSetWatchdog   },
+  { IPMI_NETFN_APP,     IPMI_APP_RESET_WATCHDOG_TIMER, MockIpmiResetWatchdog },
 };
 
 //

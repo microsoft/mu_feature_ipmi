@@ -1,5 +1,5 @@
 ## @file
-# The NULL implementation of the BMC self-test platform library.
+# The NULL implementation of the IPMI platform library.
 #
 # Copyright (c) Microsoft Corporation.<BR>
 # SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -7,14 +7,14 @@
 
 [Defines]
   INF_VERSION                    = 0x00010005
-  BASE_NAME                      = BmcSelfTestPlatformLibNull
-  FILE_GUID                      = C7C0A36D-3D30-4214-A56E-78D3C770F884
+  BASE_NAME                      = IpmiPlatformLibNull
+  FILE_GUID                      = 70F828F1-28F6-489B-B10E-EE9C0C1858FC
   MODULE_TYPE                    = BASE
   VERSION_STRING                 = 1.0
-  LIBRARY_CLASS                  = BmcSelfTestPlatformLib
+  LIBRARY_CLASS                  = IpmiPlatformLib
 
 [sources]
-  BmcSelfTestPlatformLibNull.c
+  IpmiPlatformLibNull.c
 
 [Packages]
   MdePkg/MdePkg.dec

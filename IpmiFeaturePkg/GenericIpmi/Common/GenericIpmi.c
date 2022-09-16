@@ -55,6 +55,70 @@ Returns:
   return EFI_SUCCESS;
 }
 
+/**
+  Prints out the IPMI command and it's data for debugging purposes.
+
+  @param[in]  Response          Indicates this is a response.
+  @param[in]  NetFunction       The net function of the command.
+  @param[in]  Command           The command being sent.
+  @param[in]  CompletionCode    The completion code when this is a response.
+  @param[in]  Data              The pointer to the data being sent.
+  @param[in]  DataSize          The size of the data.
+**/
+VOID
+EFIAPI
+IpmiPrintCommand (
+  IN CONST BOOLEAN  Response,
+  IN CONST UINT8    NetFunction,
+  IN CONST UINT8    Command,
+  IN CONST UINT8    CompletionCode,
+  IN CONST UINT8    *Data,
+  IN CONST UINT8    DataSize
+  )
+{
+  CONST UINT32  DebugLevel = DEBUG_VERBOSE;
+  UINT8         Index;
+  CHAR16        *TypeString;
+
+  TypeString = Response ? L"Response" : L"Command";
+
+  DEBUG ((DebugLevel, "*************** IPMI %ls Start ***************\n", TypeString));
+  DEBUG ((DebugLevel, "NetFunction:       0x%02x\n", NetFunction));
+  DEBUG ((DebugLevel, "Command:           0x%02x\n", Command));
+  if (Response) {
+    DEBUG ((DebugLevel, "Completion Code:   0x%02x\n", CompletionCode));
+  }
+
+  DEBUG ((DebugLevel, "DataSize:          0x%02x\n", DataSize));
+  for (Index = 0; Index < DataSize; Index++) {
+    if (Index % 16 == 0) {
+      DEBUG ((DebugLevel, "\n"));
+    }
+
+    DEBUG ((DebugLevel, "%02x ", Data[Index]));
+  }
+
+  DEBUG ((DebugLevel, "\n"));
+  DEBUG ((DebugLevel, "**************** IPMI %ls End ****************\n", TypeString));
+}
+
+/**
+  Send IPMI command to BMC
+
+  @param[in]      This              Pointer to IPMI protocol instance.
+  @param[in]      NetFunction       Net Function of command to send.
+  @param[in]      Lun               LUN of command to send.
+  @param[in]      Command           IPMI command to send.
+  @param[in]      CommandData       Pointer to command data buffer, if needed.
+  @param[in]      CommandDataSize   Size of command data buffer.
+  @param[in,out]  ResponseData      Pointer to response data buffer.
+  @param[in,out]  ResponseDataSize  Pointer to response data buffer size.
+
+  @retval   EFI_INVALID_PARAMETER   One of the input values is bad.
+  @retval   EFI_DEVICE_ERROR        IPMI command failed.
+  @retval   EFI_BUFFER_TOO_SMALL    Response buffer is too small.
+  @retval   EFI_SUCCESS             Command completed successfully.
+**/
 EFI_STATUS
 EFIAPI
 IpmiSendCommandInternal (
@@ -65,37 +129,8 @@ IpmiSendCommandInternal (
   IN      UINT8           *CommandData,
   IN      UINT8           CommandDataSize,
   IN OUT  UINT8           *ResponseData,
-  IN OUT  UINT8           *ResponseDataSize,
-  IN      VOID            *Context
+  IN OUT  UINT8           *ResponseDataSize
   )
-
-/*++
-
-Routine Description:
-
-  Send IPMI command to BMC
-
-Arguments:
-
-  This              - Pointer to IPMI protocol instance
-  NetFunction       - Net Function of command to send
-  Lun               - LUN of command to send
-  Command           - IPMI command to send
-  CommandData       - Pointer to command data buffer, if needed
-  CommandDataSize   - Size of command data buffer
-  ResponseData      - Pointer to response data buffer
-  ResponseDataSize  - Pointer to response data buffer size
-  Context           - Context
-
-Returns:
-
-  EFI_INVALID_PARAMETER - One of the input values is bad
-  EFI_DEVICE_ERROR      - IPMI command failed
-  EFI_BUFFER_TOO_SMALL  - Response buffer is too small
-  EFI_UNSUPPORTED       - Command is not supported by BMC
-  EFI_SUCCESS           - Command completed successfully
-
---*/
 {
   IPMI_BMC_INSTANCE_DATA  *IpmiInstance;
   UINT8                   DataSize;
@@ -107,7 +142,12 @@ Returns:
 
   RetryCnt     = PcdGet8 (PcdIpmiCommandMaxReties);
   IpmiInstance = INSTANCE_FROM_SM_IPMI_BMC_THIS (This);
-  DEBUG ((DEBUG_VERBOSE, "[IPMI] Generic - Sending IPMI Command. Fun: %d Cmd: %d\n", NetFunction, Command));
+
+  //
+  // Print out the command being sent for debugging.
+  //
+
+  IpmiPrintCommand (FALSE, NetFunction, Command, 0, CommandData, CommandDataSize);
 
   while (RetryCnt--) {
     //
@@ -143,7 +183,6 @@ Returns:
 
     Status = SendDataToBmcPort (
                IpmiInstance->IpmiTimeoutPeriod,
-               Context,
                (UINT8 *)IpmiCommand,
                (CommandDataSize + IPMI_COMMAND_HEADER_SIZE)
                );
@@ -162,7 +201,6 @@ Returns:
     DataSize = MAX_TEMP_DATA - 1;
     Status   = ReceiveBmcDataFromPort (
                  IpmiInstance->IpmiTimeoutPeriod,
-                 Context,
                  (UINT8 *)IpmiResponse,
                  &DataSize
                  );
@@ -182,6 +220,19 @@ Returns:
       DEBUG ((DEBUG_ERROR, "[IPMI] Generic - DataSize too small! (%d)\n", DataSize));
       return EFI_DEVICE_ERROR;
     }
+
+    //
+    // Print out the response for debugging purposes.
+    //
+
+    IpmiPrintCommand (
+      TRUE,
+      IpmiResponse->NetFunction,
+      IpmiResponse->Command,
+      IpmiResponse->CompletionCode,
+      IpmiResponse->ResponseData,
+      DataSize - IPMI_RESPONSE_HEADER_SIZE
+      );
 
     if ((IpmiResponse->CompletionCode != IPMI_COMP_CODE_NORMAL) &&
         (IpmiInstance->BmcStatus == BMC_UPDATE_IN_PROGRESS))
@@ -269,33 +320,23 @@ Returns:
   return EFI_SUCCESS;
 }
 
+/**
+  Updates the BMC status and returns the Com Address.
+
+  @param[in,out]  <ParameterName>       <Description>
+  @param[in]  This            Pointer to IPMI protocol instance
+  @param[out] BmcStatus       BMC status
+  @param[out] ComAddress      Com Address
+
+  @retval     EFI_SUCCESS     Success
+**/
 EFI_STATUS
 EFIAPI
 IpmiBmcStatus (
   IN  IPMI_TRANSPORT  *This,
   OUT BMC_STATUS      *BmcStatus,
-  OUT SM_COM_ADDRESS  *ComAddress,
-  IN  VOID            *Context
+  OUT SM_COM_ADDRESS  *ComAddress
   )
-
-/*++
-
-Routine Description:
-
-  Updates the BMC status and returns the Com Address
-
-Arguments:
-
-  This        - Pointer to IPMI protocol instance
-  BmcStatus   - BMC status
-  ComAddress  - Com Address
-  Context     - Context
-
-Returns:
-
-  EFI_SUCCESS - Success
-
---*/
 {
   IPMI_BMC_INSTANCE_DATA  *IpmiInstance;
 

@@ -17,7 +17,6 @@
   Sends an IPMI command message to the BMC over the SSIF transport.
 
   @param[in]  IpmiTimeoutPeriod     The timeout of the IPMI send.
-  @param[in]  Context               UNUSED.
   @param[in]  Command               The IMPI command to be sent.
   @param[in]  DataSize              The size of the data in the IPMI command.
 
@@ -28,7 +27,6 @@
 EFI_STATUS
 SendDataToBmcPort (
   UINT64  IpmiTimeoutPeriod,
-  VOID    *Context,
   UINT8   *Data,
   UINT8   DataSize
   )
@@ -112,7 +110,6 @@ Exit:
   Receives an IPMI command message from the BMC over the SSIF transport.
 
   @param[in]  IpmiTimeoutPeriod     The timeout of the IPMI receive.
-  @param[in]  Context               UNUSED.
   @param[out] Response              The IMPI response received.
   @param[out] DataSize              The size of the data in the IPMI response.
 
@@ -125,7 +122,6 @@ Exit:
 EFI_STATUS
 ReceiveBmcDataFromPort (
   UINT64  IpmiTimeoutPeriod,
-  VOID    *Context,
   UINT8   *Data,
   UINT8   *DataSize
   )

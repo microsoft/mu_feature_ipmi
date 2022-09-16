@@ -65,7 +65,7 @@ to reference the extdep location. To make sure that the package is discoverable
 for the build, the following line should also be added to the build
 configurations GetPackagesPath list.
 
-    shell_environment.GetBuildVars().GetValue("FEATURE_IPMI_PATH", "")
+    shell_environment.GetBuildVars().GetValue("IPMI_FEATURE_PATH", "")
 
 After this the package should be discoverable to can be used in the build like
 any other dependency.

@@ -48,8 +48,7 @@ BmcKcsConstructor (
 
 EFI_STATUS
 KcsErrorExit (
-  UINT64  IpmiTimeoutPeriod,
-  VOID    *Context
+  UINT64  IpmiTimeoutPeriod
   )
 
 /**
@@ -61,7 +60,6 @@ Routine Description:
 Arguments:
 
   IpmiTimeoutPeriod     - The period wait before timeout
-  Context               - The Context for this operation
 
 Returns:
 
@@ -200,8 +198,7 @@ EFI_STATUS
 KcsCheckStatus (
   UINT64     IpmiTimeoutPeriod,
   KCS_STATE  KcsState,
-  BOOLEAN    *Idle,
-  VOID       *Context
+  BOOLEAN    *Idle
   )
 
 /**
@@ -215,7 +212,6 @@ Arguments:
   IpmiTimeoutPeriod  - The period to wait before timeout
   KcsState           - The state of KCS to be checked
   Idle               - If the KCS is idle
-  Context            - The context for this operation
 
 Returns:
 
@@ -256,7 +252,7 @@ Returns:
     if ((KcsStatus.Status.State == KcsIdleState) && (KcsState == KcsReadState)) {
       *Idle = TRUE;
     } else {
-      Status = KcsErrorExit (IpmiTimeoutPeriod, Context);
+      Status = KcsErrorExit (IpmiTimeoutPeriod);
       goto LabelError;
     }
   }
@@ -289,7 +285,6 @@ LabelError:
 EFI_STATUS
 SendDataToBmc (
   UINT64  IpmiTimeoutPeriod,
-  VOID    *Context,
   UINT8   *Data,
   UINT8   DataSize
   )
@@ -303,7 +298,6 @@ Routine Description:
 Arguments:
 
   IpmiTimeoutPeriod  - The period to wait before timeout
-  Context            - The context of this operation
   Data               - The data pointer to be sent
   DataSize           - The data size
 
@@ -329,7 +323,7 @@ Returns:
     MicroSecondDelay (IPMI_DELAY_UNIT);
     KcsStatus.RawData = IoRead8 (KcsIoBase + 1);
     if ((KcsStatus.RawData == 0xFF) || (TimeOut >= IpmiTimeoutPeriod)) {
-      if ((Status = KcsErrorExit (IpmiTimeoutPeriod, Context)) != EFI_SUCCESS) {
+      if ((Status = KcsErrorExit (IpmiTimeoutPeriod)) != EFI_SUCCESS) {
         return Status;
       }
     }
@@ -339,13 +333,13 @@ Returns:
 
   KcsData = KCS_WRITE_START;
   IoWrite8 ((KcsIoBase + 1), KcsData);
-  if ((Status = KcsCheckStatus (IpmiTimeoutPeriod, KcsWriteState, &Idle, Context)) != EFI_SUCCESS) {
+  if ((Status = KcsCheckStatus (IpmiTimeoutPeriod, KcsWriteState, &Idle)) != EFI_SUCCESS) {
     return Status;
   }
 
   for (i = 0; i < DataSize; i++) {
     if (i == (DataSize - 1)) {
-      if ((Status = KcsCheckStatus (IpmiTimeoutPeriod, KcsWriteState, &Idle, Context)) != EFI_SUCCESS) {
+      if ((Status = KcsCheckStatus (IpmiTimeoutPeriod, KcsWriteState, &Idle)) != EFI_SUCCESS) {
         return Status;
       }
 
@@ -353,7 +347,7 @@ Returns:
       IoWrite8 ((KcsIoBase + 1), KcsData);
     }
 
-    Status = KcsCheckStatus (IpmiTimeoutPeriod, KcsWriteState, &Idle, Context);
+    Status = KcsCheckStatus (IpmiTimeoutPeriod, KcsWriteState, &Idle);
     if (EFI_ERROR (Status)) {
       return Status;
     }
@@ -367,7 +361,6 @@ Returns:
 EFI_STATUS
 ReceiveBmcData (
   UINT64  IpmiTimeoutPeriod,
-  VOID    *Context,
   UINT8   *Data,
   UINT8   *DataSize
   )
@@ -383,7 +376,6 @@ Routine Description:
 Arguments:
 
   IpmiTimeoutPeriod  - The period to wait before timeout
-  Context            - The context of this operation
   Data               - The buffer pointer
   DataSize           - The buffer size
 
@@ -403,7 +395,7 @@ Returns:
   KcsIoBase = PcdGet16 (PcdIpmiIoBaseAddress);
 
   while (TRUE) {
-    if ((Status = KcsCheckStatus (IpmiTimeoutPeriod, KcsReadState, &Idle, Context)) != EFI_SUCCESS) {
+    if ((Status = KcsCheckStatus (IpmiTimeoutPeriod, KcsReadState, &Idle)) != EFI_SUCCESS) {
       return Status;
     }
 
@@ -433,7 +425,6 @@ Returns:
 EFI_STATUS
 ReceiveBmcDataFromPort (
   UINT64  IpmiTimeoutPeriod,
-  VOID    *Context,
   UINT8   *Data,
   UINT8   *DataSize
   )
@@ -447,7 +438,6 @@ Routine Description:
 Arguments:
 
   IpmiTimeoutPeriod  - The period to wait before timeout
-  Context            - The context of this operation
   Data               - The buffer pointer to receive data
   DataSize           - The buffer size
 
@@ -464,9 +454,9 @@ Returns:
   MyDataSize = *DataSize;
 
   for (i = 0; i < KCS_ABORT_RETRY_COUNT; i++) {
-    Status = ReceiveBmcData (IpmiTimeoutPeriod, Context, Data, DataSize);
+    Status = ReceiveBmcData (IpmiTimeoutPeriod, Data, DataSize);
     if (EFI_ERROR (Status)) {
-      if ((Status = KcsErrorExit (IpmiTimeoutPeriod, Context)) != EFI_SUCCESS) {
+      if ((Status = KcsErrorExit (IpmiTimeoutPeriod)) != EFI_SUCCESS) {
         return Status;
       }
 
@@ -482,7 +472,6 @@ Returns:
 EFI_STATUS
 SendDataToBmcPort (
   UINT64  IpmiTimeoutPeriod,
-  VOID    *Context,
   UINT8   *Data,
   UINT8   DataSize
   )
@@ -496,7 +485,6 @@ Routine Description:
 Arguments:
 
   IpmiTimeoutPeriod  - The period to wait before timeout
-  Context            - The context of this operation
   Data               - The data pointer to be sent
   DataSize           - The data size
 
@@ -510,9 +498,9 @@ Returns:
   UINT8       i;
 
   for (i = 0; i < KCS_ABORT_RETRY_COUNT; i++) {
-    Status = SendDataToBmc (IpmiTimeoutPeriod, Context, Data, DataSize);
+    Status = SendDataToBmc (IpmiTimeoutPeriod, Data, DataSize);
     if (EFI_ERROR (Status)) {
-      if ((Status = KcsErrorExit (IpmiTimeoutPeriod, Context)) != EFI_SUCCESS) {
+      if ((Status = KcsErrorExit (IpmiTimeoutPeriod)) != EFI_SUCCESS) {
         return Status;
       }
     } else {
