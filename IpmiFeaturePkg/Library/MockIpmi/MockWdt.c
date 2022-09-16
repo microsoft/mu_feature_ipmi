@@ -75,6 +75,7 @@ MockIpmiSetWatchdog (
   mWatchdog.TimerUseExpirationFlagsClear   &= ~SetWatchdog->TimerUseExpirationFlagsClear;
   mWatchdog.InitialCountdownValue           = SetWatchdog->InitialCountdownValue;
   mWatchdog.PresentCountdownValue           = SetWatchdog->InitialCountdownValue;
+  mWatchdog.TimerUse.Bits.TimerRunning      = 0;
 
   DEBUG ((
     DEBUG_INFO,
