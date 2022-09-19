@@ -1,0 +1,37 @@
+## @file
+# Host based unit test for the IPMI watchdog modules.
+#
+# Copyright (c) Microsoft Corporation.<BR>
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION    = 1.26
+  BASE_NAME      = IpmiWatchdogTestHost
+  FILE_GUID      = 4AADE9B6-97CA-4F0C-858D-2C926F19A752
+  MODULE_TYPE    = HOST_APPLICATION
+  VERSION_STRING = 1.0
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64
+#
+
+[Sources]
+  IpmiWatchdogUnitTest.c
+  ../IpmiWatchdog.c
+  ../IpmiWatchdog.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  UnitTestFrameworkPkg/UnitTestFrameworkPkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  UnitTestLib
+  TimerLib
+  IpmiCommandLib

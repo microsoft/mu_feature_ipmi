@@ -1,0 +1,51 @@
+## @file
+# Host based unit test for the generic IPMI modules.
+#
+# Copyright (c) Microsoft Corporation.<BR>
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION    = 1.26
+  BASE_NAME      = GenericIpmiTestHost
+  FILE_GUID      = 5728A16A-F657-457F-9E73-8FB579B94AED
+  MODULE_TYPE    = HOST_APPLICATION
+  VERSION_STRING = 1.0
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64
+#
+
+[Sources]
+  ../Common/IpmiHooks.h
+  ../Common/IpmiHooks.c
+  ../Common/GenericIpmi.h
+  ../Common/GenericIpmi.c
+  ../Common/IpmiInitialize.c
+  GenericIpmiUnitTest.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  UnitTestFrameworkPkg/UnitTestFrameworkPkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[Pcd]
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiBmcReadyDelayTimer
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSioMailboxBaseAddress
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSignalPreBootToBmc
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCommandMaxReties
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCheckSelfTestResults
+  gIpmiFeaturePkgTokenSpaceGuid.PcdBmcTimeoutSeconds
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  UnitTestLib
+  ReportStatusCodeLib
+  TimerLib
+  IpmiTransportLib
+  IpmiPlatformLib
