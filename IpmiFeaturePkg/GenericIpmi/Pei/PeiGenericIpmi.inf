@@ -43,6 +43,7 @@
   HobLib
   IpmiPlatformLib
   IpmiTransportLib
+  PreBootSignalLib
 
 [Guids]
   gIpmiBmcHobGuid
@@ -53,7 +54,6 @@
 [Pcd]
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiBmcReadyDelayTimer
-  gIpmiFeaturePkgTokenSpaceGuid.PcdSioMailboxBaseAddress
   gIpmiFeaturePkgTokenSpaceGuid.PcdSignalPreBootToBmc
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCommandMaxReties
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCheckSelfTestResults
