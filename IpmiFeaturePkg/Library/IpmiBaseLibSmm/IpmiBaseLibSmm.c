@@ -13,90 +13,21 @@
 #include <Library/SmmServicesTableLib.h>
 #include <Library/DebugLib.h>
 
-STATIC IPMI_TRANSPORT  *mIpmiTransport            = NULL;
-VOID                   *mEfiIpmiProtocolNotifyReg = NULL;
-EFI_EVENT              mEfiIpmiProtocolEvent;
+STATIC IPMI_TRANSPORT  *mIpmiTransport = NULL;
 
 /**
-  Callback function for locating the IpmiTransport protocol.
+  Sends a IPMI command to the BMC and returns the response.
 
-  @param Protocol     A pointer to EFI_GUID
-  @param Interface    A pointer to Interface
-  @param Handle       Handle
+  @param[in]      NetFunction       Net function of the command.
+  @param[in]      Command           IPMI command number.
+  @param[in]      CommandData       Command data buffer.
+  @param[in]      CommandDataSize   Size of command data.
+  @param[out]     ResponseData      Response Data buffer.
+  @param[in,out]  ResponseDataSize  Response data buffer size on input, size of
+                                    read data or required size on return.
 
-  @retval EFI_SUCCESS:               Callback successfully
-
-**/
-EFI_STATUS
-NotifyIpmiTransportCallback (
-  IN CONST EFI_GUID  *Protocol,
-  IN VOID            *Interface,
-  IN EFI_HANDLE      Handle
-  )
-{
-  EFI_STATUS  Status;
-
-  Status = EFI_SUCCESS;
-  if (mIpmiTransport == NULL) {
-    Status = gSmst->SmmLocateProtocol (
-                      &gSmmIpmiTransportProtocolGuid,
-                      NULL,
-                      (VOID **)&mIpmiTransport
-                      );
-  }
-
-  return Status;
-}
-
-/**
-  Routine to send commands to BMC.
-
-  @retval EFI_SUCCESS:        Always return success
-
-**/
-EFI_STATUS
-InitializeIpmiBase (
-  VOID
-  )
-{
-  EFI_STATUS  Status;
-
-  if (mIpmiTransport == NULL) {
-    Status = gSmst->SmmLocateProtocol (
-                      &gSmmIpmiTransportProtocolGuid,
-                      NULL,
-                      (VOID **)&mIpmiTransport
-                      );
-    if (EFI_ERROR (Status)) {
-      Status = gSmst->SmmRegisterProtocolNotify (
-                        &gSmmIpmiTransportProtocolGuid,
-                        (EFI_SMM_NOTIFY_FN)NotifyIpmiTransportCallback,
-                        &mEfiIpmiProtocolNotifyReg
-                        );
-    }
-
-    ASSERT_EFI_ERROR (Status);
-    if (Status != EFI_SUCCESS) {
-      return Status;
-    }
-  }
-
-  return EFI_SUCCESS;
-}
-
-/**
-  Routine to send commands to BMC.
-
-  @param NetFunction       - Net function of the command
-  @param Command           - IPMI Command
-  @param CommandData       - Command Data
-  @param CommandDataSize   - Size of CommandData
-  @param ResponseData      - Response Data
-  @param ResponseDataSize  - Response Data Size
-
-  @retval EFI_SUCCESS:               Get successfully
-  @retval EFI_NOT_AVAILABLE_YET
-
+  @retval   EFI_SUCCESS             Successfully send IPMI command.
+  @retval   EFI_NOT_AVAILABLE_YET   Ipmi interface is not installed yet.
 **/
 EFI_STATUS
 IpmiSubmitCommand (
@@ -110,10 +41,12 @@ IpmiSubmitCommand (
 {
   EFI_STATUS  Status;
 
-  Status = gSmst->SmmLocateProtocol (&gSmmIpmiTransportProtocolGuid, NULL, (VOID **)&mIpmiTransport);
-  if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a() - Failed to locate mIpmiTransport\n", __FUNCTION__));
-    return Status;
+  if (mIpmiTransport == NULL) {
+    Status = gSmst->SmmLocateProtocol (&gSmmIpmiTransportProtocolGuid, NULL, (VOID **)&mIpmiTransport);
+    if (EFI_ERROR (Status)) {
+      DEBUG ((DEBUG_ERROR, "%a: Failed to locate IPMI protocol. %r\n", __FUNCTION__, Status));
+      return Status;
+    }
   }
 
   Status = mIpmiTransport->IpmiSubmitCommand (
@@ -130,14 +63,13 @@ IpmiSubmitCommand (
 }
 
 /**
-  Routine to send commands to BMC.
+  Gets the current status of the BMC from the IPMI module.
 
-  @param BmcStatus                   The ConnectAllComplete EFI Event.
-  @param ComAddress                  Event context pass to create function
+  @param[out]   BmcStatus     The current status of the BMC.
+  @param[out]   ComAddress    The address of the BMC.
 
-  @retval EFI_SUCCESS:               Get successfully
-  @retval EFI_NOT_AVAILABLE_YET
-
+  @retval   EFI_SUCCESS             Successfully retrieved BMC status
+  @retval   EFI_NOT_AVAILABLE_YET   Ipmi interface is not installed yet.
 **/
 EFI_STATUS
 GetBmcStatus (
@@ -147,10 +79,12 @@ GetBmcStatus (
 {
   EFI_STATUS  Status;
 
-  Status = gSmst->SmmLocateProtocol (&gSmmIpmiTransportProtocolGuid, NULL, (VOID **)&mIpmiTransport);
-  if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a() - Failed to locate mIpmiTransport\n", __FUNCTION__));
-    return Status;
+  if (mIpmiTransport == NULL) {
+    Status = gSmst->SmmLocateProtocol (&gSmmIpmiTransportProtocolGuid, NULL, (VOID **)&mIpmiTransport);
+    if (EFI_ERROR (Status)) {
+      DEBUG ((DEBUG_ERROR, "%a: Failed to locate IPMI protocol. %r\n", __FUNCTION__, Status));
+      return Status;
+    }
   }
 
   Status = mIpmiTransport->GetBmcStatus (
