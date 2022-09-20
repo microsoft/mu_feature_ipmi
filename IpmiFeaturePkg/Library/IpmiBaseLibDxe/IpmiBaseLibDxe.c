@@ -104,7 +104,7 @@ IpmiSubmitCommand (
 
   Status = gBS->LocateProtocol (&gIpmiTransportProtocolGuid, NULL, (VOID **)&mIpmiTransport);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a() - Failed to locate mIpmiTransport\n", __FUNCTION__));
+    ASSERT_EFI_ERROR (Status);
     return Status;
   }
 
