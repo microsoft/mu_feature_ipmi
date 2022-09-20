@@ -89,4 +89,5 @@ GetBmcStatus (
 {
   *BmcStatus = BMC_OK;
   ZeroMem (ComAddress, sizeof (*ComAddress));
+  return EFI_SUCCESS;
 }
