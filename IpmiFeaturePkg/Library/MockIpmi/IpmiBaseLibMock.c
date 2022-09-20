@@ -26,7 +26,7 @@ STATIC UINT8  ResponseBuffer[MOCK_BASE_IPMI_BUFFER_SIZE];
                                     read data or required size on return.
 
   @retval   EFI_SUCCESS             Successfully send IPMI command.
-  @retval   EFI_NOT_AVAILABLE_YET   Ipmi interface is not installed yet.
+  @retval   EFI_NOT_FOUND           Ipmi interface is not installed yet.
 **/
 EFI_STATUS
 IpmiSubmitCommand (

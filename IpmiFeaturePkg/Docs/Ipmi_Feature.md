@@ -37,7 +37,7 @@ use the base library mentioned below. The generic interface is defined in the
 [IPMI interface header file](../Include/IpmiInterface.h).
 
 __IPMI Base Library__ - Supplies a library abstraction for the basic
-functionality provided by the Generic IPMI component. This in the API surface
+functionality provided by the Generic IPMI component. This is the API surface
 that should be used for platform components implementing non-standard IPMI messages.
 The library definitions are in the [base library header file](../Include/Library/IpmiBaseLib.h).
 

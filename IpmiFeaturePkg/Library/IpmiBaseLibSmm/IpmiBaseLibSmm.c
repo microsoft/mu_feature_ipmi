@@ -69,7 +69,7 @@ IpmiSubmitCommand (
   @param[out]   ComAddress    The address of the BMC.
 
   @retval   EFI_SUCCESS             Successfully retrieved BMC status
-  @retval   EFI_NOT_AVAILABLE_YET   Ipmi interface is not installed yet.
+  @retval   EFI_NOT_FOUND           Ipmi interface is not installed yet.
 **/
 EFI_STATUS
 GetBmcStatus (
