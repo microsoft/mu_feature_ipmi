@@ -28,7 +28,7 @@ InitializeIpmiBase (
 
   Status = PeiServicesLocatePpi (&gPeiIpmiTransportPpiGuid, 0, NULL, (VOID **)&IpmiTransport);
   if (EFI_ERROR (Status)) {
-    ASSERT_EFI_ERROR (Status);
+    DEBUG ((DEBUG_ERROR, "%a() - Failed to locate IpmiTransport\n", __FUNCTION__));
   }
 
   return Status;
@@ -62,7 +62,7 @@ IpmiSubmitCommand (
 
   Status = PeiServicesLocatePpi (&gPeiIpmiTransportPpiGuid, 0, NULL, (VOID **)&IpmiTransport);
   if (EFI_ERROR (Status)) {
-    ASSERT_EFI_ERROR (Status);
+    DEBUG ((DEBUG_ERROR, "%a() - Failed to locate IpmiTransport\n", __FUNCTION__));
     return Status;
   }
 
@@ -99,7 +99,7 @@ GetBmcStatus (
 
   Status = PeiServicesLocatePpi (&gPeiIpmiTransportPpiGuid, 0, NULL, (VOID **)&IpmiTransport);
   if (EFI_ERROR (Status)) {
-    ASSERT_EFI_ERROR (Status);
+    DEBUG ((DEBUG_ERROR, "%a() - Failed to locate IpmiTransport\n", __FUNCTION__));
     return Status;
   }
 

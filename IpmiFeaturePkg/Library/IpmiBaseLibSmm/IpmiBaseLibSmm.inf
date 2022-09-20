@@ -27,3 +27,6 @@
 
 [Protocols]
   gSmmIpmiTransportProtocolGuid
+
+[Depex]
+  TRUE
