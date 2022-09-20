@@ -34,8 +34,6 @@
 [Pcd]
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiBmcReadyDelayTimer
-  gIpmiFeaturePkgTokenSpaceGuid.PcdSioMailboxBaseAddress
-  gIpmiFeaturePkgTokenSpaceGuid.PcdSignalPreBootToBmc
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCommandMaxReties
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCheckSelfTestResults
   gIpmiFeaturePkgTokenSpaceGuid.PcdBmcTimeoutSeconds
