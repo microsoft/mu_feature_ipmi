@@ -13,39 +13,18 @@
 #include <Ppi/IpmiTransportPpi.h>
 
 /**
-  Initialize the global varible with the pointer of IpmiTransport Protocol.
+  Sends a IPMI command to the BMC and returns the response.
 
-  @return EFI_SUCCESS - Always return success
+  @param[in]      NetFunction       Net function of the command.
+  @param[in]      Command           IPMI command number.
+  @param[in]      CommandData       Command data buffer.
+  @param[in]      CommandDataSize   Size of command data.
+  @param[out]     ResponseData      Response Data buffer.
+  @param[in,out]  ResponseDataSize  Response data buffer size on input, size of
+                                    read data or required size on return.
 
-**/
-EFI_STATUS
-InitializeIpmiBase (
-  VOID
-  )
-{
-  EFI_STATUS              Status;
-  PEI_IPMI_TRANSPORT_PPI  *IpmiTransport;
-
-  Status = PeiServicesLocatePpi (&gPeiIpmiTransportPpiGuid, 0, NULL, (VOID **)&IpmiTransport);
-  if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a() - Failed to locate IpmiTransport\n", __FUNCTION__));
-  }
-
-  return Status;
-}
-
-/**
-  Routine to send commands to BMC.
-
-  @param NetFunction       - Net function of the command
-  @param Command           - IPMI Command
-  @param CommandData       - Command Data
-  @param CommandDataSize   - Size of CommandData
-  @param ResponseData      - Response Data
-  @param ResponseDataSize  - Response Data Size
-
-  @return EFI_NOT_AVAILABLE_YET - IpmiTransport Protocol is not installed yet
-
+  @retval   EFI_SUCCESS             Successfully send IPMI command.
+  @retval   EFI_NOT_FOUND           Ipmi interface is not installed yet.
 **/
 EFI_STATUS
 IpmiSubmitCommand (
@@ -62,7 +41,7 @@ IpmiSubmitCommand (
 
   Status = PeiServicesLocatePpi (&gPeiIpmiTransportPpiGuid, 0, NULL, (VOID **)&IpmiTransport);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a() - Failed to locate IpmiTransport\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to locate IPMI PPI. %r\n", __FUNCTION__, Status));
     return Status;
   }
 
@@ -80,13 +59,13 @@ IpmiSubmitCommand (
 }
 
 /**
-  Routine to send commands to BMC.
+  Gets the current status of the BMC from the IPMI module.
 
-  @param BmcStatus       - Ststus of Bmc
-  @param ComAddress      - IPMI Address
+  @param[out]   BmcStatus     The current status of the BMC.
+  @param[out]   ComAddress    The address of the BMC.
 
-  @return EFI_NOT_AVAILABLE_YET - IpmiTransport Protocol is not installed yet
-
+  @retval   EFI_SUCCESS             Successfully retrieved BMC status
+  @retval   EFI_NOT_AVAILABLE_YET   Ipmi interface is not installed yet.
 **/
 EFI_STATUS
 GetBmcStatus (
@@ -99,7 +78,7 @@ GetBmcStatus (
 
   Status = PeiServicesLocatePpi (&gPeiIpmiTransportPpiGuid, 0, NULL, (VOID **)&IpmiTransport);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a() - Failed to locate IpmiTransport\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to locate IPMI PPI. %r\n", __FUNCTION__, Status));
     return Status;
   }
 

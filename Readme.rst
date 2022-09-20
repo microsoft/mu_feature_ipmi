@@ -97,7 +97,8 @@ Issues
 Please open any issues in the Project Mu GitHub tracker. `More
 Details <https://microsoft.github.io/mu/How/contributing/>`_
 
-## Contributing Code or Docs
+Contributing Code or Docs
+=========================
 
 Please follow the general Project Mu Pull Request process.  `More
 Details <https://microsoft.github.io/mu/How/contributing/>`_
