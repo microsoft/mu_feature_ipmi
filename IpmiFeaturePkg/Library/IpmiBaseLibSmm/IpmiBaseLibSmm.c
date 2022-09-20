@@ -107,33 +107,12 @@ IpmiSubmitCommand (
   OUT UINT8      *ResponseData,
   IN OUT UINT32  *ResponseDataSize
   )
-
-/*++
-
-Routine Description:
-
-  Routine to send commands to BMC
-
-Arguments:
-
-  NetFunction       - Net function of the command
-  Command           - IPMI Command
-  CommandData       - Command Data
-  CommandDataSize   - Size of CommandData
-  ResponseData      - Response Data
-  ResponseDataSize  - Response Data Size
-
-Returns:
-
-  EFI_NOT_AVAILABLE_YET - IpmiTransport Protocol is not installed yet
-
---*/
 {
   EFI_STATUS  Status;
 
   Status = gSmst->SmmLocateProtocol (&gSmmIpmiTransportProtocolGuid, NULL, (VOID **)&mIpmiTransport);
   if (EFI_ERROR (Status)) {
-    ASSERT_EFI_ERROR (Status);
+    DEBUG ((DEBUG_ERROR, "%a() - Failed to locate mIpmiTransport\n", __FUNCTION__));
     return Status;
   }
 
@@ -170,7 +149,7 @@ GetBmcStatus (
 
   Status = gSmst->SmmLocateProtocol (&gSmmIpmiTransportProtocolGuid, NULL, (VOID **)&mIpmiTransport);
   if (EFI_ERROR (Status)) {
-    ASSERT_EFI_ERROR (Status);
+    DEBUG ((DEBUG_ERROR, "%a() - Failed to locate mIpmiTransport\n", __FUNCTION__));
     return Status;
   }
 

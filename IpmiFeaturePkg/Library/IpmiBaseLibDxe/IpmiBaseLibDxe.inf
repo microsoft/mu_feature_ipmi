@@ -28,4 +28,5 @@
   gIpmiTransportProtocolGuid
 
 [Depex]
-  gIpmiTransportProtocolGuid
+  TRUE
+
