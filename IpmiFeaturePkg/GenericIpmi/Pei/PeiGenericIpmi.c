@@ -32,52 +32,8 @@
 // Static definitions for the IPMI PEIM
 //
 
-#define MBXDAT_B              0x0B
 #define BMC_IPMI_TIMEOUT_PEI  5         // [s] Single IPMI request timeout
 #define IPMI_DELAY_UNIT_PEI   1000      // [s] Each KSC IO delay
-#define IPMI_DEFAULT_IO_BASE  0xCA2
-
-/**
-  Sends a pre-boot signal to the BMC. Signal will be sent in very early PEI
-  phase, to enable necessary IPMI access for host boot.
-
-  @param[in]  PeiServices     The PEI services structure.
-
-  @retval     EFI_SUCCESS     Indicates that the signal is sent successfully.
-**/
-EFI_STATUS
-SendPreBootSignaltoBmc (
-  IN CONST EFI_PEI_SERVICES  **PeiServices
-  )
-{
-  EFI_STATUS          Status;
-  EFI_PEI_CPU_IO_PPI  *CpuIoPpi;
-  UINT32              ProvisionPort = 0;
-  UINT8               PreBoot       = 0;
-
-  //
-  // Locate CpuIo service
-  //
-  CpuIoPpi      = (**PeiServices).CpuIo;
-  ProvisionPort = PcdGet32 (PcdSioMailboxBaseAddress) + MBXDAT_B;
-  PreBoot       = 0x01;// PRE-BOOT
-
-  Status = CpuIoPpi->Io.Write (
-                          PeiServices,
-                          CpuIoPpi,
-                          EfiPeiCpuIoWidthUint8,
-                          ProvisionPort,
-                          1,
-                          &PreBoot
-                          );
-
-  if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "SendPreBootSignaltoBmc () Write PRE-BOOT Status=%r\n", Status));
-    return Status;
-  }
-
-  return EFI_SUCCESS;
-}
 
 /**
   The entry point of the Ipmi PEIM. Installs Ipmi PPI interface.
@@ -101,16 +57,6 @@ PeimIpmiInterfaceInit (
   IPMI_BMC_HOB            *BmcHob;
 
   mIpmiInstance = NULL;
-
-  //
-  // Send Pre-Boot signal to BMC
-  //
-  if (PcdGetBool (PcdSignalPreBootToBmc)) {
-    Status = SendPreBootSignaltoBmc (PeiServices);
-    if (EFI_ERROR (Status)) {
-      return Status;
-    }
-  }
 
   //
   // Make one allocation for both the PPI descriptor and the Bmc Instance data

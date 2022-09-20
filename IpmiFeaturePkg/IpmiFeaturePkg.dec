@@ -47,19 +47,16 @@
 
 [PcdsFixedAtBuild]
   gIpmiFeaturePkgTokenSpaceGuid.PcdMaxSOLChannels|3|UINT8|0xF0000001
-  #When True, BIOS will send a Pre-Boot signal to BMC
-  gIpmiFeaturePkgTokenSpaceGuid.PcdSignalPreBootToBmc|FALSE|BOOLEAN|0xF0000002
-  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCheckSelfTestResults|FALSE|BOOLEAN|0xF0000003
-  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCommandTimeoutSeconds|5|UINT8|0xF0000004
-  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCommandMaxReties|3|UINT8|0xF0000005
-  gIpmiFeaturePkgTokenSpaceGuid.PcdBmcTimeoutSeconds|30|UINT8|0xF0000006
-  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiBmcReadyDelayTimer|120|UINT8|0xF0000007
-  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiSelOemManufacturerId|{0, 0, 0}|VOID*|0xF0000008
-  gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2EnabledFlag|TRUE|BOOLEAN|0xF000000B
-  gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2TimeoutSeconds|600|UINT16|0xF000000C
-  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress|0xCA2|UINT16|0xF000000D
-  gIpmiFeaturePkgTokenSpaceGuid.PcdSioMailboxBaseAddress|0x600|UINT32|0xF000000E
-  gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2TimeoutAction|0|UINT8|0xF000000F
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCheckSelfTestResults|FALSE|BOOLEAN|0xF0000002
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCommandTimeoutSeconds|5|UINT8|0xF0000003
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCommandMaxReties|3|UINT8|0xF0000004
+  gIpmiFeaturePkgTokenSpaceGuid.PcdBmcTimeoutSeconds|30|UINT8|0xF0000005
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiBmcReadyDelayTimer|120|UINT8|0xF0000006
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiSelOemManufacturerId|{0, 0, 0}|VOID*|0xF0000007
+  gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2EnabledFlag|TRUE|BOOLEAN|0xF0000008
+  gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2TimeoutSeconds|600|UINT16|0xF0000009
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress|0xCA2|UINT16|0xF000000A
+  gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2TimeoutAction|0|UINT8|0xF000000B
 
 [PcdsDynamic, PcdsDynamicEx]
   gIpmiFeaturePkgTokenSpaceGuid.PcdOsWatchdogEnabled|FALSE|BOOLEAN|0xD0000001
