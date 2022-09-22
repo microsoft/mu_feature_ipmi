@@ -110,6 +110,7 @@
   IpmiFeaturePkg/IpmiWatchdog/Dxe/IpmiWatchdogDxe.inf
   IpmiFeaturePkg/Library/IpmiPlatformLibNull/IpmiPlatformLibNull.inf
   IpmiFeaturePkg/Library/IpmiWatchdogLib/IpmiWatchdogLib.inf
+  IpmiFeaturePkg/Library/IpmiBootOptionLib/IpmiBootOptionLib.inf
 
   # Transport Libraries
   IpmiFeaturePkg/Library/IpmiTransportLibNull/IpmiTransportLibNull.inf
