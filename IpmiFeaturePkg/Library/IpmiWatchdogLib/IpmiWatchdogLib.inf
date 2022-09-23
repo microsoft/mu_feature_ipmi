@@ -1,0 +1,32 @@
+## @file
+#  Library for easy use of IPMI watchdog timers.
+#
+#  Copyright (c) Microsoft Corporation.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.26
+  BASE_NAME                      = IpmiWatchdogLib
+  FILE_GUID                      = 72C7CD02-2E7A-4D67-83E4-07457CEE9854
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = IpmiWatchdogLib
+
+[sources]
+  IpmiWatchdogLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  BaseLib
+  DebugLib
+  TimerLib
+  IpmiCommandLib
+
+[Pcd]
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiSelOemManufacturerId

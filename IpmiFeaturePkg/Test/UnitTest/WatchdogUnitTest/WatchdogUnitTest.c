@@ -13,7 +13,7 @@
 #include <Library/UnitTestLib.h>
 #include <IndustryStandard/Ipmi.h>
 
-#include <IpmiWatchdog.h>
+#include <Library/IpmiWatchdogLib.h>
 
 #define UNIT_TEST_NAME     "IPMI Watchdog Unit Test"
 #define UNIT_TEST_VERSION  "1.0"

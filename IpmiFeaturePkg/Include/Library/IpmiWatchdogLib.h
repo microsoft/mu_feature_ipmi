@@ -7,8 +7,8 @@
 
 **/
 
-#ifndef _IPMI_WATCHDOG_H_
-#define _IPMI_WATCHDOG_H_
+#ifndef IPMI_WATCHDOG_LIB_H_
+#define IPMI_WATCHDOG_LIB_H_
 
 /**
   Enables the IPMI watchdog timer with the provided configurations.

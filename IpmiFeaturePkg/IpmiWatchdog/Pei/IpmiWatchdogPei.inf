@@ -18,8 +18,6 @@
 
 [Sources]
   WatchdogPei.c
-  ../IpmiWatchdog.c
-  ../IpmiWatchdog.h
 
 [Packages]
   MdePkg/MdePkg.dec
@@ -30,7 +28,7 @@
   DebugLib
   BaseMemoryLib
   PcdLib
-  IpmiCommandLib
+  IpmiWatchdogLib
 
 [Pcd]
   gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2EnabledFlag

@@ -16,7 +16,7 @@
 
 #include <IndustryStandard/Ipmi.h>
 
-#include <IpmiWatchdog.h>
+#include <Library/IpmiWatchdogLib.h>
 
 /**
   Enables the IPMI watchdog timer with the provided configurations.

@@ -19,9 +19,7 @@
 #
 
 [Sources]
-  IpmiWatchdogUnitTest.c
-  ../IpmiWatchdog.c
-  ../IpmiWatchdog.h
+  WatchdogUnitTest.c
 
 [Packages]
   MdePkg/MdePkg.dec
@@ -35,3 +33,4 @@
   UnitTestLib
   TimerLib
   IpmiCommandLib
+  IpmiWatchdogLib

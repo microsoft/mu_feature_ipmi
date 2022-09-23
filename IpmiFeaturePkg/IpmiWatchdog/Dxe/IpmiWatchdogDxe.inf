@@ -18,8 +18,6 @@
 
 [Sources]
   WatchdogDxe.c
-  ../IpmiWatchdog.c
-  ../IpmiWatchdog.h
 
 [Packages]
   MdePkg/MdePkg.dec
@@ -33,8 +31,8 @@
   UefiLib
   DebugLib
   BaseMemoryLib
-  IpmiCommandLib
   PcdLib
+  IpmiWatchdogLib
 
 [Pcd]
   gIpmiFeaturePkgTokenSpaceGuid.PcdOsWatchdogEnabled
