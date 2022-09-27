@@ -21,9 +21,8 @@
 // Useful definitions for the test.
 //
 
-#define INVALID_SELECTOR           (0xFFFF)
-#define IPMI_BOOT_OPTION_BIOS_ACK  (BIT0)
-#define BIOS_ACKED_VALUE           (0xFF & ~IPMI_BOOT_OPTION_BIOS_ACK)
+#define INVALID_SELECTOR  (0xFFFF)
+#define BIOS_ACKED_VALUE  (0xFF & ~BOOT_OPTION_HANDLED_BY_BIOS)
 
 //
 // Hooks into the mock library for testing.

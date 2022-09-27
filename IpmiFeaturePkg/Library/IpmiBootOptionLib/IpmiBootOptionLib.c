@@ -16,11 +16,11 @@
 #include <Library/IpmiBaseLib.h>
 #include <Library/IpmiBootOptionLib.h>
 
-#pragma pack(1)
-
 //
 // Direct definitions of the expected structures for accurate structure sizes.
 //
+
+#pragma pack(1)
 
 typedef struct _IPMI_GET_BOOT_OPTIONS_RESPONSE_5 {
   UINT8                                      CompletionCode;
@@ -38,8 +38,6 @@ typedef struct _IPMI_SET_BOOT_OPTIONS_REQUEST_4 {
   IPMI_SET_BOOT_OPTIONS_PARAMETER_VALID     ParameterValid;
   IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_4    Data;
 } IPMI_SET_BOOT_OPTIONS_REQUEST_4;
-
-#define IPMI_BOOT_OPTION_BIOS_ACK  (BIT0)
 
 #pragma pack()
 
@@ -101,7 +99,7 @@ IpmiAcknowledgeBootOption (
   ZeroMem (&Response, sizeof (Response));
   Request.ParameterValid.Bits.ParameterSelector    = IPMI_BOOT_OPTIONS_PARAMETER_BOOT_INFO_ACK;
   Request.ParameterValid.Bits.MarkParameterInvalid = 0;
-  Request.Data.WriteMask                           = IPMI_BOOT_OPTION_BIOS_ACK;
+  Request.Data.WriteMask                           = BOOT_OPTION_HANDLED_BY_BIOS;
   Request.Data.BootInitiatorAcknowledgeData        = 0;
 
   Status = IpmiSubmitCommand (
