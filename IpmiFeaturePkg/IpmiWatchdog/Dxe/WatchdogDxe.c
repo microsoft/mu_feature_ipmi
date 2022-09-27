@@ -15,8 +15,7 @@
 #include <Library/IpmiCommandLib.h>
 
 #include <IndustryStandard/Ipmi.h>
-
-#include <IpmiWatchdog.h>
+#include <Library/IpmiWatchdogLib.h>
 
 EFI_EVENT  mExitBootServicesEvent;
 EFI_EVENT  mReadyToBootEvent;

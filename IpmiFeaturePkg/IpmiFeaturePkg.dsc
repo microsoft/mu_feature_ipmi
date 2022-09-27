@@ -51,6 +51,7 @@
   IpmiTransportLib|IpmiFeaturePkg/Library/IpmiTransportLibNull/IpmiTransportLibNull.inf
   IpmiSelLib|IpmiFeaturePkg/Library/IpmiSelLib/IpmiSelLib.inf
   IpmiPlatformLib|IpmiFeaturePkg/Library/IpmiPlatformLibNull/IpmiPlatformLibNull.inf
+  IpmiWatchdogLib|IpmiFeaturePkg/Library/IpmiWatchdogLib/IpmiWatchdogLib.inf
 
 [LibraryClasses.common.PEI_CORE,LibraryClasses.common.PEIM]
   #######################################
@@ -108,6 +109,7 @@
   IpmiFeaturePkg/IpmiWatchdog/Pei/IpmiWatchdogPei.inf
   IpmiFeaturePkg/IpmiWatchdog/Dxe/IpmiWatchdogDxe.inf
   IpmiFeaturePkg/Library/IpmiPlatformLibNull/IpmiPlatformLibNull.inf
+  IpmiFeaturePkg/Library/IpmiWatchdogLib/IpmiWatchdogLib.inf
 
   # Transport Libraries
   IpmiFeaturePkg/Library/IpmiTransportLibNull/IpmiTransportLibNull.inf

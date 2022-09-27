@@ -27,6 +27,7 @@
   IpmiPlatformLib|IpmiFeaturePkg/Library/IpmiPlatformLibNull/IpmiPlatformLibNull.inf
   IpmiCommandLib|IpmiFeaturePkg/Library/IpmiCommandLib/IpmiCommandLib.inf
   IpmiBaseLib|IpmiFeaturePkg/Library/MockIpmi/IpmiBaseLibMock.inf
+  IpmiWatchdogLib|IpmiFeaturePkg/Library/IpmiWatchdogLib/IpmiWatchdogLib.inf
 
 [PcdsFixedAtBuild]
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCheckSelfTestResults|TRUE
@@ -40,7 +41,7 @@
 
   IpmiFeaturePkg/Test/UnitTest/SelUnitTest/SelUnitTest.inf
   IpmiFeaturePkg/GenericIpmi/Test/GenericIpmiUnitTest.inf
-  IpmiFeaturePkg/IpmiWatchdog/Test/IpmiWatchdogUnitTest.inf
+  IpmiFeaturePkg/Test/UnitTest/WatchdogUnitTest/WatchdogUnitTest.inf
 
   #
   # Build HOST_APPLICATION Libraries
