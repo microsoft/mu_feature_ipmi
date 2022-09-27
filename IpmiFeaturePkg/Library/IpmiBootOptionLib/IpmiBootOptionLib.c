@@ -130,7 +130,7 @@ IpmiGetBootOption (
     return EFI_PROTOCOL_ERROR;
   }
 
-  if (!Response.ParameterValid.Bits.ParameterValid != 0) {
+  if (Response.ParameterValid.Bits.ParameterValid != 0) {
     DEBUG ((DEBUG_INFO, "%a: Boot options parameter 5 invalid.\n", __FUNCTION__));
     return EFI_SUCCESS;
   }
