@@ -21,8 +21,9 @@ typedef enum _IPMI_BOOT_OPTION_SELECTOR {
   BootRemoteCd             = 0x8,
   BootPrimaryRemoteMedia   = 0x9,
   BootRemoteHardDrive      = 0xB,
-  BootHttp                 = 0xC,
-  BootHttps                = 0xD,
+  BootC                    = 0xC, // Platforms may choose how to interpret these
+  BootD                    = 0xD,
+  BootE                    = 0xE,
   BootFloppy               = 0xF, // Max value, only 4 bits allocated.
 } IPMI_BOOT_OPTION_SELECTOR;
 
