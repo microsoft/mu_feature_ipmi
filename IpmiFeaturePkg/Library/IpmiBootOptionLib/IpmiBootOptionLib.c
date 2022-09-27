@@ -34,6 +34,13 @@ typedef struct _IPMI_SET_BOOT_OPTIONS_REQUEST_5 {
   IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_5    Data;
 } IPMI_SET_BOOT_OPTIONS_REQUEST_5;
 
+typedef struct _IPMI_SET_BOOT_OPTIONS_REQUEST_4 {
+  IPMI_SET_BOOT_OPTIONS_PARAMETER_VALID     ParameterValid;
+  IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_4    Data;
+} IPMI_SET_BOOT_OPTIONS_REQUEST_4;
+
+#define IPMI_BOOT_OPTION_BIOS_ACK  (BIT0)
+
 #pragma pack()
 
 /**
@@ -70,6 +77,48 @@ IpmiClearBootFlags (
     DEBUG ((
       DEBUG_ERROR,
       "%a: Clear IPMI boot flags returned failing completion code! 0x%x\n",
+      __FUNCTION__,
+      Response.CompletionCode
+      ));
+  }
+}
+
+/**
+  Acknowledges the IPMI boot options.
+
+**/
+VOID
+IpmiAcknowledgeBootOption (
+  VOID
+  )
+{
+  IPMI_SET_BOOT_OPTIONS_REQUEST_4  Request;
+  IPMI_SET_BOOT_OPTIONS_RESPONSE   Response;
+  EFI_STATUS                       Status;
+  UINT32                           DataSize;
+
+  ZeroMem (&Request, sizeof (Request));
+  ZeroMem (&Response, sizeof (Response));
+  Request.ParameterValid.Bits.ParameterSelector    = IPMI_BOOT_OPTIONS_PARAMETER_BOOT_INFO_ACK;
+  Request.ParameterValid.Bits.MarkParameterInvalid = 0;
+  Request.Data.WriteMask                           = IPMI_BOOT_OPTION_BIOS_ACK;
+  Request.Data.BootInitiatorAcknowledgeData        = 0;
+
+  Status = IpmiSubmitCommand (
+             IPMI_NETFN_CHASSIS,
+             IPMI_CHASSIS_SET_SYSTEM_BOOT_OPTIONS,
+             (VOID *)&Request,
+             sizeof (Request),
+             (VOID *)&Response,
+             &DataSize
+             );
+
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a: Failed to acknowledge IPMI boot options! %r\n", __FUNCTION__, Status));
+  } else if (Response.CompletionCode != IPMI_COMP_CODE_NORMAL) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a: Acknowledge IPMI boot option returned failing completion code! 0x%x\n",
       __FUNCTION__,
       Response.CompletionCode
       ));
@@ -132,12 +181,12 @@ IpmiGetBootOption (
 
   if (Response.ParameterValid.Bits.ParameterValid != 0) {
     DEBUG ((DEBUG_INFO, "%a: Boot options parameter 5 invalid.\n", __FUNCTION__));
-    return EFI_SUCCESS;
+    goto Exit;
   }
 
   if (Response.Data.Data1.Bits.BootFlagValid == 0) {
     DEBUG ((DEBUG_INFO, "%a: Boot options flags not valid.\n", __FUNCTION__));
-    return EFI_SUCCESS;
+    goto Exit;
   }
 
   *Selector =  Response.Data.Data2.Bits.BootDeviceSelector;
@@ -158,5 +207,11 @@ IpmiGetBootOption (
     IpmiClearBootFlags ();
   }
 
+Exit:
+  //
+  // Acknowledge the boot options.
+  //
+
+  IpmiAcknowledgeBootOption ();
   return EFI_SUCCESS;
 }

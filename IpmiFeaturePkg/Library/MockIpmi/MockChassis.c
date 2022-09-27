@@ -9,6 +9,7 @@
 #include "MockIpmi.h"
 
 IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_5  mBootFlags;
+UINT8                                   mBootOptionAcks = 0xFF;
 
 /**
   Mocks the result of IPMI_CHASSIS_GET_SYSTEM_BOOT_OPTIONS.
@@ -75,8 +76,9 @@ MockIpmiSetSystemBootOptions (
   IN OUT UINT8  *ResponseSize
   )
 {
-  IPMI_SET_BOOT_OPTIONS_REQUEST   *SetOptions;
-  IPMI_SET_BOOT_OPTIONS_RESPONSE  *SetOptionsResponse;
+  IPMI_SET_BOOT_OPTIONS_REQUEST           *SetOptions;
+  IPMI_SET_BOOT_OPTIONS_RESPONSE          *SetOptionsResponse;
+  IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_4  *BootOptionAcks;
 
   ASSERT (DataSize >= sizeof (IPMI_SET_BOOT_OPTIONS_REQUEST));
   ASSERT (*ResponseSize >= sizeof (IPMI_SET_BOOT_OPTIONS_RESPONSE));
@@ -92,8 +94,17 @@ MockIpmiSetSystemBootOptions (
       );
 
     CopyMem (&mBootFlags, SetOptions + 1, sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_5));
+  } else if (SetOptions->ParameterValid.Bits.ParameterSelector == IPMI_BOOT_OPTIONS_PARAMETER_BOOT_INFO_ACK) {
+    ASSERT (
+      DataSize - sizeof (IPMI_SET_BOOT_OPTIONS_REQUEST) >=
+      sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_4)
+      );
+
+    BootOptionAcks   = (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_4 *)(SetOptions + 1);
+    mBootOptionAcks &= ~BootOptionAcks->WriteMask;
+    mBootOptionAcks |= (BootOptionAcks->WriteMask & BootOptionAcks->BootInitiatorAcknowledgeData);
   } else {
     DEBUG ((DEBUG_ERROR, "%a: Mock boot options only support boot flags!\n", __FUNCTION__));
-    SetOptionsResponse->CompletionCode = IPMI_COMP_CODE_INVALID_DATA_FIELD;
+    SetOptionsResponse->CompletionCode = 0x80; // Spec defined response for unsupported parameter.
   }
 }

@@ -21,13 +21,16 @@
 // Useful definitions for the test.
 //
 
-#define INVALID_SELECTOR  (0xFFFF)
+#define INVALID_SELECTOR           (0xFFFF)
+#define IPMI_BOOT_OPTION_BIOS_ACK  (BIT0)
+#define BIOS_ACKED_VALUE           (0xFF & ~IPMI_BOOT_OPTION_BIOS_ACK)
 
 //
 // Hooks into the mock library for testing.
 //
 
 extern IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_5  mBootFlags;
+extern UINT8                                   mBootOptionAcks;
 
 /**
   Clears the state of the test libraries.
@@ -41,6 +44,7 @@ ResetTestState (
   )
 {
   ZeroMem (&mBootFlags, sizeof (mBootFlags));
+  mBootOptionAcks = 0xFF;
 }
 
 /**
@@ -66,6 +70,7 @@ TestGetBootOptionNone (
   Status   = IpmiGetBootOption (&Selector);
   UT_ASSERT_STATUS_EQUAL (Status, EFI_SUCCESS);
   UT_ASSERT_EQUAL (Selector, BootNone);
+  UT_ASSERT_EQUAL (mBootOptionAcks, BIOS_ACKED_VALUE);
 
   return UNIT_TEST_PASSED;
 }
@@ -95,6 +100,7 @@ TestGetBootOptionInvalid (
   Status                                   = IpmiGetBootOption (&Selector);
   UT_ASSERT_STATUS_EQUAL (Status, EFI_SUCCESS);
   UT_ASSERT_EQUAL (Selector, BootNone);
+  UT_ASSERT_EQUAL (mBootOptionAcks, BIOS_ACKED_VALUE);
 
   return UNIT_TEST_PASSED;
 }
@@ -132,6 +138,7 @@ TestGetBootOptionNoPersistance (
   Status = IpmiGetBootOption (&Selector);
   UT_ASSERT_STATUS_EQUAL (Status, EFI_SUCCESS);
   UT_ASSERT_EQUAL (Selector, BootNone);
+  UT_ASSERT_EQUAL (mBootOptionAcks, BIOS_ACKED_VALUE);
 
   return UNIT_TEST_PASSED;
 }
@@ -171,6 +178,7 @@ TestGetBootOptionPersistance (
     UT_ASSERT_EQUAL (Selector, BootCd);
   }
 
+  UT_ASSERT_EQUAL (mBootOptionAcks, BIOS_ACKED_VALUE);
   return UNIT_TEST_PASSED;
 }
 
