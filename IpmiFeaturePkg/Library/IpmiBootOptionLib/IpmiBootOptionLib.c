@@ -10,8 +10,6 @@
 #include <Uefi.h>
 #include <Library/DebugLib.h>
 #include <Library/BaseMemoryLib.h>
-#include <Library/TimerLib.h>
-
 #include <IndustryStandard/Ipmi.h>
 #include <Library/IpmiBaseLib.h>
 #include <Library/IpmiBootOptionLib.h>
@@ -59,6 +57,7 @@ IpmiClearBootFlags (
   ZeroMem (&Response, sizeof (Response));
   Request.ParameterValid.Bits.ParameterSelector    = IPMI_BOOT_OPTIONS_PARAMETER_BOOT_FLAGS;
   Request.ParameterValid.Bits.MarkParameterInvalid = 0;
+  DataSize                                         = sizeof (Response);
 
   Status = IpmiSubmitCommand (
              IPMI_NETFN_CHASSIS,
@@ -71,6 +70,8 @@ IpmiClearBootFlags (
 
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: Failed to clear IPMI boot flags! %r\n", __FUNCTION__, Status));
+  } else if (DataSize < sizeof (IPMI_SET_BOOT_OPTIONS_RESPONSE)) {
+    DEBUG ((DEBUG_ERROR, "%a: Unexpected message size! 0x%x\n", __FUNCTION__, DataSize));
   } else if (Response.CompletionCode != IPMI_COMP_CODE_NORMAL) {
     DEBUG ((
       DEBUG_ERROR,
@@ -101,6 +102,7 @@ IpmiAcknowledgeBootOption (
   Request.ParameterValid.Bits.MarkParameterInvalid = 0;
   Request.Data.WriteMask                           = BOOT_OPTION_HANDLED_BY_BIOS;
   Request.Data.BootInitiatorAcknowledgeData        = 0;
+  DataSize                                         = sizeof (Response);
 
   Status = IpmiSubmitCommand (
              IPMI_NETFN_CHASSIS,
@@ -113,6 +115,8 @@ IpmiAcknowledgeBootOption (
 
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: Failed to acknowledge IPMI boot options! %r\n", __FUNCTION__, Status));
+  } else if (DataSize < sizeof (IPMI_SET_BOOT_OPTIONS_RESPONSE)) {
+    DEBUG ((DEBUG_ERROR, "%a: Unexpected message size! 0x%x\n", __FUNCTION__, DataSize));
   } else if (Response.CompletionCode != IPMI_COMP_CODE_NORMAL) {
     DEBUG ((
       DEBUG_ERROR,
@@ -130,9 +134,10 @@ IpmiAcknowledgeBootOption (
   @param[out]   Selector        The boot option device specified by BMC. BootNone
                                 will be returned if no valid override exists.
 
-  @retval       EFI_SUCCESS         The boot options were successfully queried.
-  @retval       EFI_PROTOCOL_ERROR  A failing IPMI completion code was returned.
-  @retval       Other               A failure was returned by the IPMI stack.
+  @retval       EFI_SUCCESS             The boot options were successfully queried.
+  @retval       EFI_INVALID_PARAMETER   Selector is NULL.
+  @retval       EFI_PROTOCOL_ERROR      A failing IPMI completion code was returned.
+  @retval       Other                   A failure was returned by the IPMI stack.
 **/
 EFI_STATUS
 EFIAPI
@@ -144,6 +149,10 @@ IpmiGetBootOption (
   IPMI_GET_BOOT_OPTIONS_RESPONSE_5  Response;
   EFI_STATUS                        Status;
   UINT32                            DataSize;
+
+  if (Selector == NULL) {
+    return EFI_INVALID_PARAMETER;
+  }
 
   *Selector = BootNone;
   ZeroMem (&Request, sizeof (Request));
@@ -166,6 +175,11 @@ IpmiGetBootOption (
     return Status;
   }
 
+  if (DataSize < sizeof (Response.CompletionCode)) {
+    DEBUG ((DEBUG_ERROR, "%a: Response too small for completion code! 0x%x\n", __FUNCTION__, DataSize));
+    return EFI_BAD_BUFFER_SIZE;
+  }
+
   if (Response.CompletionCode != IPMI_COMP_CODE_NORMAL) {
     DEBUG ((
       DEBUG_ERROR,
@@ -175,6 +189,11 @@ IpmiGetBootOption (
       ));
 
     return EFI_PROTOCOL_ERROR;
+  }
+
+  if (DataSize < sizeof (Response)) {
+    DEBUG ((DEBUG_ERROR, "%a: Unexpected response size! 0x%x\n", __FUNCTION__, DataSize));
+    return EFI_BAD_BUFFER_SIZE;
   }
 
   if (Response.ParameterValid.Bits.ParameterValid != 0) {

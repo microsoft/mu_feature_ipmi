@@ -34,9 +34,10 @@ typedef enum _IPMI_BOOT_OPTION_SELECTOR {
   @param[out]   Selector        The boot option device specified by BMC. BootNone
                                 will be returned if no valid override exists.
 
-  @retval       EFI_SUCCESS         The boot options were successfully queried.
-  @retval       EFI_PROTOCOL_ERROR  A failing IPMI completion code was returned.
-  @retval       Other               A failure was returned by the IPMI stack.
+  @retval       EFI_SUCCESS             The boot options were successfully queried.
+  @retval       EFI_INVALID_PARAMETER   Selector is NULL.
+  @retval       EFI_PROTOCOL_ERROR      A failing IPMI completion code was returned.
+  @retval       Other                   A failure was returned by the IPMI stack.
 **/
 EFI_STATUS
 EFIAPI
