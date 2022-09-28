@@ -9,22 +9,28 @@
 #ifndef IPMI_BOOT_OPTION_LIB_H_
 #define IPMI_BOOT_OPTION_LIB_H_
 
+//
+// Boot options as defined by the UEFI spec. Consuming platforms may choice to
+// interpret these differently from the spec.
+//
+
 typedef enum _IPMI_BOOT_OPTION_SELECTOR {
-  BootNone                 = 0x0,
-  BootPxe                  = 0x1,
-  BootHardDrive            = 0x2,
-  BootHardDriveSafeMode    = 0x3,
-  BootDiagnosticsPartition = 0x4,
-  BootCd                   = 0x5,
-  BootBiosSetup            = 0x6,
-  BootRemoteFloppy         = 0x7,
-  BootRemoteCd             = 0x8,
-  BootPrimaryRemoteMedia   = 0x9,
-  BootRemoteHardDrive      = 0xB,
-  BootC                    = 0xC, // Platforms may choose how to interpret these
-  BootD                    = 0xD,
-  BootE                    = 0xE,
-  BootFloppy               = 0xF, // Max value, only 4 bits allocated.
+  BootNone               = 0x0,
+  BootPxe                = 0x1,
+  BootHardDrive          = 0x2,
+  BootHardDriveSafeMode  = 0x3,
+  Boot4                  = 0x4,
+  BootCd                 = 0x5,
+  BootBiosSetup          = 0x6,
+  BootRemoteFloppy       = 0x7,
+  BootRemoteCd           = 0x8,
+  BootPrimaryRemoteMedia = 0x9,
+  BootA                  = 0xA,
+  BootRemoteHardDrive    = 0xB,
+  BootC                  = 0xC,
+  BootD                  = 0xD,
+  BootE                  = 0xE,
+  BootFloppy             = 0xF, // Max value, only 4 bits allocated.
 } IPMI_BOOT_OPTION_SELECTOR;
 
 /**
