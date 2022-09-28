@@ -47,7 +47,7 @@ typedef enum _IPMI_BOOT_OPTION_SELECTOR {
 **/
 EFI_STATUS
 EFIAPI
-IpmiGetBootOption (
+IpmiGetBootDevice (
   OUT IPMI_BOOT_OPTION_SELECTOR  *Selector
   );
 

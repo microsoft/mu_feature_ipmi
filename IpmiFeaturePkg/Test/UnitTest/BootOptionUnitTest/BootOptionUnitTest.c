@@ -66,7 +66,7 @@ TestGetBootOptionNone (
   EFI_STATUS                 Status;
 
   Selector = INVALID_SELECTOR;
-  Status   = IpmiGetBootOption (&Selector);
+  Status   = IpmiGetBootDevice (&Selector);
   UT_ASSERT_STATUS_EQUAL (Status, EFI_SUCCESS);
   UT_ASSERT_EQUAL (Selector, BootNone);
   UT_ASSERT_EQUAL (mBootOptionAcks, BIOS_ACKED_VALUE);
@@ -96,7 +96,7 @@ TestGetBootOptionInvalid (
   mBootFlags.Data1.Bits.BootFlagValid      = 0;
   mBootFlags.Data2.Bits.BootDeviceSelector = BootCd;
   Selector                                 = INVALID_SELECTOR;
-  Status                                   = IpmiGetBootOption (&Selector);
+  Status                                   = IpmiGetBootDevice (&Selector);
   UT_ASSERT_STATUS_EQUAL (Status, EFI_SUCCESS);
   UT_ASSERT_EQUAL (Selector, BootNone);
   UT_ASSERT_EQUAL (mBootOptionAcks, BIOS_ACKED_VALUE);
@@ -126,7 +126,7 @@ TestGetBootOptionNoPersistance (
   mBootFlags.Data1.Bits.BootFlagValid      = 1;
   mBootFlags.Data2.Bits.BootDeviceSelector = BootCd;
   Selector                                 = INVALID_SELECTOR;
-  Status                                   = IpmiGetBootOption (&Selector);
+  Status                                   = IpmiGetBootDevice (&Selector);
   UT_ASSERT_STATUS_EQUAL (Status, EFI_SUCCESS);
   UT_ASSERT_EQUAL (Selector, BootCd);
 
@@ -134,7 +134,7 @@ TestGetBootOptionNoPersistance (
   // Check that the value was cleared.
   //
 
-  Status = IpmiGetBootOption (&Selector);
+  Status = IpmiGetBootDevice (&Selector);
   UT_ASSERT_STATUS_EQUAL (Status, EFI_SUCCESS);
   UT_ASSERT_EQUAL (Selector, BootNone);
   UT_ASSERT_EQUAL (mBootOptionAcks, BIOS_ACKED_VALUE);
@@ -172,7 +172,7 @@ TestGetBootOptionPersistance (
 
   for (Index = 0; Index < 5; Index++) {
     Selector = INVALID_SELECTOR;
-    Status   = IpmiGetBootOption (&Selector);
+    Status   = IpmiGetBootDevice (&Selector);
     UT_ASSERT_STATUS_EQUAL (Status, EFI_SUCCESS);
     UT_ASSERT_EQUAL (Selector, BootCd);
   }
