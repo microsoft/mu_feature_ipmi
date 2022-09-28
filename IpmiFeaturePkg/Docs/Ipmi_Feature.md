@@ -32,8 +32,8 @@ __Generic IPMI__ - Implements the generic IPMI in a protocol, PPI, or MM driver.
 This layer is responsible for taking a high level IPMI request and building the
 IPMI request and parsing the response. Generic IPMI will rely on the transport
 library to handle the hardware specifics. External consumers of the IPMI package
-should avoid directly calling into the IPMI generic interface and should instead
-use the base library mentioned below. The generic interface is defined in the
+should consider uring the base library instead of directly calling the protocols.
+The generic interface is defined in the
 [IPMI interface header file](../Include/IpmiInterface.h).
 
 __IPMI Base Library__ - Supplies a library abstraction for the basic
@@ -57,8 +57,8 @@ Platforms may implement custom or specialized IPMI commands and functionality
 that are not implemented in this repo. In this case, the platform should leverage
 the [IPMI base library](../Include/Library/IpmiBaseLib.h) to abstract the interface
 into a single command which they can provide an opaque command and response buffer.
-Platforms should avoid directly calling into the protocol/PPI as this is considered
-internal and may be subject to change.
+Platforms may call directly into the protocols/PPIs if needed, but for consistency
+it is advised to use the base library.
 
 ## Testing the IPMI feature
 
