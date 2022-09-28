@@ -24,6 +24,10 @@
   SKUID_IDENTIFIER               = DEFAULT
 
 !include MdePkg/MdeLibs.dsc.inc
+
+# Include the core IPMI libraries.
+!include IpmiFeaturePkg/IpmiCoreLibs.dsc.inc
+
 [LibraryClasses]
   #######################################
   # BaseCore Packages
@@ -47,11 +51,8 @@
   #####################################
   # IPMI Feature Package
   #####################################
-  IpmiCommandLib|IpmiFeaturePkg/Library/IpmiCommandLib/IpmiCommandLib.inf
   IpmiTransportLib|IpmiFeaturePkg/Library/IpmiTransportLibNull/IpmiTransportLibNull.inf
-  IpmiSelLib|IpmiFeaturePkg/Library/IpmiSelLib/IpmiSelLib.inf
   IpmiPlatformLib|IpmiFeaturePkg/Library/IpmiPlatformLibNull/IpmiPlatformLibNull.inf
-  IpmiWatchdogLib|IpmiFeaturePkg/Library/IpmiWatchdogLib/IpmiWatchdogLib.inf
 
 [LibraryClasses.common.PEI_CORE,LibraryClasses.common.PEIM]
   #######################################
@@ -65,11 +66,6 @@
   PeiServicesTablePointerLib|MdePkg/Library/PeiServicesTablePointerLib/PeiServicesTablePointerLib.inf
   ReportStatusCodeLib|MdeModulePkg/Library/PeiReportStatusCodeLib/PeiReportStatusCodeLib.inf
 
-  #####################################
-  # IPMI Feature Package
-  #####################################
-  IpmiBaseLib|IpmiFeaturePkg/Library/IpmiBaseLibPei/IpmiBaseLibPei.inf
-
 [LibraryClasses.common.DXE_DRIVER,LibraryClasses.common.UEFI_DRIVER]
   #######################################
   # BaseCore Packages
@@ -78,11 +74,6 @@
   PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
   UefiBootServicesTableLib|MdePkg/Library/UefiBootServicesTableLib/UefiBootServicesTableLib.inf
   UefiDriverEntryPoint|MdePkg/Library/UefiDriverEntryPoint/UefiDriverEntryPoint.inf
-
-  #####################################
-  # IPMI Feature Package
-  #####################################
-  IpmiBaseLib|IpmiFeaturePkg/Library/IpmiBaseLibDxe/IpmiBaseLibDxe.inf
 
 [LibraryClasses.common.DXE_DRIVER]
   ReportStatusCodeLib|MdeModulePkg/Library/DxeReportStatusCodeLib/DxeReportStatusCodeLib.inf

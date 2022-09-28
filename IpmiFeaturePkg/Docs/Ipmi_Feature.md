@@ -4,6 +4,11 @@ This package implements core-functionality for IPMI as well as several services
 built on IPMI. See [IPMI Specification 2nd Generation v2.0](https://www.intel.com/content/dam/www/public/us/en/documents/product-briefs/ipmi-second-gen-interface-spec-v2-rev1-1.pdf)
 for more information. This document details the design on the IPMI feature. For
 using and configuring this feature package, see [the package readme](../Readme.md).
+For specific functionality within this package see the other documents.
+
+- [IPMI Watchdog](./Ipmi_Watchdog.md)
+- [IPMI Boot Options](./Ipmi_Boot_Options.md)
+- [IPMI System Event Log](./Ipmi_System_Event_Log.md)
 
 ## Purpose
 
@@ -32,9 +37,9 @@ __Generic IPMI__ - Implements the generic IPMI in a protocol, PPI, or MM driver.
 This layer is responsible for taking a high level IPMI request and building the
 IPMI request and parsing the response. Generic IPMI will rely on the transport
 library to handle the hardware specifics. External consumers of the IPMI package
-should avoid directly calling into the IPMI generic interface and should instead
-use the base library mentioned below. The generic interface is defined in the
-[IPMI interface header file](../Include/IpmiInterface.h).
+should consider using the base library. The generic transport interface is defined
+in the [IPMI interface header file](../Include/IpmiInterface.h) but should be considered
+internal.
 
 __IPMI Base Library__ - Supplies a library abstraction for the basic
 functionality provided by the Generic IPMI component. This is the API surface
@@ -57,8 +62,8 @@ Platforms may implement custom or specialized IPMI commands and functionality
 that are not implemented in this repo. In this case, the platform should leverage
 the [IPMI base library](../Include/Library/IpmiBaseLib.h) to abstract the interface
 into a single command which they can provide an opaque command and response buffer.
-Platforms should avoid directly calling into the protocol/PPI as this is considered
-internal and may be subject to change.
+Platforms may call directly into the protocols/PPIs if needed, but for consistency
+it is advised to use the base library.
 
 ## Testing the IPMI feature
 

@@ -16,7 +16,7 @@ env:
   PACKAGE: IpmiFeaturePkg/
   PACKAGE_DIR: _package/
   NUSPEC_FILE: _package.nuspec
-  RELEASE_LOG: _package/release_log.txt
+  RELEASE_LOG: _package/release_notes.txt
 
 jobs:
   build:
