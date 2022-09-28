@@ -10,7 +10,7 @@
 #define IPMI_BOOT_OPTION_LIB_H_
 
 //
-// Boot options as defined by the UEFI spec. Consuming platforms may choice to
+// Boot options as defined by the IPMI spec. Consuming platforms may choice to
 // interpret these differently from the spec.
 //
 
