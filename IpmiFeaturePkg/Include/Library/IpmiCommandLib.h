@@ -150,6 +150,7 @@ EFI_STATUS
 EFIAPI
 IpmiSetSystemBootOptions (
   IN  IPMI_SET_BOOT_OPTIONS_REQUEST   *BootOptionsRequest,
+  IN  UINT32                          RequestSize,
   OUT IPMI_SET_BOOT_OPTIONS_RESPONSE  *BootOptionsResponse
   );
 
@@ -157,7 +158,8 @@ EFI_STATUS
 EFIAPI
 IpmiGetSystemBootOptions (
   IN  IPMI_GET_BOOT_OPTIONS_REQUEST   *BootOptionsRequest,
-  OUT IPMI_GET_BOOT_OPTIONS_RESPONSE  *BootOptionsResponse
+  OUT IPMI_GET_BOOT_OPTIONS_RESPONSE  *BootOptionsResponse,
+  IN OUT UINT32                       *ResponseSize
   );
 
 //

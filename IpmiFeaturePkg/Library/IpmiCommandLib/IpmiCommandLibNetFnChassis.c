@@ -102,6 +102,7 @@ EFI_STATUS
 EFIAPI
 IpmiSetSystemBootOptions (
   IN  IPMI_SET_BOOT_OPTIONS_REQUEST   *BootOptionsRequest,
+  IN  UINT32                          RequestSize,
   OUT IPMI_SET_BOOT_OPTIONS_RESPONSE  *BootOptionsResponse
   )
 {
@@ -113,7 +114,7 @@ IpmiSetSystemBootOptions (
                IPMI_NETFN_CHASSIS,
                IPMI_CHASSIS_SET_SYSTEM_BOOT_OPTIONS,
                (VOID *)BootOptionsRequest,
-               sizeof (*BootOptionsRequest),
+               RequestSize,
                (VOID *)BootOptionsResponse,
                &DataSize
                );
@@ -124,20 +125,19 @@ EFI_STATUS
 EFIAPI
 IpmiGetSystemBootOptions (
   IN  IPMI_GET_BOOT_OPTIONS_REQUEST   *BootOptionsRequest,
-  OUT IPMI_GET_BOOT_OPTIONS_RESPONSE  *BootOptionsResponse
+  OUT IPMI_GET_BOOT_OPTIONS_RESPONSE  *BootOptionsResponse,
+  IN OUT UINT32                       *ResponseSize
   )
 {
   EFI_STATUS  Status;
-  UINT32      DataSize;
 
-  DataSize = sizeof (*BootOptionsResponse);
-  Status   = IpmiSubmitCommand (
-               IPMI_NETFN_CHASSIS,
-               IPMI_CHASSIS_GET_SYSTEM_BOOT_OPTIONS,
-               (VOID *)BootOptionsRequest,
-               sizeof (*BootOptionsRequest),
-               (VOID *)BootOptionsResponse,
-               &DataSize
-               );
+  Status = IpmiSubmitCommand (
+             IPMI_NETFN_CHASSIS,
+             IPMI_CHASSIS_GET_SYSTEM_BOOT_OPTIONS,
+             (VOID *)BootOptionsRequest,
+             sizeof (*BootOptionsRequest),
+             (VOID *)BootOptionsResponse,
+             ResponseSize
+             );
   return Status;
 }

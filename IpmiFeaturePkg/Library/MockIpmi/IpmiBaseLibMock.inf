@@ -20,6 +20,7 @@
   MockIpmi.c
   MockSel.c
   MockWdt.c
+  MockChassis.c
   MockIpmi.h
 
 [Packages]

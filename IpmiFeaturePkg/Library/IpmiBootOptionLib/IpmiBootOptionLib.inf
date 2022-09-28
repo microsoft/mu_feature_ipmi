@@ -1,5 +1,5 @@
 ## @file
-#  Null IPMI transport library
+#  Library for easy querying of the BMC provided boot option override.
 #
 #  Copyright (c) Microsoft Corporation.
 #
@@ -9,24 +9,21 @@
 
 [Defines]
   INF_VERSION                    = 1.26
-  BASE_NAME                      = IpmiTransportLibMock
-  FILE_GUID                      = B2BB6C98-ED97-442E-A73F-6D41BEE6DA77
+  BASE_NAME                      = IpmiBootOptionLib
+  FILE_GUID                      = 0C0383A1-C75F-4263-9E3F-8ABD56899510
   MODULE_TYPE                    = BASE
   VERSION_STRING                 = 1.0
-  LIBRARY_CLASS                  = IpmiTransportLib
+  LIBRARY_CLASS                  = IpmiBootOptionLib
 
 [sources]
-  IpmiTransportLibMock.c
-  MockIpmi.c
-  MockSel.c
-  MockWdt.c
-  MockChassis.c
-  MockIpmi.h
+  IpmiBootOptionLib.c
 
 [Packages]
   MdePkg/MdePkg.dec
   IpmiFeaturePkg/IpmiFeaturePkg.dec
 
 [LibraryClasses]
+  BaseLib
   DebugLib
-  BaseMemoryLib
+  TimerLib
+  IpmiBaseLib
