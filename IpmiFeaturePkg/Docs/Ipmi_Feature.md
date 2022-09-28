@@ -4,6 +4,11 @@ This package implements core-functionality for IPMI as well as several services
 built on IPMI. See [IPMI Specification 2nd Generation v2.0](https://www.intel.com/content/dam/www/public/us/en/documents/product-briefs/ipmi-second-gen-interface-spec-v2-rev1-1.pdf)
 for more information. This document details the design on the IPMI feature. For
 using and configuring this feature package, see [the package readme](../Readme.md).
+For specific functionality within this package see the other documents.
+
+- [IPMI Watchdog](./Ipmi_Watchdog.md)
+- [IPMI Boot Options](./Ipmi_Boot_Options.md)
+- [IPMI System Event Log](./Ipmi_System_Event_Log.md)
 
 ## Purpose
 
