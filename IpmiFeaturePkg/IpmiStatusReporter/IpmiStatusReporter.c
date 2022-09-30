@@ -31,7 +31,7 @@ IpmiReportStatusCode (
 
   ZeroMem (&Data, sizeof (Data));
   EntryData.Type     = (UINT8)(CodeType | EFI_STATUS_CODE_TYPE_MASK);
-  EntryData.Severity = (UINT8)((CodeType | EFI_STATUS_CODE_SEVERITY_MASK) >> 6);
+  EntryData.Severity = (UINT8)((CodeType | EFI_STATUS_CODE_SEVERITY_MASK) >> 12);
   EntryData.Value    = Value;
 
   Status = SelAddOemEntry (
