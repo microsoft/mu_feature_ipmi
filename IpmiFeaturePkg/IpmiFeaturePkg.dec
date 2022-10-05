@@ -55,12 +55,12 @@
   gIpmiFeaturePkgTokenSpaceGuid.PcdBmcTimeoutSeconds|30|UINT8|0xF0000005
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiBmcReadyDelayTimer|120|UINT8|0xF0000006
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiSelOemManufacturerId|{0, 0, 0}|VOID*|0xF0000007
-  gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2EnabledFlag|TRUE|BOOLEAN|0xF0000008
-  gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2TimeoutSeconds|600|UINT16|0xF0000009
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress|0xCA2|UINT16|0xF000000A
-  gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2TimeoutAction|0|UINT8|0xF000000B
 
 [PcdsDynamic, PcdsDynamicEx]
   gIpmiFeaturePkgTokenSpaceGuid.PcdOsWatchdogEnabled|FALSE|BOOLEAN|0xD0000001
   gIpmiFeaturePkgTokenSpaceGuid.PcdOsWatchdogTimeoutSeconds|600|UINT16|0xD0000002
   gIpmiFeaturePkgTokenSpaceGuid.PcdOsWatchdogAction|0|UINT8|0xD0000003
+  gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2EnabledFlag|TRUE|BOOLEAN|0xD0000004
+  gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2TimeoutSeconds|600|UINT16|0xD0000005
+  gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2TimeoutAction|0|UINT8|0xD0000006
