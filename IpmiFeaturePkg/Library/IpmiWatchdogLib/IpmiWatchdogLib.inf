@@ -27,6 +27,3 @@
   DebugLib
   TimerLib
   IpmiCommandLib
-
-[Pcd]
-  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiSelOemManufacturerId

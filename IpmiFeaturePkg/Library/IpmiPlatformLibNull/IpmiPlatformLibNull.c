@@ -57,18 +57,3 @@ PlatformIpmiInitialize (
 {
   return EFI_SUCCESS;
 }
-
-/**
-  Performs any platform specific initialization needed for the BMC or IPMI
-  stack.
-
-  @retval   EFI_SUCCESS   The platform initialization was successfully completed.
-**/
-EFI_STATUS
-EFIAPI
-PlatformIpmiGetFrb2Settings (
-  VOID
-  )
-{
-  return EFI_SUCCESS;
-}
