@@ -34,10 +34,9 @@ jobs:
     arch_list: IA32,X64,AARCH64
     do_ci_build: true
     do_ci_setup: false
-    extra_steps:
-    - script: sudo apt-get install mingw-w64
-      displayName: Install Windows Resource Compiler for Linux
     packages: IpmiFeaturePkg
     target_list: DEBUG,RELEASE,NO-TARGET,NOOPT
     tool_chain_tag: GCC5
     vm_image: ubuntu-latest
+    container_image: ghcr.io/tianocore/containers/fedora-35-build:latest
+    install_tools: false
