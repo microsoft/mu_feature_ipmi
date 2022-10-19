@@ -163,7 +163,7 @@ ReceiveBmcDataFromPort (
       //
 
       if ((BlockBuffer[0] == 0) && (BlockBuffer[1] == 1)) {
-        DEBUG ((DEBUG_VERBOSE, "[SSIF]     Multi-read detected.\n", ReadSize));
+        DEBUG ((DEBUG_VERBOSE, "[SSIF]     Multi-read detected.\n"));
         //
         // Trim off the indicator and copy the data over. Set the multi-command
         // for the next loop.
