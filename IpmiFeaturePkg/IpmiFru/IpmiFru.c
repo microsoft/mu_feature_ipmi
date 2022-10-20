@@ -43,6 +43,8 @@ Returns:
   IPMI_GET_FRU_INVENTORY_AREA_INFO_REQUEST   GetFruInventoryAreaInfoRequest;
   IPMI_GET_FRU_INVENTORY_AREA_INFO_RESPONSE  GetFruInventoryAreaInfoResponse;
 
+  // This is a test change!
+
   //
   //  Get all the SDR Records from BMC and retrieve the Record ID from the structure for future use.
   //

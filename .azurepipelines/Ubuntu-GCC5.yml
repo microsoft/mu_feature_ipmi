@@ -10,9 +10,9 @@ resources:
   repositories:
     - repository: mu_devops
       type: github
-      endpoint: microsoft
-      name: microsoft/mu_devops
-      ref: main
+      endpoint: cfernald
+      name: cfernald/mu_devops
+      ref: no_shallow
 
 trigger:
 - main
