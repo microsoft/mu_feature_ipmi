@@ -16,7 +16,7 @@ resources:
 
 variables:
 - group: architectures-arm64-x86-64
-- group: tool-chain-ubuntu-gcc
+- group: tool-chain-container-gcc
 
 jobs:
 - template: Jobs/PrGate.yml@mu_devops
@@ -28,5 +28,5 @@ jobs:
     target_list: DEBUG,RELEASE,NO-TARGET,NOOPT
     tool_chain_tag: $(tool_chain_tag)
     vm_image: $(vm_image)
-    container_image: ghcr.io/tianocore/containers/fedora-35-build:latest
+    container_image: $(container_image)
     install_tools: false
