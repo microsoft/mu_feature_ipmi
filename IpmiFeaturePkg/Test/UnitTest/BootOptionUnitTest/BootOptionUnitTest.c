@@ -182,6 +182,61 @@ TestGetBootOptionPersistance (
 }
 
 /**
+  Tests retrieving the IPMI boot option CMOS clear bit.
+
+  @param[in]  Context             UNUSED
+
+  @retval  UNIT_TEST_PASSED             The Unit test has completed and the test
+                                        case was successful.
+  @retval  UNIT_TEST_ERROR_TEST_FAILED  A test case assertion has failed.
+**/
+UNIT_TEST_STATUS
+EFIAPI
+TestGetBootOptionCmosClear (
+  IN UNIT_TEST_CONTEXT  Context
+  )
+
+{
+  BOOLEAN     CmosClear;
+  EFI_STATUS  Status;
+
+  //
+  // Ensure valid bit is respected.
+  //
+
+  mBootFlags.Data1.Bits.BootFlagValid = 0;
+  mBootFlags.Data2.Bits.CmosClear     = 1;
+  CmosClear                           = TRUE;
+  Status                              = IpmiGetCmosClearOption (&CmosClear);
+  UT_ASSERT_STATUS_EQUAL (Status, EFI_SUCCESS);
+  UT_ASSERT_FALSE (CmosClear);
+
+  //
+  // Ensure valid bit is respected.
+  //
+
+  mBootFlags.Data1.Bits.BootFlagValid = 1;
+  mBootFlags.Data2.Bits.CmosClear     = 0;
+  CmosClear                           = TRUE;
+  Status                              = IpmiGetCmosClearOption (&CmosClear);
+  UT_ASSERT_STATUS_EQUAL (Status, EFI_SUCCESS);
+  UT_ASSERT_FALSE (CmosClear);
+
+  //
+  // Ensure valid bit is respected.
+  //
+
+  mBootFlags.Data1.Bits.BootFlagValid = 1;
+  mBootFlags.Data2.Bits.CmosClear     = 1;
+  CmosClear                           = FALSE;
+  Status                              = IpmiGetCmosClearOption (&CmosClear);
+  UT_ASSERT_STATUS_EQUAL (Status, EFI_SUCCESS);
+  UT_ASSERT_TRUE (CmosClear);
+
+  return UNIT_TEST_PASSED;
+}
+
+/**
   Initializes and configures the SEL library tests.
 
   @retval  EFI_SUCCESS           All test cases were dispatched.
@@ -225,6 +280,7 @@ BootOptionTestMain (
   AddTestCase (BootOptionTests, "Tests retrieving invalid boot flags", "TestGetBootOptionInvalid", TestGetBootOptionInvalid, NULL, ResetTestState, NULL);
   AddTestCase (BootOptionTests, "Tests retrieving boot flags", "TestGetBootOptionNoPersistance", TestGetBootOptionNoPersistance, NULL, ResetTestState, NULL);
   AddTestCase (BootOptionTests, "Tests retrieving persistent boot flags", "TestGetBootOptionPersistance", TestGetBootOptionPersistance, NULL, ResetTestState, NULL);
+  AddTestCase (BootOptionTests, "Tests retrieving persistent boot flags", "TestGetBootOptionCmosClear", TestGetBootOptionCmosClear, NULL, ResetTestState, NULL);
 
   Status = RunAllTestSuites (Framework);
 

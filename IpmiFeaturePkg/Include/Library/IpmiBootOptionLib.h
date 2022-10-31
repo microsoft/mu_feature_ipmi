@@ -51,4 +51,19 @@ IpmiGetBootDevice (
   OUT IPMI_BOOT_OPTION_SELECTOR  *Selector
   );
 
+/**
+  Checks if the CMOS clear bit is set in the IPMI boot options.
+
+  @param[out]  ClearCmos    TRUE if the CMOS clear bit is set, FALSE otherwise.
+
+  @retval     EFI_SUCCESS   The CMOS bit was successfully checked.
+  @retval     EFI_NOT_READY The boot option set in progress bit is set.
+  @retval     Other         An error was returned by a subroutine.
+**/
+EFI_STATUS
+EFIAPI
+IpmiGetCmosClearOption (
+  OUT BOOLEAN  *ClearCmos
+  );
+
 #endif
