@@ -163,49 +163,6 @@ IpmiCheckSetInProgress (
 }
 
 /**
-  Clears the IPMI boot options boot flags.
-
-**/
-VOID
-IpmiClearBootFlags (
-  VOID
-  )
-{
-  IPMI_SET_BOOT_OPTIONS_REQUEST_5  Request;
-  IPMI_SET_BOOT_OPTIONS_RESPONSE   Response;
-  EFI_STATUS                       Status;
-  UINT32                           DataSize;
-
-  ZeroMem (&Request, sizeof (Request));
-  ZeroMem (&Response, sizeof (Response));
-  Request.ParameterValid.Bits.ParameterSelector    = IPMI_BOOT_OPTIONS_PARAMETER_BOOT_FLAGS;
-  Request.ParameterValid.Bits.MarkParameterInvalid = 0;
-  DataSize                                         = sizeof (Response);
-
-  Status = IpmiSubmitCommand (
-             IPMI_NETFN_CHASSIS,
-             IPMI_CHASSIS_SET_SYSTEM_BOOT_OPTIONS,
-             (VOID *)&Request,
-             sizeof (Request),
-             (VOID *)&Response,
-             &DataSize
-             );
-
-  if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to clear IPMI boot flags! %r\n", __FUNCTION__, Status));
-  } else if (DataSize < sizeof (IPMI_SET_BOOT_OPTIONS_RESPONSE)) {
-    DEBUG ((DEBUG_ERROR, "%a: Unexpected message size! 0x%x\n", __FUNCTION__, DataSize));
-  } else if (Response.CompletionCode != IPMI_COMP_CODE_NORMAL) {
-    DEBUG ((
-      DEBUG_ERROR,
-      "%a: Clear IPMI boot flags returned failing completion code! 0x%x\n",
-      __FUNCTION__,
-      Response.CompletionCode
-      ));
-  }
-}
-
-/**
   Acknowledges the IPMI boot options.
 
 **/
@@ -250,6 +207,70 @@ IpmiAcknowledgeBootOption (
   }
 }
 
+/**
+  Clears the IPMI boot options boot flags.
+
+  @param[in] BootFlags  The boot flags value to set.
+
+  @retval   EFI_SUCCESS         Boot flags were successfully set.
+  @retval   EFI_PROTOCOL_ERROR  IPMI set returned a failing completion code.
+  @retval   Other               A subroutine returned a failing status.
+**/
+EFI_STATUS
+EFIAPI
+IpmiSetBootFlags (
+  IN IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_5  *BootFlags
+  )
+{
+  IPMI_SET_BOOT_OPTIONS_REQUEST_5  Request;
+  IPMI_SET_BOOT_OPTIONS_RESPONSE   Response;
+  EFI_STATUS                       Status;
+  UINT32                           DataSize;
+
+  ZeroMem (&Request, sizeof (Request));
+  ZeroMem (&Response, sizeof (Response));
+  Request.ParameterValid.Bits.ParameterSelector    = IPMI_BOOT_OPTIONS_PARAMETER_BOOT_FLAGS;
+  Request.ParameterValid.Bits.MarkParameterInvalid = 0;
+  CopyMem (&Request.Data, BootFlags, sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_5));
+  DataSize = sizeof (Response);
+
+  Status = IpmiSubmitCommand (
+             IPMI_NETFN_CHASSIS,
+             IPMI_CHASSIS_SET_SYSTEM_BOOT_OPTIONS,
+             (VOID *)&Request,
+             sizeof (Request),
+             (VOID *)&Response,
+             &DataSize
+             );
+
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a: Failed to set IPMI boot flags! %r\n", __FUNCTION__, Status));
+  } else if (DataSize < sizeof (IPMI_SET_BOOT_OPTIONS_RESPONSE)) {
+    DEBUG ((DEBUG_ERROR, "%a: Unexpected message size! 0x%x\n", __FUNCTION__, DataSize));
+  } else if (Response.CompletionCode != IPMI_COMP_CODE_NORMAL) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a: Setting IPMI boot flags returned failing completion code! 0x%x\n",
+      __FUNCTION__,
+      Response.CompletionCode
+      ));
+
+    Status = EFI_PROTOCOL_ERROR;
+  }
+
+  return Status;
+}
+
+/**
+  Retrieves the IPMI boot option boot flags.
+
+  @param[in] BootFlags    The boot flags.
+  @param[in] FlagsValid   TRUE if the flags are valid, FALSE otherwise.
+
+  @retval   EFI_SUCCESS         Boot flags were successfully retrieved.
+  @retval   EFI_PROTOCOL_ERROR  IPMI get returned a failing completion code.
+  @retval   Other               A subroutine returned a failing status.
+**/
 EFI_STATUS
 EFIAPI
 IpmiGetBootFlags (
@@ -361,7 +382,8 @@ IpmiGetBootDevice (
     //
 
     if (FlagsData.Data1.Bits.PersistentOptions == 0) {
-      IpmiClearBootFlags ();
+      ZeroMem (&FlagsData, sizeof (FlagsData));
+      IpmiSetBootFlags (&FlagsData);
     }
   }
 
@@ -430,6 +452,11 @@ IpmiGetCmosClearOption (
   //
   // Clear the CMOS flag so that this doesn't occur next boot.
   //
+
+  if (FlagsData.Data2.Bits.CmosClear) {
+    FlagsData.Data2.Bits.CmosClear = 0;
+    IpmiSetBootFlags (&FlagsData);
+  }
 
   return EFI_SUCCESS;
 }
