@@ -1,0 +1,37 @@
+### @file
+# Component description file for IPMI CMOS clear driver.
+#
+# Copyright (c) Microsoft Corporation
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+###
+
+[defines]
+  INF_VERSION          = 1.26
+  BASE_NAME            = IpmiCmosClear
+  FILE_GUID            = 02FF4955-99AD-45A8-98F0-78CBE279D5CE
+  MODULE_TYPE          = DXE_DRIVER
+  VERSION_STRING       = 1.0
+  ENTRY_POINT          = IpmiCmosEntryPoint
+
+[Sources]
+  IpmiCmosClear.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  MemoryAllocationLib
+  UefiLib
+  DebugLib
+  BaseMemoryLib
+  IpmiBootOptionLib
+  PlatformCmosClearLib
+
+[Depex]
+  gIpmiTransportProtocolGuid
