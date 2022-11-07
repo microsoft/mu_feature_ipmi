@@ -10,7 +10,7 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #define _IPMI_COMMAND_LIB_H_
 
 #include <Uefi.h>
-#include <IndustryStandard/Ipmi.h>
+#include <IpmiFeature.h>
 
 //
 // NetFnApp
@@ -249,6 +249,20 @@ IpmiGetSdr (
   IN  IPMI_GET_SDR_REQUEST   *GetSdrRequest,
   OUT IPMI_GET_SDR_RESPONSE  *GetSdrResponse,
   IN OUT UINT32              *GetSdrResponseSize
+  );
+
+EFI_STATUS
+EFIAPI
+IpmiGetSystemGuid (
+  IN OUT EFI_GUID  *SystemGuid
+  );
+
+EFI_STATUS
+EFIAPI
+IpmiGetSystemInterfaceCapabilities (
+  IN GET_SYSTEM_INTEFACE_INTERFACE_TYPE                 Type,
+  IN OUT IPMI_GET_SYSTEM_INTERFACE_CAPABILITY_RESPONSE  *GetSystemInterfaceResponse,
+  IN OUT UINT32                                         *ResponseDataSize
   );
 
 #endif
