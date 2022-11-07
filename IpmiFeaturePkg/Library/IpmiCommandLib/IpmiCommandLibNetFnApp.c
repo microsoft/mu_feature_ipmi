@@ -10,7 +10,6 @@
 #include <Library/DebugLib.h>
 #include <Library/IpmiBaseLib.h>
 
-#include <IndustryStandard/Ipmi.h>
 #include <IpmiFeature.h>
 
 EFI_STATUS
