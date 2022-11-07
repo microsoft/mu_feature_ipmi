@@ -289,20 +289,18 @@ IpmiGetSystemGuid (
  * @brief Query the BMC for the information about the system interface
  *
  * @param Type The interface that is being queried (GET_SYSTEM_INTEFACE_INTERFACE_TYPE)
- * @param GetSystemInterfaceResponse Pointer to a buffer for returning the response data
- * @param ResponseDataSize Size of the buffer for returning the response data
+ * @param GetSystemInterfaceResponse Pointer to a buffer for returning the response data.
  * @return EFI_STATUS
  */
 EFI_STATUS
 EFIAPI
 IpmiGetSystemInterfaceCapabilities (
   IN GET_SYSTEM_INTEFACE_INTERFACE_TYPE                 Type,
-  IN OUT IPMI_GET_SYSTEM_INTERFACE_CAPABILITY_RESPONSE  *GetSystemInterfaceResponse,
-  IN OUT UINT32                                         *ResponseDataSize
+  IN OUT IPMI_GET_SYSTEM_INTERFACE_CAPABILITY_RESPONSE  *GetSystemInterfaceResponse
   )
 {
-  EFI_STATUS  Status;
-
+  EFI_STATUS                                    Status;
+  UINT32                                        ResponseDataSize;
   IPMI_GET_SYSTEM_INTERFACE_CAPABILITY_REQUEST  RequestData;
 
   RequestData.SystemInterfaceType = Type;
@@ -310,15 +308,16 @@ IpmiGetSystemInterfaceCapabilities (
 
   Status = EFI_INVALID_PARAMETER;
 
-  if ((GetSystemInterfaceResponse != NULL) &&  (ResponseDataSize != NULL) && (*ResponseDataSize >= sizeof (IPMI_GET_SYSTEM_INTERFACE_CAPABILITY_RESPONSE))) {
-    Status = IpmiSubmitCommand (
-               IPMI_NETFN_APP,
-               IPMI_APP_GET_SYSTEM_INTERFACE_CAPABILITIES,
-               (VOID *)&RequestData,
-               sizeof (IPMI_GET_SYSTEM_INTERFACE_CAPABILITY_REQUEST),
-               (VOID *)GetSystemInterfaceResponse,
-               ResponseDataSize
-               );
+  if ((GetSystemInterfaceResponse != NULL)) {
+    ResponseDataSize = sizeof (IPMI_GET_SYSTEM_INTERFACE_CAPABILITY_REQUEST);
+    Status           = IpmiSubmitCommand (
+                         IPMI_NETFN_APP,
+                         IPMI_APP_GET_SYSTEM_INTERFACE_CAPABILITIES,
+                         (VOID *)&RequestData,
+                         sizeof (IPMI_GET_SYSTEM_INTERFACE_CAPABILITY_REQUEST),
+                         (VOID *)GetSystemInterfaceResponse,
+                         &ResponseDataSize
+                         );
   }
 
   return Status;

@@ -38,6 +38,7 @@ typedef struct {
   UINT8    Reserved;                  ///< Reserved (returned as 0x00)
   UINT8    SsifVersion : 3;           ///< System Interface Version (000b is version 1)
   UINT8    Reserved1   : 5;           ///< Reserved
+  UINT8    InputMessageSize;          ///< Maximum input Message Size that BMC can accept (in byte)
   UINT8    MaxMessageSize;            ///< Max Message Size (0xFF is 255 bytes)
 } IPMI_GET_SYSTEM_INTERFACE_CAPABILITY_RESPONSE_SSIF;
 
