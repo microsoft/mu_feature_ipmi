@@ -10,7 +10,7 @@
 #include <Library/DebugLib.h>
 #include <Library/IpmiBaseLib.h>
 
-#include <IndustryStandard/Ipmi.h>
+#include <IpmiFeature.h>
 
 EFI_STATUS
 EFIAPI
@@ -243,5 +243,82 @@ IpmiSendMessage (
              (VOID *)SendMessageResponse,
              SendMessageResponseSize
              );
+  return Status;
+}
+
+/**
+ * Function which returns the System Guid returned from the BMC
+ *
+ * @param SystemGuid Pointer the the buffer to fill with System Guid
+ * @return EFI_STATUS
+ */
+EFI_STATUS
+EFIAPI
+IpmiGetSystemGuid (
+  OUT EFI_GUID  *SystemGuid
+  )
+{
+  EFI_STATUS  Status;
+  UINT32      DataSize;
+
+  //  IPMI_GET_DEVICE_GUID_RESPONSE is associted with Get Device Guid (NetFn App,  Cmd 0x08), but
+  //   the response from Get System Guid is the same format. Reusing the structure here.
+  IPMI_GET_SYSTEM_GUID_RESPONSE  GuidResponse;
+
+  Status = EFI_INVALID_PARAMETER;
+  if (SystemGuid != NULL) {
+    DataSize = sizeof (IPMI_GET_DEVICE_GUID_RESPONSE);
+
+    Status = IpmiSubmitCommand (
+               IPMI_NETFN_APP,
+               IPMI_APP_GET_SYSTEM_GUID,
+               NULL,
+               0,
+               (VOID *)&GuidResponse,
+               &DataSize
+               );
+    if (!EFI_ERROR (Status)) {
+      CopyMem ((VOID *)SystemGuid, (VOID *)(GuidResponse.Guid), sizeof (EFI_GUID));
+    }
+  }
+
+  return Status;
+}
+
+/**
+ * @brief Query the BMC for the information about the system interface
+ *
+ * @param Type The interface that is being queried (GET_SYSTEM_INTEFACE_INTERFACE_TYPE)
+ * @param GetSystemInterfaceResponse Pointer to a buffer for returning the response data.
+ * @return EFI_STATUS
+ */
+EFI_STATUS
+EFIAPI
+IpmiGetSystemInterfaceCapabilities (
+  IN GET_SYSTEM_INTEFACE_INTERFACE_TYPE                 Type,
+  IN OUT IPMI_GET_SYSTEM_INTERFACE_CAPABILITY_RESPONSE  *GetSystemInterfaceResponse
+  )
+{
+  EFI_STATUS                                    Status;
+  UINT32                                        ResponseDataSize;
+  IPMI_GET_SYSTEM_INTERFACE_CAPABILITY_REQUEST  RequestData;
+
+  RequestData.SystemInterfaceType = Type;
+  RequestData.Reserved            = 0;
+
+  Status = EFI_INVALID_PARAMETER;
+
+  if ((GetSystemInterfaceResponse != NULL)) {
+    ResponseDataSize = sizeof (IPMI_GET_SYSTEM_INTERFACE_CAPABILITY_REQUEST);
+    Status           = IpmiSubmitCommand (
+                         IPMI_NETFN_APP,
+                         IPMI_APP_GET_SYSTEM_INTERFACE_CAPABILITIES,
+                         (VOID *)&RequestData,
+                         sizeof (IPMI_GET_SYSTEM_INTERFACE_CAPABILITY_REQUEST),
+                         (VOID *)GetSystemInterfaceResponse,
+                         &ResponseDataSize
+                         );
+  }
+
   return Status;
 }
