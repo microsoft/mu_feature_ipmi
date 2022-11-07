@@ -35,6 +35,7 @@ IpmiCmosEntryPoint (
 {
   EFI_STATUS  Status;
   BOOLEAN     ClearCmos;
+  BOOLEAN     RebootRequired;
 
   Status = IpmiGetCmosClearOption (&ClearCmos);
   if (EFI_ERROR (Status)) {
@@ -45,14 +46,17 @@ IpmiCmosEntryPoint (
   DEBUG ((DEBUG_INFO, "CMOS Clear: %d\n", ClearCmos));
 
   if (ClearCmos) {
-    Status = PlatformClearCmos ();
+    RebootRequired = FALSE;
+    Status         = PlatformClearCmos (&RebootRequired);
     if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_ERROR, "%a: Platform CMOS clear failed! %r\n", __FUNCTION__, Status));
       return Status;
     }
 
-    DEBUG ((DEBUG_INFO, "CMOS Cleared, rebooting..\n"));
-    gRT->ResetSystem (EfiResetCold, EFI_SUCCESS, 0, NULL);
+    DEBUG ((DEBUG_INFO, "CMOS Cleared. RebootRequired: %x\n", RebootRequired));
+    if (RebootRequired) {
+      gRT->ResetSystem (EfiResetCold, EFI_SUCCESS, 0, NULL);
+    }
   }
 
   return EFI_SUCCESS;

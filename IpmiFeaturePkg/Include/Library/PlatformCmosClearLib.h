@@ -14,12 +14,17 @@
 /**
   Implements platform specifics to clear the CMOS.
 
+  @param[out]   RebootRequired    Indicates the platform should be rebooted after
+                                  CMOS clear. If the routine is successful and
+                                  RebootRequired is TRUE then the caller will
+                                  reset the system.
+
   @retval   EFI_SUCCESS     CMOS was successfully cleared.
 **/
 EFI_STATUS
 EFIAPI
 PlatformClearCmos (
-  VOID
+  OUT BOOLEAN  *RebootRequired
   );
 
 #endif
