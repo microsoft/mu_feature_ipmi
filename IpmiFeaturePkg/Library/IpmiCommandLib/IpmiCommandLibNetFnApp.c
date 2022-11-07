@@ -256,7 +256,7 @@ IpmiSendMessage (
 EFI_STATUS
 EFIAPI
 IpmiGetSystemGuid (
-  IN EFI_GUID  *SystemGuid
+  OUT EFI_GUID  *SystemGuid
   )
 {
   EFI_STATUS  Status;
