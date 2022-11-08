@@ -27,6 +27,10 @@ PlatformClearCmos (
   OUT BOOLEAN  *RebootRequired
   )
 {
+  if (RebootRequired == NULL) {
+    return EFI_INVALID_PARAMETER;
+  }
+
   *RebootRequired = FALSE;
   return EFI_UNSUPPORTED;
 }

@@ -129,8 +129,9 @@ IpmiGetBootOption (
 
   @param[out]   SetInProgress   TRUE if set in progress is active, FALSE otherwise.
 
-  @retval   EFI_SUCCESS     Successfully checked the set in progress bit.
-  @retval   Other           Subroutine returned an error.
+  @retval   EFI_SUCCESS             Successfully checked the set in progress bit.
+  @retval   EFI_INVALID_PARAMETER   SetInProgress is NULL.
+  @retval   Other                   Subroutine returned an error.
 **/
 EFI_STATUS
 EFIAPI
@@ -140,6 +141,10 @@ IpmiCheckSetInProgress (
 {
   IPMI_GET_BOOT_OPTIONS_RESPONSE_0  Response;
   EFI_STATUS                        Status;
+
+  if (SetInProgress == NULL) {
+    return EFI_INVALID_PARAMETER;
+  }
 
   ZeroMem (&Response, sizeof (Response));
   Status = IpmiGetBootOption (
@@ -401,9 +406,10 @@ IpmiGetBootDevice (
 
   @param[out]  ClearCmos    TRUE if the CMOS clear bit is set, FALSE otherwise.
 
-  @retval     EFI_SUCCESS   The CMOS bit was successfully checked.
-  @retval     EFI_NOT_READY The boot option set in progress bit is set.
-  @retval     Other         An error was returned by a subroutine.
+  @retval     EFI_SUCCESS             The CMOS bit was successfully checked.
+  @retval     EFI_INVALID_PARAMETER   ClearCmos is NULL.
+  @retval     EFI_NOT_READY           The boot option set in progress bit is set.
+  @retval     Other                   An error was returned by a subroutine.
 **/
 EFI_STATUS
 EFIAPI
@@ -416,6 +422,10 @@ IpmiGetCmosClearOption (
   IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_5  FlagsData;
   BOOLEAN                                 FlagsValid;
   BOOLEAN                                 SetInProgress;
+
+  if (ClearCmos == NULL) {
+    return EFI_INVALID_PARAMETER;
+  }
 
   *ClearCmos    = FALSE;
   SetInProgress = FALSE;

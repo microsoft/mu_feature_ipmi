@@ -43,7 +43,7 @@ IpmiCmosEntryPoint (
     return Status;
   }
 
-  DEBUG ((DEBUG_INFO, "CMOS Clear: %d\n", ClearCmos));
+  DEBUG ((DEBUG_INFO, "%a: CMOS Clear: %d\n", __FUNCTION__, ClearCmos));
 
   if (ClearCmos) {
     RebootRequired = FALSE;
