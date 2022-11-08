@@ -1,0 +1,23 @@
+## @file
+# The NULL implementation of the platform CMOS clear library
+#
+# Copyright (c) Microsoft Corporation.
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PlatformCmosClearLibNull
+  FILE_GUID                      = CC4DC596-AC74-4B37-B86D-A7C6B5031A57
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = PlatformCmosClearLib
+
+[sources]
+  PlatformCmosClearLibNull.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  DebugLib

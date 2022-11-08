@@ -52,6 +52,15 @@ MockIpmiGetSystemBootOptions (
     CopyMem (OptionResponse + 1, &mBootFlags, sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_5));
     *ResponseSize = sizeof (IPMI_GET_BOOT_OPTIONS_RESPONSE) +
                     sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_5);
+  } else if (GetOptionRequest->ParameterSelector.Bits.ParameterSelector == IPMI_BOOT_OPTIONS_PARAMETER_SELECTOR_SET_IN_PROGRESS) {
+    ASSERT (
+      *ResponseSize - sizeof (IPMI_GET_BOOT_OPTIONS_RESPONSE) >=
+      sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_0)
+      );
+
+    ZeroMem (OptionResponse + 1, sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_0));
+    *ResponseSize = sizeof (IPMI_GET_BOOT_OPTIONS_RESPONSE) +
+                    sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_0);
   } else {
     DEBUG ((DEBUG_ERROR, "%a: Mock boot options only support boot flags!\n", __FUNCTION__));
     OptionResponse->CompletionCode = 0x80; // Spec defined response for unsupported parameter.
