@@ -48,6 +48,7 @@ STATIC_ASSERT (
 
   @retval     EFI_STATUS best representing the completion code.
 **/
+STATIC
 EFI_STATUS
 EFIAPI
 IpmiCompCodeToEfiStatus (
@@ -107,6 +108,7 @@ IpmiCompCodeToEfiStatus (
   @retval   EFI_PROTOCOL_ERROR  Unexpected result size.
   @retval   Other               The IPMI base library returned an error.
 **/
+STATIC
 EFI_STATUS
 EFIAPI
 IpmiAddSelEntry (
