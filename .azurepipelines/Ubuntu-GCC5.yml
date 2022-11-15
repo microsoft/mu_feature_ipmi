@@ -10,9 +10,9 @@ resources:
   repositories:
     - repository: mu_devops
       type: github
-      endpoint: microsoft
-      name: microsoft/mu_devops
-      ref: main
+      endpoint: makubacki
+      name: makubacki/mu_devops
+      ref: use_py_virtual_env_on_linux
 
 variables:
 - group: architectures-arm64-x86-64
