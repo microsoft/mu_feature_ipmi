@@ -254,7 +254,7 @@ IpmiGetSdr (
 EFI_STATUS
 EFIAPI
 IpmiGetSystemGuid (
-  OUT EFI_GUID  *SystemGuid
+  OUT IPMI_GUID  *SystemGuid
   );
 
 EFI_STATUS
