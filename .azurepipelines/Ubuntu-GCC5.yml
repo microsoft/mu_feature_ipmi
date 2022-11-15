@@ -12,7 +12,7 @@ resources:
       type: github
       endpoint: makubacki
       name: makubacki/mu_devops
-      ref: use_py_virtual_env_on_linux
+      ref: use_py_virtual_env_on_linux_container_test
 
 variables:
 - group: architectures-arm64-x86-64
