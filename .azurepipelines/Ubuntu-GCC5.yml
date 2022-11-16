@@ -10,17 +10,15 @@ resources:
   repositories:
     - repository: mu_devops
       type: github
-      endpoint: makubacki
-      name: makubacki/mu_devops
-      ref: use_py_virtual_env_on_linux_container_test
+      endpoint: cfernald
+      name: cfernald/mu_devops
+      ref: default_ci_container
 
 variables:
 - group: architectures-arm64-x86-64
 - group: tool-chain-ubuntu-gcc
 
 jobs:
-- script: echo "##vso[task.prependpath]/home/vsts_azpcontainer/.local/bin"
-  displayName: Add User Local Bin to Path
 - template: Jobs/PrGate.yml@mu_devops
   parameters:
     arch_list: $(arch_list)
@@ -30,5 +28,4 @@ jobs:
     target_list: DEBUG,RELEASE,NO-TARGET,NOOPT
     tool_chain_tag: $(tool_chain_tag)
     vm_image: $(vm_image)
-    container_image: ghcr.io/tianocore/containers/fedora-35-build:latest
-    install_tools: false
+    container_build: true
