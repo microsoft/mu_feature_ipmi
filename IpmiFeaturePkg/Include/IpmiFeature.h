@@ -14,13 +14,30 @@
 
 #pragma pack(1)
 
-// Structure definition for NetApp function IPMI_APP_GET_SYSTEM_GUID
+//
+// In IPMI, GUID are stored least-significant byte first.
+// The order of fields are the reverse of convention described in [RFC4122].
+// Note: This definition is used for both the IPMI_APP_GET_SYSTEM_GUID
+// and IPMI_APP_GET_DEVICE_GUID.
+//
 typedef struct {
-  UINT8    CompletionCode;
-  UINT8    Guid[16];
+  UINT8     Data4[8];
+  UINT16    Data3;
+  UINT16    Data2;
+  UINT32    Data1;
+} IPMI_GUID;
+
+//
+// Structure definition for NetApp function IPMI_APP_GET_SYSTEM_GUID
+//
+typedef struct {
+  UINT8        CompletionCode;
+  IPMI_GUID    Guid;
 } IPMI_GET_SYSTEM_GUID_RESPONSE;
 
+//
 // Structure definitions for NetApp Function IPMI_APP_GET_SYSTEM_INTERFACE_CAPABILITIES
+//
 typedef enum {
   GetSystemInterfaceTypeSsif = 0,
   GetSystemInterfaceTypeKcs,

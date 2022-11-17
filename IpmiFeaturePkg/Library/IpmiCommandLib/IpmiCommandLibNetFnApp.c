@@ -255,7 +255,7 @@ IpmiSendMessage (
 EFI_STATUS
 EFIAPI
 IpmiGetSystemGuid (
-  OUT EFI_GUID  *SystemGuid
+  OUT IPMI_GUID  *IpmiSystemGuid
   )
 {
   EFI_STATUS  Status;
@@ -266,7 +266,7 @@ IpmiGetSystemGuid (
   IPMI_GET_SYSTEM_GUID_RESPONSE  GuidResponse;
 
   Status = EFI_INVALID_PARAMETER;
-  if (SystemGuid != NULL) {
+  if (IpmiSystemGuid != NULL) {
     DataSize = sizeof (IPMI_GET_DEVICE_GUID_RESPONSE);
 
     Status = IpmiSubmitCommand (
@@ -278,7 +278,7 @@ IpmiGetSystemGuid (
                &DataSize
                );
     if (!EFI_ERROR (Status)) {
-      CopyMem ((VOID *)SystemGuid, (VOID *)(GuidResponse.Guid), sizeof (EFI_GUID));
+      CopyMem ((VOID *)IpmiSystemGuid, (VOID *)(&GuidResponse.Guid), sizeof (IPMI_GUID));
     }
   }
 
