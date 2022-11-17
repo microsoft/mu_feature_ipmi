@@ -10,9 +10,9 @@ resources:
   repositories:
     - repository: mu_devops
       type: github
-      endpoint: cfernald
-      name: cfernald/mu_devops
-      ref: default_ci_container
+      endpoint: microsoft
+      name: microsoft/mu_devops
+      ref: main
 
 variables:
 - group: architectures-arm64-x86-64
