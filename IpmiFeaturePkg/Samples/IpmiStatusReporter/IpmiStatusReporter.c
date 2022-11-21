@@ -38,8 +38,8 @@ IpmiReportStatusCode (
 
   //
   // TODO: Platform specific logic for deciding what kind of events to be logged.
-  // This structure use is intended as a sample and the platform may use a different
-  // you specific structure and Record Type for the status code reported.
+  // The structure used is intended as a sample and the platform may use a different
+  // generic or specific structure and Record Type for the status code reported.
   //
 
   ZeroMem (&EntryData, sizeof (EntryData));
