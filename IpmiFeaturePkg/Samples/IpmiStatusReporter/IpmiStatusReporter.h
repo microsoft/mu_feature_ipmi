@@ -40,6 +40,19 @@ STATIC_ASSERT (sizeof (SEL_STATUS_CODE_DATA) == 6, "Incorrect size of SEL data!"
 
 #pragma pack()
 
+/**
+  Sample implementation for logging a Status Code event to the System Event Log (SEL).
+
+  @param[in]  CodeType   The status code type.
+  @param[in]  Value      The status code value.
+  @param[in]  Instance   The status code instance number.
+  @param[in]  CallerId   Pointer to a GUID that identifies the caller of this
+                         function. This is an optional parameter that may be NULL.
+  @param[in]  Data       Pointer to the extended data buffer. This is an optional
+                         parameter that may be NULL.
+
+  @retval     EFI Status Code.
+**/
 EFI_STATUS
 EFIAPI
 IpmiReportStatusCode (
