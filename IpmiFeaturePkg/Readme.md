@@ -36,3 +36,11 @@ implementing this library.
 
 Additionally the platform may choice to implement their own IPMI transport
 library for a non-standard communication method wth the BMC.
+
+### Samples
+
+The [samples directory](./Samples/) in this package is intended to provide examples
+of common usage of the IPMI package components that are not suitable for generic
+implementation. Platforms may choose to use these as a starting point or reference
+for implementing similar functionality, but these implementations cannot be used
+as-is.

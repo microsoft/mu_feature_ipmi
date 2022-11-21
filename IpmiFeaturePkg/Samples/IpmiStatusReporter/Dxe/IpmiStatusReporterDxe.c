@@ -1,5 +1,6 @@
 /** @file
-
+  Sample implementation for DXE specific logic for registering for an status
+  event callback for SEL status reporting.
 
   Copyright (c) Microsoft Corporation
   SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -31,7 +32,7 @@ ExitBootServicesCallback (
 }
 
 /**
-  Entry point for IpmiStatusReporterDxe to intiialize the ReportStatusCode
+  Entry point for IpmiStatusReporterDxe to initialize the ReportStatusCode
   handler.
 
   @param[in]    ImageHandle   The handle for this module image.

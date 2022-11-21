@@ -20,6 +20,12 @@
 
 #pragma pack(1)
 
+//
+// Sample format for a EFI status code. The platform may choose a different format
+// for its specific constraints. The platform may choose to not use a generic structure
+// and use contextually specific events for particular failure codes.
+//
+
 typedef struct _SEL_STATUS_CODE_DATA {
   UINT8                    Type;
   UINT8                    Severity;

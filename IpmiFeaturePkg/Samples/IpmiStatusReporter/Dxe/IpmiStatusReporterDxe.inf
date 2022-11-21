@@ -1,5 +1,5 @@
 ### @file
-# DXE module for reporting status codes to the BMC.
+# Sample DXE module for reporting status codes to the BMC.
 #
 # Copyright (c) Microsoft Corporation
 #
@@ -37,10 +37,6 @@
 
 [Protocols]
   gEfiRscHandlerProtocolGuid
-
-[Pcd]
-  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiStatusCodeTypeMask
-  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiStatusCodeOemRecordType
 
 [Depex]
   gIpmiTransportProtocolGuid AND gEfiRscHandlerProtocolGuid

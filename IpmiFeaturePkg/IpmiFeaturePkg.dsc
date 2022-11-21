@@ -129,6 +129,9 @@
       MemoryAllocationLib|MdePkg/Library/UefiMemoryAllocationLib/UefiMemoryAllocationLib.inf
   }
 
+  # Sample modules
+  IpmiFeaturePkg/Samples/IpmiStatusReporter/Dxe/IpmiStatusReporterDxe.inf
+
 [Components.IA32, Components.X64]
   IpmiFeaturePkg/GenericIpmi/Smm/SmmGenericIpmi.inf
 
