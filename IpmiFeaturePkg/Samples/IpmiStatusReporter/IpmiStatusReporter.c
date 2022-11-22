@@ -13,7 +13,8 @@
 
   @param[in]  CodeType   The status code type.
   @param[in]  Value      The status code value.
-  @param[in]  Instance   The status code instance number.
+  @param[in]  Instance   The status code instance number. If specified this refers
+                         to the hardware or software entity for the operation and status.
   @param[in]  CallerId   Pointer to a GUID that identifies the caller of this
                          function. This is an optional parameter that may be NULL.
   @param[in]  Data       Pointer to the extended data buffer. This is an optional
@@ -46,6 +47,11 @@ IpmiReportStatusCode (
   EntryData.Type     = (UINT8)(CodeType | EFI_STATUS_CODE_TYPE_MASK);
   EntryData.Severity = (UINT8)((CodeType | EFI_STATUS_CODE_SEVERITY_MASK) >> 12);
   EntryData.Value    = Value;
+
+  //
+  // It might be desired to cache status codes if the IPMI protocol is not yet
+  // available
+  //
 
   Status = SelAddOemEntry (
              &RecordId,

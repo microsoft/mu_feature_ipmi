@@ -39,4 +39,4 @@
   gEfiRscHandlerProtocolGuid
 
 [Depex]
-  gIpmiTransportProtocolGuid AND gEfiRscHandlerProtocolGuid
+  gEfiRscHandlerProtocolGuid
