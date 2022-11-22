@@ -1,0 +1,42 @@
+### @file
+# Sample DXE module for reporting status codes to the BMC.
+#
+# Copyright (c) Microsoft Corporation
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+###
+
+[defines]
+  INF_VERSION          = 1.26
+  BASE_NAME            = IpmiStatusReporterDxe
+  FILE_GUID            = F6774B74-945A-4E42-A987-611ED22A8E5F
+  MODULE_TYPE          = DXE_DRIVER
+  VERSION_STRING       = 1.0
+  ENTRY_POINT          = IpmiStatusReporterDxeEntryPoint
+
+[Sources]
+  IpmiStatusReporterDxe.c
+  ../IpmiStatusReporter.c
+  ../IpmiStatusReporter.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  MemoryAllocationLib
+  UefiLib
+  DebugLib
+  BaseMemoryLib
+  PcdLib
+  IpmiSelLib
+
+[Protocols]
+  gEfiRscHandlerProtocolGuid
+
+[Depex]
+  gEfiRscHandlerProtocolGuid
