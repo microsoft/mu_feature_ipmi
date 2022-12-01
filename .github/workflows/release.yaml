@@ -25,7 +25,7 @@ jobs:
     environment: release
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Install Python Tools
         run: pip install --upgrade -r pip-requirements.txt
       - name: Prepare Release Files
