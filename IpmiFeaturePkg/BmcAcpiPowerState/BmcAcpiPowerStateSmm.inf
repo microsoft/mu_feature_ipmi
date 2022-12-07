@@ -1,0 +1,42 @@
+## @file BmcAcpiPowerStateSmm.inf
+#
+# INF description file for BmcAcpiPowerState SMM driver
+#
+# Copyright (c) Microsoft Corporation. All rights reserved.
+##
+
+[Defines]
+  INF_VERSION              = 0x00010005
+  BASE_NAME                = BmcAcpiPowerStateSmm
+  FILE_GUID                = DDB0D654-B9C8-45F0-8A8A-D63474AF3210
+  MODULE_TYPE              = DXE_SMM_DRIVER
+  PI_SPECIFICATION_VERSION = 0x0001000A
+  ENTRY_POINT              = InitializeBmcAcpiPowerStateSmm
+
+[Sources]
+  BmcAcpiPowerStateSmm.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec  
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  UefiBootServicesTableLib
+  UefiRuntimeServicesTableLib
+  SmmServicesTableLib
+  DebugLib
+  IpmiBaseLib
+
+[Protocols]
+  gEfiSmmSxDispatch2ProtocolGuid
+  gEdkiiSmmExitBootServicesProtocolGuid
+
+[Guids]
+
+[Pcd]
+
+[Depex]
+   gEfiSmmSxDispatch2ProtocolGuid AND
+   gIpmiTransportProtocolGuid
