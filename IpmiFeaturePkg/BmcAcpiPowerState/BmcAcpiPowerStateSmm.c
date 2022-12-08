@@ -9,6 +9,7 @@
 #include <Library/SmmServicesTableLib.h>
 #include <Library/DebugLib.h>
 #include <Library/IpmiBaseLib.h>
+#include <Library/BaseMemoryLib.h>
 #include <IndustryStandard/IpmiNetFnApp.h>
 
 #include <Protocol/SmmExitBootServices.h>
@@ -34,6 +35,7 @@ SetBmcAcpiPowerState (
   UINT8                              CompletionCode;
   UINT32                             DataSize;
 
+  ZeroMem (&SetAcpiPowerState, sizeof (SetAcpiPowerState));
   SetAcpiPowerState.SystemPowerState.Bits.StateChange = 1;
   SetAcpiPowerState.SystemPowerState.Bits.PowerState  = SystemPowerState;
   SetAcpiPowerState.DevicePowerState.Bits.StateChange = 1;

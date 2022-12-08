@@ -29,6 +29,7 @@
   SmmServicesTableLib
   DebugLib
   IpmiBaseLib
+  BaseMemoryLib
 
 [Protocols]
   gEfiSmmSxDispatch2ProtocolGuid
