@@ -95,6 +95,7 @@
   IpmiFeaturePkg/GenericIpmi/Pei/PeiGenericIpmi.inf
   IpmiFeaturePkg/GenericIpmi/Dxe/DxeGenericIpmi.inf
   IpmiFeaturePkg/BmcAcpi/BmcAcpi.inf
+  IpmiFeaturePkg/BmcAcpiPowerState/BmcAcpiPowerStateSmm.inf  
   IpmiFeaturePkg/IpmiFru/IpmiFru.inf
   IpmiFeaturePkg/SolStatus/SolStatus.inf
   IpmiFeaturePkg/Library/IpmiSelLib/IpmiSelLib.inf
