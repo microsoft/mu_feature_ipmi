@@ -11,10 +11,11 @@ from edk2toolext.environment import shell_environment
 from edk2toolext.invocables.edk2_ci_build import CiBuildSettingsManager
 from edk2toolext.invocables.edk2_update import UpdateSettingsManager
 from edk2toolext.invocables.edk2_pr_eval import PrEvalSettingsManager
+from edk2toolext.invocables.edk2_ci_setup import CiSetupSettingsManager
 from edk2toollib.utility_functions import GetHostInfo
 
 
-class Settings(CiBuildSettingsManager, UpdateSettingsManager, PrEvalSettingsManager):
+class Settings(CiBuildSettingsManager, UpdateSettingsManager, PrEvalSettingsManager, CiSetupSettingsManager):
 
     def __init__(self):
         self.ActualPackages = []
@@ -170,14 +171,17 @@ class Settings(CiBuildSettingsManager, UpdateSettingsManager, PrEvalSettingsMana
         }
         '''
         return [
+            {
+                "Path": "MU_BASECORE",
+                "Url": "https://github.com/microsoft/mu_basecore.git",
+                "Branch": "release/202208"
+            }
         ]
 
 
     def GetPackagesPath(self):
         ''' Return a list of workspace relative paths that should be mapped as edk2 PackagesPath '''
-        result = [
-            shell_environment.GetBuildVars().GetValue("BASECORE_PATH", "")
-        ]
+        result = []
         for a in self.GetDependencies():
             result.append(a["Path"])
         return result
