@@ -170,14 +170,17 @@ class Settings(CiBuildSettingsManager, UpdateSettingsManager, PrEvalSettingsMana
         }
         '''
         return [
+            {
+                "Path": "MU_BASECORE",
+                "Url": "https://github.com/microsoft/mu_basecore.git",
+                "Branch": "release/202208"
+            }
         ]
 
 
     def GetPackagesPath(self):
         ''' Return a list of workspace relative paths that should be mapped as edk2 PackagesPath '''
-        result = [
-            shell_environment.GetBuildVars().GetValue("BASECORE_PATH", "")
-        ]
+        result = []
         for a in self.GetDependencies():
             result.append(a["Path"])
         return result
