@@ -85,6 +85,16 @@
   ReportStatusCodeLib|MdeModulePkg/Library/SmmReportStatusCodeLib/SmmReportStatusCodeLib.inf
   HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
 
+[LibraryClasses.X64]
+  RngLib|MdePkg/Library/BaseRngLib/BaseRngLib.inf
+!if $(TOOL_CHAIN_TAG) == VS2017 or $(TOOL_CHAIN_TAG) == VS2015 or $(TOOL_CHAIN_TAG) == VS2019 or $(TOOL_CHAIN_TAG) == VS2022
+  # Provide StackCookie support lib so that we can link to /GS exports for VS builds
+  NULL|MdePkg/Library/BaseBinSecurityLibRng/BaseBinSecurityLibRng.inf
+  BaseBinSecurityLib|MdePkg/Library/BaseBinSecurityLibRng/BaseBinSecurityLibRng.inf
+!else
+  BaseBinSecurityLib|MdePkg/Library/BaseBinSecurityLibNull/BaseBinSecurityLibNull.inf
+!endif
+
 [Components]
   IpmiFeaturePkg/Library/IpmiCommandLib/IpmiCommandLib.inf
   IpmiFeaturePkg/Library/IpmiBaseLibNull/IpmiBaseLibNull.inf
@@ -95,7 +105,7 @@
   IpmiFeaturePkg/GenericIpmi/Pei/PeiGenericIpmi.inf
   IpmiFeaturePkg/GenericIpmi/Dxe/DxeGenericIpmi.inf
   IpmiFeaturePkg/BmcAcpi/BmcAcpi.inf
-  IpmiFeaturePkg/BmcAcpiPowerState/BmcAcpiPowerStateSmm.inf  
+  IpmiFeaturePkg/BmcAcpiPowerState/BmcAcpiPowerStateSmm.inf
   IpmiFeaturePkg/IpmiFru/IpmiFru.inf
   IpmiFeaturePkg/SolStatus/SolStatus.inf
   IpmiFeaturePkg/Library/IpmiSelLib/IpmiSelLib.inf
