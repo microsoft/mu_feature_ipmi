@@ -12,7 +12,7 @@
 #include <IpmiFeature.h>
 
 /**
- * @brief Query the BMC for the information about the system interface
+ * @brief Send the Set Sensor Threshold command for a specified SensorNumber
  *
  * @param SetSensorThresholdRequestData The filled out Set Sensor Threshold command structure
  * @param CompletionCode Pointer to a buffer for returning the completion code
@@ -47,10 +47,10 @@ IpmiSetSensorThreshold (
 }
 
 /**
- * @brief Query the BMC for the information about the system interface
+ * @brief Query the threshold data of the specified SensorNumber.
  *
- * @param SensorNumber The interface that is being queried (GET_SYSTEM_INTEFACE_INTERFACE_TYPE)
- * @param GetSensorThresholdResponse Pointer to a buffer for returning the response data.
+ * @param SensorNumber The unique identifier of the sensor being queried.
+ * @param GetSensorThresholdResponse Pointer to a buffer for returning the threshold response data.
  * @return EFI_STATUS
  */
 EFI_STATUS
