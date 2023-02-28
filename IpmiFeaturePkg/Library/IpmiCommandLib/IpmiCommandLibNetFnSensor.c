@@ -1,8 +1,8 @@
 /** @file
   IPMI Command - NetFnSensor.
 
-  Copyright (c) 2018 - 2021, Intel Corporation. All rights reserved.<BR>
-  SPDX-License-Identifier: BSD-2-Clause-Patent
+  Copyright (c) Microsoft Corporation
+  PDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
 #include <Library/BaseMemoryLib.h>
