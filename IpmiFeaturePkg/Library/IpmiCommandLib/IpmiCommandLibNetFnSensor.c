@@ -12,11 +12,13 @@
 #include <IpmiFeature.h>
 
 /**
- * @brief Send the Set Sensor Threshold command for a specified SensorNumber
+ * Send the Set Sensor Threshold command for a specified SensorNumber
  *
- * @param SetSensorThresholdRequestData The filled out Set Sensor Threshold command structure
- * @param CompletionCode Pointer to a buffer for returning the completion code
- * @return EFI_STATUS
+ * @param[in]   SetSensorThresholdRequestData   The filled out Set Sensor Threshold command structure
+ * @param[out]  CompletionCode                  Pointer to a buffer for returning the completion code
+ *
+ * @retval  EFI_SUCCESS
+ * @retval  EFI_INVALID_PARAMETER
  */
 EFI_STATUS
 EFIAPI
@@ -47,11 +49,13 @@ IpmiSetSensorThreshold (
 }
 
 /**
- * @brief Query the threshold data of the specified SensorNumber.
+ * Query the threshold data of the specified SensorNumber.
  *
- * @param SensorNumber The unique identifier of the sensor being queried.
- * @param GetSensorThresholdResponse Pointer to a buffer for returning the threshold response data.
- * @return EFI_STATUS
+ * @param[in]   SensorNumber                The unique identifier of the sensor being queried.
+ * @param[out]  GetSensorThresholdResponse  Pointer to a buffer for returning the threshold response data.
+ *
+ * @retval  EFI_SUCCESS
+ * @retval  EFI_INVALID_PARAMETER
  */
 EFI_STATUS
 EFIAPI
