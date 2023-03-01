@@ -38,9 +38,10 @@ IpmiSetSensorThreshold (
                IPMI_SENSOR_SET_SENSOR_THRESHOLDS,
                (UINT8 *)SetSensorThresholdRequestData,
                sizeof (*SetSensorThresholdRequestData),
-               (UINT8 *)&CompletionCode,
+               CompletionCode,
                &ResponseDataSize
                );
+
   }
 
   return Status;
