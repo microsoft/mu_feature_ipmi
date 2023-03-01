@@ -43,7 +43,6 @@ IpmiSetSensorThreshold (
                CompletionCode,
                &ResponseDataSize
                );
-
   }
 
   return Status;
@@ -69,6 +68,7 @@ IpmiGetSensorThreshold (
   UINT32      ResponseDataSize;
 
   Status = EFI_INVALID_PARAMETER;
+
   if (GetSensorThresholdResponse != NULL) {
     ResponseDataSize = sizeof (IPMI_SENSOR_GET_SENSOR_THRESHOLD_RESPONSE_DATA);
 
