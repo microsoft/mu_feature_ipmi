@@ -265,4 +265,18 @@ IpmiGetSystemInterfaceCapabilities (
   IN OUT UINT32                                         *ResponseDataSize
   );
 
+EFI_STATUS
+EFIAPI
+IpmiSetSensorThreshold (
+  IN IPMI_SENSOR_SET_SENSOR_THRESHOLD_REQUEST_DATA  *SetSensorThresholdRequestData,
+  OUT UINT8                                         *CompletionCode
+  );
+
+EFI_STATUS
+EFIAPI
+IpmiGetSensorThreshold (
+  IN UINT8                                            SensorNumber,
+  OUT IPMI_SENSOR_GET_SENSOR_THRESHOLD_RESPONSE_DATA  *GetSensorThresholdResponse
+  );
+
 #endif
