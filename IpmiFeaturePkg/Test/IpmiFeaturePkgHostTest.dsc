@@ -7,14 +7,15 @@
 ##
 
 [Defines]
-  PLATFORM_NAME           = IpmiFeaturePkgHostTest
-  PLATFORM_GUID           = 0CDC468B-0C10-4BD0-834C-E732AFB87E64
-  PLATFORM_VERSION        = 0.1
-  DSC_SPECIFICATION       = 0x00010005
-  OUTPUT_DIRECTORY        = Build/IpmiFeaturePkg/HostTest
-  SUPPORTED_ARCHITECTURES = IA32|X64|AARCH64
-  BUILD_TARGETS           = NOOPT
-  SKUID_IDENTIFIER        = DEFAULT
+  PLATFORM_NAME               = IpmiFeaturePkgHostTest
+  PLATFORM_GUID               = 0CDC468B-0C10-4BD0-834C-E732AFB87E64
+  PLATFORM_VERSION            = 0.1
+  DSC_SPECIFICATION           = 0x00010005
+  OUTPUT_DIRECTORY            = Build/IpmiFeaturePkg/HostTest
+  COVERAGE_OUTPUT_DIRECTORY   = Build/IpmiFeaturePkg
+  SUPPORTED_ARCHITECTURES     = IA32|X64|AARCH64
+  BUILD_TARGETS               = NOOPT
+  SKUID_IDENTIFIER            = DEFAULT
 
 !include UnitTestFrameworkPkg/UnitTestFrameworkPkgHost.dsc.inc
 
