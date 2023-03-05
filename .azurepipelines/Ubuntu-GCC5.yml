@@ -16,13 +16,8 @@ resources:
     - repository: mu_devops
       type: github
       endpoint: microsoft
-<<<<<<< HEAD
-      name: microsoft/mu_devops
-      ref: refs/tags/v2.2.0
-=======
       name: cfernald/mu_devops
       ref: code_cov
->>>>>>> c6568a7 (TEST: checking code coverage)
 
 variables:
 - group: architectures-arm64-x86-64
