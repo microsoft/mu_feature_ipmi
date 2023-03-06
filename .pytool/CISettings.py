@@ -173,8 +173,8 @@ class Settings(CiBuildSettingsManager, UpdateSettingsManager, PrEvalSettingsMana
         return [
             {
                 "Path": "MU_BASECORE",
-                "Url": "https://github.com/microsoft/mu_basecore.git",
-                "Branch": "release/202208"
+                "Url": "https://github.com/cfernald/mu_basecore.git",
+                "Branch": "code_cov_2"
             }
         ]
 
