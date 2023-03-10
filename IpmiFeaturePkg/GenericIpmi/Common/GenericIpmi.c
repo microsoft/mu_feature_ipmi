@@ -95,7 +95,7 @@ IpmiPrintCommand (
       DEBUG ((DebugLevel, "\n"));
     }
 
-    DEBUG ((DebugLevel, "%02x ", Data[Index]));
+    DEBUG ((DebugLevel, "%02x ", (Data == NULL) ? 0 : Data[Index]));
   }
 
   DEBUG ((DebugLevel, "\n"));
@@ -140,6 +140,10 @@ IpmiSendCommandInternal (
   UINT8                   RetryCnt;
   UINT8                   Index;
 
+  if ((CommandDataSize > 0) && (CommandData == NULL)) {
+    return EFI_INVALID_PARAMETER;
+  }
+
   RetryCnt     = PcdGet8 (PcdIpmiCommandMaxReties);
   IpmiInstance = INSTANCE_FROM_SM_IPMI_BMC_THIS (This);
 
@@ -170,10 +174,6 @@ IpmiSendCommandInternal (
     // buffer into the IpmiCommand structure.
     //
     if (CommandDataSize > 0) {
-      if (CommandData == NULL) {
-        return EFI_INVALID_PARAMETER;
-      }
-
       CopyMem (
         IpmiCommand->CommandData,
         CommandData,
