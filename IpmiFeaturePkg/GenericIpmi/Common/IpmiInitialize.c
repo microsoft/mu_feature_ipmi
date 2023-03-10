@@ -46,7 +46,7 @@ GetSelfTest (
 {
   EFI_STATUS                      Status;
   UINT32                          DataSize;
-  UINT8                           Index;
+  UINT32                          Index;
   UINT8                           *TempPtr;
   UINT32                          Retries;
   BOOLEAN                         bResultFlag = FALSE;
