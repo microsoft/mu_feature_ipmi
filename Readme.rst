@@ -2,8 +2,6 @@
 Project Mu IPMI Feature Repository
 =================================
 
-|NugetBuild| |NugetVersion|
-
 ============================= ================= =============== ===================
  Host Type & Toolchain        Build Status      Test Status     Code Coverage
 ============================= ================= =============== ===================
@@ -47,17 +45,22 @@ desired.
 
       "type": "web",
 
-      "type": "nuget",
-
       "name": "mu-feature-ipmi",
 
-      "source": "https://api.nuget.org/v3/index.json",
+      "source": "https://github.com/microsoft/mu_feature_ipmi/archive/refs/tags/0.1.0.zip",
 
-      "version": "<release version>",
+      "version": "0.1.0",
+
+      "internal_path": "/mu_feature_ipmi-0.1.0/",
+
+      "sha256": "2d541735195fbef2bca07ae06391bfaf08db0cb8aeb780f0029f907d1943e595",
+
+      "compression_type": "zip",
 
       "flags": ["set_build_var"],
 
       "var_name": "IPMI_FEATURE_PATH"
+
     }
 
 Setting the the var_name and the set_build_var flags will allow the build scripts
@@ -186,6 +189,3 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 .. |UbuntuCiBuild| image:: https://dev.azure.com/projectmu/mu/_apis/build/status/CI/Feature%20IPMI/Mu%20Feature%20IPMI%20-%20CI%20-%20GCC5?repoName=microsoft%2Fmu_feature_ipmi&branchName=main
 .. |UbuntuCiTest| image:: https://img.shields.io/azure-devops/tests/projectmu/mu/120.svg
 .. |UbuntuCiCoverage| image:: https://img.shields.io/badge/coverage-coming_soon-blue
-
-.. |NugetBuild| image:: https://github.com/microsoft/mu_feature_ipmi/actions/workflows/release.yaml/badge.svg
-.. |NugetVersion| image:: https://img.shields.io/nuget/v/mu-feature-ipmi
