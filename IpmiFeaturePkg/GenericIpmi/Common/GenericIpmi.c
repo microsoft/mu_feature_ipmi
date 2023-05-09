@@ -76,30 +76,29 @@ IpmiPrintCommand (
   IN CONST UINT8    DataSize
   )
 {
-  CONST UINT32  DebugLevel = DEBUG_VERBOSE;
-  UINT8         Index;
-  CHAR16        *TypeString;
+  UINT8   Index;
+  CHAR16  *TypeString;
 
   TypeString = Response ? L"Response" : L"Command";
 
-  DEBUG ((DebugLevel, "*************** IPMI %ls Start ***************\n", TypeString));
-  DEBUG ((DebugLevel, "NetFunction:       0x%02x\n", NetFunction));
-  DEBUG ((DebugLevel, "Command:           0x%02x\n", Command));
+  DEBUG ((DEBUG_VERBOSE, "*************** IPMI %ls Start ***************\n", TypeString));
+  DEBUG ((DEBUG_VERBOSE, "NetFunction:       0x%02x\n", NetFunction));
+  DEBUG ((DEBUG_VERBOSE, "Command:           0x%02x\n", Command));
   if (Response) {
-    DEBUG ((DebugLevel, "Completion Code:   0x%02x\n", CompletionCode));
+    DEBUG ((DEBUG_VERBOSE, "Completion Code:   0x%02x\n", CompletionCode));
   }
 
-  DEBUG ((DebugLevel, "DataSize:          0x%02x\n", DataSize));
+  DEBUG ((DEBUG_VERBOSE, "DataSize:          0x%02x\n", DataSize));
   for (Index = 0; Index < DataSize; Index++) {
     if (Index % 16 == 0) {
-      DEBUG ((DebugLevel, "\n"));
+      DEBUG ((DEBUG_VERBOSE, "\n"));
     }
 
-    DEBUG ((DebugLevel, "%02x ", (Data == NULL) ? 0 : Data[Index]));
+    DEBUG ((DEBUG_VERBOSE, "%02x ", (Data == NULL) ? 0 : Data[Index]));
   }
 
-  DEBUG ((DebugLevel, "\n"));
-  DEBUG ((DebugLevel, "**************** IPMI %ls End ****************\n", TypeString));
+  DEBUG ((DEBUG_VERBOSE, "\n"));
+  DEBUG ((DEBUG_VERBOSE, "**************** IPMI %ls End ****************\n", TypeString));
 }
 
 /**
