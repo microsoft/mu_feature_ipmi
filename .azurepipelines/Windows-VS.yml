@@ -12,7 +12,7 @@
 ##
 
 variables:
-- group: architectures-x86-64
+- group: architectures-arm64-x86-64
 - group: tool-chain-windows-visual-studio-latest
 
 extends:
