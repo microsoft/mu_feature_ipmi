@@ -12,7 +12,7 @@
   PLATFORM_VERSION        = 0.1
   DSC_SPECIFICATION       = 0x00010005
   OUTPUT_DIRECTORY        = Build/IpmiFeaturePkg/HostTest
-  SUPPORTED_ARCHITECTURES = IA32|X64|AARCH64
+  SUPPORTED_ARCHITECTURES = IA32|X64
   BUILD_TARGETS           = NOOPT
   SKUID_IDENTIFIER        = DEFAULT
 
@@ -50,7 +50,3 @@
   #
 
   MdePkg/Library/BaseLib/UnitTestHostBaseLib.inf
-
-[BuildOptions]
-# Need to use floats in this library. Got rid of -mgeneral-regs-only to do so.
-  GCC:*_*_AARCH64_CC_XIPFLAGS == -mstrict-align

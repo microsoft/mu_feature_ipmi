@@ -66,10 +66,7 @@
     },
     "SpellCheck": {
         "AuditOnly": False,
-        "ExtendWords": [
-            "mgeneral",
-            "mstrict"
-        ], # words to extend to the dictionary for this package   
+        "ExtendWords": [], # words to extend to the dictionary for this package   
         "IgnoreStandardPaths": ["*.c", "*.asm", "*.h", "*.nasm", "*.s", "*.asl", "*.inf", "*.fdf"],   # Standard Plugin defined paths that should be ignore
         "AdditionalIncludePaths": [] # Additional paths to spell check (wildcards supported)
     },
