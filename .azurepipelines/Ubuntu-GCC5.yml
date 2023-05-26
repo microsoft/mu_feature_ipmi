@@ -27,7 +27,6 @@ extends:
         Pkgs: 'IpmiFeaturePkg'
         Targets: 'DEBUG,RELEASE,NO-TARGET,NOOPT'
         ArchList: $(arch_list)
-        SelfHostAgent: false
       TARGET_IPMI_ARM:
         Pkgs: 'IpmiFeaturePkg'
         Targets: 'DEBUG,RELEASE,NO-TARGET,NOOPT'
