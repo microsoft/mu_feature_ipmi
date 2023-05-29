@@ -1,0 +1,58 @@
+### @file
+# Component description file for BMC SPMI Table.
+#
+    Copyright (c) Microsoft Corporation. All rights reserved.
+    SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+###
+
+[Defines]
+  INF_VERSION                   = 0x00010005
+  BASE_NAME                     = SpmiTable
+  FILE_GUID                     = F4BF828A-0139-4EE7-958C-B4670C9F6506
+  MODULE_TYPE                   = DXE_DRIVER
+  VERSION_STRING                = 1.0
+  ENTRY_POINT                   = SpmiTableEntryPoint
+
+[Sources]
+  SpmiTable.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  BaseMemoryLib
+  DebugLib
+  UefiLib
+  PcdLib
+
+[Protocols]
+  gEfiAcpiTableProtocolGuid
+  gIpmiTransportProtocolGuid
+
+[Pcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemId
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemTableId
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemRevision
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultCreatorId
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultCreatorRevision
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiInterfaceType
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiInterruptType
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiGpe
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiPciDeviceFlag
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiGlobalSystemInterrupt
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiAddressSpaceId
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiRegisterBitWidth
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiRegisterBitOffset
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiAccessSize
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiAddress
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiDeviceId
+
+[Depex]
+  gEfiAcpiTableProtocolGuid AND
+  gIpmiTransportProtocolGuid
