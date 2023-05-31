@@ -54,7 +54,12 @@ EFI_ACPI_SERVICE_PROCESSOR_MANAGEMENT_INTERFACE_TABLE  gSpmiTable = {
     0,                                       // Address, will be programmed at runtime
   },
   {   // Device identification information.
-    0,
+    {
+      0,
+      0,
+      0,
+      0,
+    },
   },
   0                                  // Reserved
 };
