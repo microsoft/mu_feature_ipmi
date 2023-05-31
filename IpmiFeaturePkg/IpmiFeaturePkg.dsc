@@ -107,6 +107,7 @@
   IpmiFeaturePkg/BmcAcpi/BmcAcpi.inf
   IpmiFeaturePkg/BmcAcpiPowerState/BmcAcpiPowerStateSmm.inf
   IpmiFeaturePkg/SpmiTable/SpmiTable.inf
+  IpmiFeaturePkg/IpmiSmbios/IpmiSmbios.inf
   IpmiFeaturePkg/IpmiFru/IpmiFru.inf
   IpmiFeaturePkg/SolStatus/SolStatus.inf
   IpmiFeaturePkg/Library/IpmiSelLib/IpmiSelLib.inf
