@@ -1,0 +1,58 @@
+## @file
+# Unit test suite for the IpmiSmbios using Google Test
+#
+#   Copyright (c) Microsoft Corporation.
+#   SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION         = 0x00010017
+  BASE_NAME           = IpmiSmbiosGoogleTest
+  FILE_GUID           = 25F43D7B-0B2C-43C7-8F3F-9C1BF95620A0
+  VERSION_STRING      = 1.0
+  MODULE_TYPE         = HOST_APPLICATION
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64
+#
+
+[Sources]
+  IpmiSmbiosGoogleTest.cpp
+  ../IpmiSmbios.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+  UnitTestFrameworkPkg/UnitTestFrameworkPkg.dec
+
+[LibraryClasses]
+  UefiBootServicesTableLib
+  BaseLib
+  MemoryAllocationLib
+  BaseMemoryLib
+  DebugLib
+  IpmiCommandLib
+  GoogleTestLib
+
+[Protocols]
+  gEfiSmbiosProtocolGuid                        # CONSUMES
+  gIpmiTransportProtocolGuid                    # CONSUMES
+
+[Guids]
+  gEfiEventReadyToBootGuid                      # CONSUMES
+
+[Pcd]
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiAddress
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiInterfaceType
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiAccessType
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiRegisterSpacing
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiInterruptInfo
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiInterruptPolarity
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiInterruptTriggerMode
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiInterruptNumber
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiI2CSlaveAddress
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiNVStorageDeviceAddress

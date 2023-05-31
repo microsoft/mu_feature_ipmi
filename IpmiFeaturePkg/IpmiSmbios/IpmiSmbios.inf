@@ -1,0 +1,57 @@
+## @file IpmiSmbios.inf
+#
+#  INF description file for IpmiSmbios DXE driver
+#
+#  Copyright (c) Microsoft Corporation. All rights reserved.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010015
+  BASE_NAME                      = IpmiSmbios
+  FILE_GUID                      = C44B28E4-A4AE-4E34-96E6-E9EADBF04A4A
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = IpmiSmbiosEntry
+
+[Sources]
+  IpmiSmbios.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  UefiBootServicesTableLib
+  BaseLib
+  MemoryAllocationLib
+  BaseMemoryLib
+  UefiLib
+  DebugLib
+  IpmiCommandLib
+
+[Protocols]
+  gEfiSmbiosProtocolGuid                        # CONSUMES
+  gIpmiTransportProtocolGuid                    # CONSUMES
+
+[Guids]
+  gEfiEventReadyToBootGuid                      # CONSUMES
+
+[FixedPcd]
+# Type 38
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiAddress
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiInterfaceType
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiAccessType
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiRegisterSpacing
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiInterruptInfo
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiInterruptPolarity
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiInterruptTriggerMode
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiInterruptNumber
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiI2CSlaveAddress
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiNVStorageDeviceAddress
+
+[Depex]
+  TRUE
