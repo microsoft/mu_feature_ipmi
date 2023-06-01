@@ -56,4 +56,3 @@ To leverage this feature,
 ## Copyright
 
 Copyright (c) Microsoft Corporation.
-
