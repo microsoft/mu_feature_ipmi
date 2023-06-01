@@ -25,7 +25,7 @@
 #include <Library/PcdLib.h>
 
 // Service Processor Management Interface Table definition
-EFI_ACPI_SERVICE_PROCESSOR_MANAGEMENT_INTERFACE_TABLE  gSpmiTable = {
+EFI_ACPI_SERVICE_PROCESSOR_MANAGEMENT_INTERFACE_TABLE  mSpmiTable = {
   {
     EFI_ACPI_2_0_SERVER_PLATFORM_MANAGEMENT_INTERFACE_SIGNATURE,
     sizeof (EFI_ACPI_SERVICE_PROCESSOR_MANAGEMENT_INTERFACE_TABLE),
@@ -92,9 +92,9 @@ UpdateAcpiSpmiTables (
 
   // OEM ID
   CopyMem (
-    gSpmiTable.Header.OemId,
+    mSpmiTable.Header.OemId,
     PcdGetPtr (PcdAcpiDefaultOemId),
-    sizeof (gSpmiTable.Header.OemId)
+    sizeof (mSpmiTable.Header.OemId)
     );
 
   ResponseDataSize = sizeof (SM_CTRL_INFO);
@@ -126,20 +126,20 @@ UpdateAcpiSpmiTables (
   IpmiSpecRevision  = (UINT16)(SmCtrlInfo->SpecificationVersion & 0xF0);
   IpmiSpecRevision |= (UINT16)((SmCtrlInfo->SpecificationVersion & 0x0F) << 8);
   // IPMI Specification Version
-  gSpmiTable.SpecificationRevision = IpmiSpecRevision;
+  mSpmiTable.SpecificationRevision = IpmiSpecRevision;
 
   // Address
   if (PcdGet8 (PcdIpmiAddressSpaceId) == EFI_ACPI_5_0_SYSTEM_IO) {
-    gSpmiTable.BaseAddress.Address = PcdGet16 (PcdIpmiIoBaseAddress);
+    mSpmiTable.BaseAddress.Address = PcdGet16 (PcdIpmiIoBaseAddress);
   } else {
-    gSpmiTable.BaseAddress.Address = PcdGet64 (PcdIpmiAddress);
+    mSpmiTable.BaseAddress.Address = PcdGet64 (PcdIpmiAddress);
   }
 
   // DeviceId
   CopyMem (
-    &gSpmiTable.DeviceId,
+    &mSpmiTable.DeviceId,
     PcdGetPtr (PcdIpmiDeviceId),
-    sizeof (gSpmiTable.DeviceId)
+    sizeof (mSpmiTable.DeviceId)
     );
 
 Exit:
@@ -191,7 +191,7 @@ SpmiTableEntryPoint (
   TableHandle = 0;
   Status      = AcpiTable->InstallAcpiTable (
                              AcpiTable,
-                             &gSpmiTable,
+                             &mSpmiTable,
                              sizeof (EFI_ACPI_SERVICE_PROCESSOR_MANAGEMENT_INTERFACE_TABLE),
                              &TableHandle
                              );

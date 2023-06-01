@@ -14,7 +14,7 @@ extern "C" {
 #include <IpmiInterface.h>
 #include <Protocol/AcpiTable.h>
 
-extern EFI_ACPI_SERVICE_PROCESSOR_MANAGEMENT_INTERFACE_TABLE  gSpmiTable;
+extern EFI_ACPI_SERVICE_PROCESSOR_MANAGEMENT_INTERFACE_TABLE  mSpmiTable;
 
 //
 // Interfaces to be tested
@@ -137,19 +137,19 @@ TEST_F (MockSpmiTable, VerifySpmiTableEntryPointPositiveTestCase) {
 
   Status = SpmiTableEntryPoint (NULL, NULL);
   EXPECT_EQ (Status, EFI_SUCCESS);
-  EXPECT_EQ (gSpmiTable.Header.OemTableId, FixedPcdGet64 (PcdAcpiDefaultOemTableId));
-  EXPECT_EQ (gSpmiTable.Header.OemRevision, FixedPcdGet32 (PcdAcpiDefaultOemRevision));
-  EXPECT_EQ (gSpmiTable.Header.CreatorId, FixedPcdGet32 (PcdAcpiDefaultCreatorId));
-  EXPECT_EQ (gSpmiTable.Header.CreatorRevision, FixedPcdGet32 (PcdAcpiDefaultCreatorRevision));
-  EXPECT_EQ (gSpmiTable.InterfaceType, FixedPcdGet8 (PcdIpmiInterfaceType));
-  EXPECT_EQ (gSpmiTable.InterruptType, FixedPcdGet8 (PcdIpmiInterruptType));
-  EXPECT_EQ (gSpmiTable.Gpe, FixedPcdGet8 (PcdIpmiGpe));
-  EXPECT_EQ (gSpmiTable.PciDeviceFlag, FixedPcdGet8 (PcdIpmiPciDeviceFlag));
-  EXPECT_EQ (gSpmiTable.GlobalSystemInterrupt, FixedPcdGet32 (PcdIpmiGlobalSystemInterrupt));
-  EXPECT_EQ (gSpmiTable.BaseAddress.AddressSpaceId, FixedPcdGet8 (PcdIpmiAddressSpaceId));
-  EXPECT_EQ (gSpmiTable.BaseAddress.RegisterBitWidth, FixedPcdGet8 (PcdIpmiRegisterBitWidth));
-  EXPECT_EQ (gSpmiTable.BaseAddress.RegisterBitOffset, FixedPcdGet8 (PcdIpmiRegisterBitOffset));
-  EXPECT_EQ (gSpmiTable.BaseAddress.Reserved, FixedPcdGet8 (PcdIpmiAccessSize));
+  EXPECT_EQ (mSpmiTable.Header.OemTableId, FixedPcdGet64 (PcdAcpiDefaultOemTableId));
+  EXPECT_EQ (mSpmiTable.Header.OemRevision, FixedPcdGet32 (PcdAcpiDefaultOemRevision));
+  EXPECT_EQ (mSpmiTable.Header.CreatorId, FixedPcdGet32 (PcdAcpiDefaultCreatorId));
+  EXPECT_EQ (mSpmiTable.Header.CreatorRevision, FixedPcdGet32 (PcdAcpiDefaultCreatorRevision));
+  EXPECT_EQ (mSpmiTable.InterfaceType, FixedPcdGet8 (PcdIpmiInterfaceType));
+  EXPECT_EQ (mSpmiTable.InterruptType, FixedPcdGet8 (PcdIpmiInterruptType));
+  EXPECT_EQ (mSpmiTable.Gpe, FixedPcdGet8 (PcdIpmiGpe));
+  EXPECT_EQ (mSpmiTable.PciDeviceFlag, FixedPcdGet8 (PcdIpmiPciDeviceFlag));
+  EXPECT_EQ (mSpmiTable.GlobalSystemInterrupt, FixedPcdGet32 (PcdIpmiGlobalSystemInterrupt));
+  EXPECT_EQ (mSpmiTable.BaseAddress.AddressSpaceId, FixedPcdGet8 (PcdIpmiAddressSpaceId));
+  EXPECT_EQ (mSpmiTable.BaseAddress.RegisterBitWidth, FixedPcdGet8 (PcdIpmiRegisterBitWidth));
+  EXPECT_EQ (mSpmiTable.BaseAddress.RegisterBitOffset, FixedPcdGet8 (PcdIpmiRegisterBitOffset));
+  EXPECT_EQ (mSpmiTable.BaseAddress.Reserved, FixedPcdGet8 (PcdIpmiAccessSize));
 }
 
 TEST_F (MockSpmiTable, VerifyIpmiSendCommandFailed) {
