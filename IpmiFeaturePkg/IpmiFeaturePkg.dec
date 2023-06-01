@@ -95,22 +95,22 @@
   # (Note: This field is valid only if Bit[1] of the Interrupt Type field is set. Otherwise set to 00h)
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiGlobalSystemInterrupt|0x00|UINT32|0xF000000F
   #
-  # IPMI Base Address GAS ID
+  # IPMI Base Address Space ID of Generic Address Structure(GAS) . Reference ACPI specification for more information.
   #
   # SYSTEM_MEMORY              0
   # SYSTEM_IO                  1
   # SMBUS                      4
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiAddressSpaceId|0x01|UINT8|0xF0000010
   #
-  # IPMI Base Address RegisterBitWidth
+  # IPMI Base Address RegisterBitWidth of Generic Address Structure(GAS) . Reference ACPI specification for more information.
   #
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiRegisterBitWidth|0x08|UINT8|0xF0000011
   #
-  # IPMI Base Address RegisterBitOffset
+  # IPMI Base Address RegisterBitOffset of Generic Address Structure(GAS) . Reference ACPI specification for more information.
   #
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiRegisterBitOffset|0x00|UINT8|0xF0000012
   #
-  # IPMI Base Address AccessSize
+  # IPMI Base Address AccessSize of Generic Address Structure(GAS) . Reference ACPI specification for more information.
   #
   # UNDEFINED  0
   # BYTE       1
@@ -119,7 +119,7 @@
   # QWORD      4
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiAccessSize|0x01|UINT8|0xF0000013
   #
-  # IPMI Base Address
+  # IPMI Base Address of Generic Address Structure(GAS) . Reference ACPI specification for more information.
   #
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiAddress|0x00|UINT64|0xF0000014
   #

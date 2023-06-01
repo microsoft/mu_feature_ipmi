@@ -79,10 +79,16 @@ UpdateAcpiSpmiTables (
   )
 {
   EFI_STATUS      Status;
-  IPMI_TRANSPORT  *IpmiTransport = NULL;
-  SM_CTRL_INFO    *SmCtrlInfo    = NULL;
+  IPMI_TRANSPORT  *IpmiTransport;
+  SM_CTRL_INFO    *SmCtrlInfo;
   UINT16          IpmiSpecRevision;
   UINT32          ResponseDataSize;
+
+  Status           = EFI_SUCCESS;
+  IpmiTransport    = NULL;
+  SmCtrlInfo       = NULL;
+  IpmiSpecRevision = 0;
+  ResponseDataSize = 0;
 
   SmCtrlInfo = AllocateZeroPool (sizeof (SM_CTRL_INFO));
   if (SmCtrlInfo == NULL) {
@@ -168,8 +174,12 @@ SpmiTableEntryPoint (
   )
 {
   EFI_STATUS               Status;
-  UINTN                    TableHandle = 0;
+  UINTN                    TableHandle;
   EFI_ACPI_TABLE_PROTOCOL  *AcpiTable;
+
+  Status      = EFI_SUCCESS;
+  TableHandle = 0;
+  AcpiTable   = NULL;
 
   //
   // Find the AcpiTable protocol
