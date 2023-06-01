@@ -104,8 +104,8 @@ UpdateAcpiSpmiTables (
                             (VOID **)&IpmiTransport
                             );
   if (EFI_ERROR (Status)) {
-    FreePool (SmCtrlInfo);
-    return Status;
+    DEBUG ((DEBUG_ERROR, "[%a] Locate gIpmiTransportProtocolGuid failed! Status = %r\n", __FUNCTION__, Status));
+    goto Exit;
   }
 
   Status = IpmiTransport->IpmiSubmitCommand (
@@ -119,8 +119,8 @@ UpdateAcpiSpmiTables (
                             &ResponseDataSize
                             );
   if (EFI_ERROR (Status)) {
-    FreePool (SmCtrlInfo);
-    return Status;
+    DEBUG ((DEBUG_ERROR, "[%a] IpmiSubmitCommand IPMI_APP_GET_DEVICE_ID failed! Status = %r\n", __FUNCTION__, Status));
+    goto Exit;
   }
 
   IpmiSpecRevision  = (UINT16)(SmCtrlInfo->SpecificationVersion & 0xF0);
@@ -142,8 +142,10 @@ UpdateAcpiSpmiTables (
     sizeof (gSpmiTable.DeviceId)
     );
 
+Exit:
+
   FreePool (SmCtrlInfo);
-  return EFI_SUCCESS;
+  return Status;
 }
 
 /**
