@@ -1,7 +1,9 @@
 /** @file IpmiSmbios.c
     Create IPMI SMBIOS in ReadyToBoot event.
 
-    Copyright (c) Microsoft Corporation. All rights reserved.
+    Copyright (c) Microsoft Corporation.
+    SPDX-License-Identifier: BSD-2-Clause-Patent
+
 **/
 
 #include <PiDxe.h>
