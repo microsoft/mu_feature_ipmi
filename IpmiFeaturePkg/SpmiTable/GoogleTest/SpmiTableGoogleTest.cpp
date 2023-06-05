@@ -73,6 +73,8 @@ struct MockIpmiTransport {
 MOCK_INTERFACE_DEFINITION (MockIpmiTransport);
 MOCK_FUNCTION_DEFINITION (MockIpmiTransport, IpmiSendCommand, 8, EFIAPI);
 
+static IPMI_TRANSPORT  LocalIpmiTransport;
+
 //
 // Declarations to handle usage of the EFI_ACPI_TABLE_PROTOCOL by creating mock
 //

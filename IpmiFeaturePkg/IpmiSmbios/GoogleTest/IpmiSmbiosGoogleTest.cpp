@@ -70,8 +70,6 @@ struct MockIpmiBaseLib {
 MOCK_INTERFACE_DEFINITION (MockIpmiBaseLib);
 MOCK_FUNCTION_DEFINITION (MockIpmiBaseLib, IpmiSubmitCommand, 6, EFIAPI);
 
-static IPMI_TRANSPORT  LocalIpmiTransport;
-
 //
 // Declarations to handle usage of the EFI_SMBIOS_PROTOCOL by creating mock
 //

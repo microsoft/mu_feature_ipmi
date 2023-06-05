@@ -46,7 +46,6 @@ To leverage this feature,
 |PcdSmbiosTablesIpmiI2CSlaveAddress|Default value is 0x20.
 |PcdSmbiosTablesIpmiNVStorageDeviceAddress|Default value is 0xFF.
 
-
 ## Copyright
 
 Copyright (c) Microsoft Corporation.
