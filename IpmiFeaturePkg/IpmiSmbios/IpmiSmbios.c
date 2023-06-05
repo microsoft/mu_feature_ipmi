@@ -19,27 +19,31 @@
 #define IPMI_ACCESS_TYPE_MMIO  0
 #define IPMI_ACCESS_TYPE_IO    1
 
-struct {
+#pragma pack(1)
+typedef struct {
   SMBIOS_TABLE_TYPE38    Type38;
   UINT8                  TrailingZero[2]; // SMBIOS protocol expects two zero bytes behind added record
 } mSmbiosTableType38 = {
   {
     {
-      EFI_SMBIOS_TYPE_IPMI_DEVICE_INFORMATION,  // Type
-      sizeof (SMBIOS_TABLE_TYPE38),             // Length
-      0,                                        // Handle, will be programmed at runtime
+      EFI_SMBIOS_TYPE_IPMI_DEVICE_INFORMATION,   // Type
+      sizeof (SMBIOS_TABLE_TYPE38),              // Length
+      0,                                         // Handle, will be programmed at runtime
     },
-    FixedPcdGet8 (PcdIpmiInterfaceType),                      // InterfaceType
-    0x20,                                                     // IPMISpecificationRevision, will be programmed at runtime
-    FixedPcdGet8 (PcdSmbiosTablesIpmiI2CSlaveAddress),        // I2CSlaveAddress
-    FixedPcdGet8 (PcdSmbiosTablesIpmiNVStorageDeviceAddress), // NVStorageDeviceAddress
-    0,                                                        // BaseAddress, will be programmed at runtime
-    0,                                                        // BaseAddressModifier_InterruptInfo, will be programmed at runtime
-    FixedPcdGet8 (PcdSmbiosTablesIpmiInterruptNumber)         // InterruptNumber
+    FixedPcdGet8 (PcdIpmiInterfaceType),                        // InterfaceType
+    0x20,                                                       // IPMISpecificationRevision, will be programmed at runtime
+    FixedPcdGet8 (PcdSmbiosTablesIpmiI2CSlaveAddress),          // I2CSlaveAddress
+    FixedPcdGet8 (PcdSmbiosTablesIpmiNVStorageDeviceAddress),   // NVStorageDeviceAddress
+    0,                                                          // BaseAddress, will be programmed at runtime
+    0,                                                          // BaseAddressModifier_InterruptInfo, will be programmed at runtime
+    FixedPcdGet8 (PcdSmbiosTablesIpmiInterruptNumber),          // InterruptNumber
   },
-  0,
-  0
+  {
+    0,
+    0,
+  }
 };
+#pragma pack()
 
 /**
     Create SMBIOS Type 38.
