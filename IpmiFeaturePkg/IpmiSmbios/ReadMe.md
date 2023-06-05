@@ -34,7 +34,9 @@ To leverage this feature,
 
 |PCD Name|Descritpion|
 |---|---|
-|PcdIpmiIoBaseAddress|Default value is 0xCA2.
+|PcdSmbiosTablesIpmiAccessType|Default value is 0x01. 0x00 MMIO, 0x01 IO
+|PcdIpmiIoBaseAddress|Default value is 0xCA2. only available when PcdSmbiosTablesIpmiAccessType == 0x01
+|PcdIpmiAddress|Default value is 0. only available when PcdSmbiosTablesIpmiAccessType == 0x00
 |PcdIpmiInterfaceType|Default value is 0x1. 0x00 Uknown, 0x01 KCS, 0x02 SMIC, 0x3 BT, 0x4 SSIF.
 |PcdSmbiosTablesIpmiRegisterSpacing|Default value is 0x0. 0x0 successive byte, 0x1 32bit, 0x2 16bit boundaries.
 |PcdSmbiosTablesIpmiInterruptInfo|Default value is 0x0. 0x0 not specified, 0x1 specified.
@@ -43,6 +45,7 @@ To leverage this feature,
 |PcdSmbiosTablesIpmiInterruptNumber|Default value is 0x0. 0x0 unspecified/unsupported.
 |PcdSmbiosTablesIpmiI2CSlaveAddress|Default value is 0x20.
 |PcdSmbiosTablesIpmiNVStorageDeviceAddress|Default value is 0xFF.
+
 
 ## Copyright
 
