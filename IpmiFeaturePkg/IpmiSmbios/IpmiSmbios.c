@@ -20,7 +20,7 @@
 #define IPMI_ACCESS_TYPE_IO    1
 
 #pragma pack(1)
-typedef struct {
+struct {
   SMBIOS_TABLE_TYPE38    Type38;
   UINT8                  TrailingZero[2]; // SMBIOS protocol expects two zero bytes behind added record
 } mSmbiosTableType38 = {
