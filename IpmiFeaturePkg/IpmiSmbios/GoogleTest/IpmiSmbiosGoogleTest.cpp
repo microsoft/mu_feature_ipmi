@@ -133,12 +133,11 @@ TEST_F (MockIpmiSmbios, VerifyCreateIpmiSmbiosType38TestCase) {
   EXPECT_EQ (mSmbiosTableType38.BaseAddress, FixedPcdGet16 (PcdIpmiIoBaseAddress) | BIT0);
   EXPECT_EQ (
     mSmbiosTableType38.BaseAddressModifier_InterruptInfo,
-    ((PcdGet8 (PcdSmbiosTablesIpmiRegisterSpacing) & 0x3) << 6) |
     ((PcdGet16 (PcdIpmiIoBaseAddress) & BIT0) << 4) |
     ((PcdGet8 (PcdSmbiosTablesIpmiInterruptInfo) & 1) << 3) |
     ((PcdGet8 (PcdSmbiosTablesIpmiInterruptPolarity) & 1) << 1) |
     (PcdGet8 (PcdSmbiosTablesIpmiInterruptTriggerMode) & 1)
-    );
+  );
 }
 
 TEST_F (MockIpmiSmbios, VerifyCreateIpmiSmbiosType38LocateProtocolFailTestCase) {

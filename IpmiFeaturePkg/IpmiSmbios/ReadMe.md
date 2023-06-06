@@ -32,13 +32,13 @@ To leverage this feature,
 
 ## PCDs
 
-|PCD Name|Descritpion|
+|PCD Name|Description|
 |---|---|
-|PcdSmbiosTablesIpmiAccessType|Default value is 0x01. 0x00 MMIO, 0x01 IO
 |PcdIpmiIoBaseAddress|Default value is 0xCA2. only available when PcdSmbiosTablesIpmiAccessType == 0x01
 |PcdIpmiAddress|Default value is 0. only available when PcdSmbiosTablesIpmiAccessType == 0x00
-|PcdIpmiInterfaceType|Default value is 0x1. 0x00 Uknown, 0x01 KCS, 0x02 SMIC, 0x3 BT, 0x4 SSIF.
-|PcdSmbiosTablesIpmiRegisterSpacing|Default value is 0x0. 0x0 successive byte, 0x1 32bit, 0x2 16bit boundaries.
+|PcdIpmiInterfaceType|Default value is 0x1. 0x00 Unknown, 0x01 KCS, 0x02 SMIC, 0x3 BT, 0x4 SSIF.
+|PcdIpmiAddressSpaceId|IPMI GAS Address Space ID. Default is 0x01|
+|PcdIpmiRegisterBitWidth|IPMI GAS Register Bit Width. Default is 0x08|
 |PcdSmbiosTablesIpmiInterruptInfo|Default value is 0x0. 0x0 not specified, 0x1 specified.
 |PcdSmbiosTablesIpmiInterruptPolarity|Default value is 0x0. 0x0 active low, 0x1 active high.
 |PcdSmbiosTablesIpmiInterruptTriggerMode|Default value is 0x0. 0x0 edge, 0x1 level.

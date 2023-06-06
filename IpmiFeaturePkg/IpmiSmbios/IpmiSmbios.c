@@ -14,12 +14,8 @@
 #include <Library/UefiLib.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/BaseMemoryLib.h>
-#include <Library/MemoryAllocationLib.h>
 #include <Library/IpmiCommandLib.h>
 #include <ServerManagement.h>
-
-#define IPMI_ACCESS_TYPE_MMIO  0
-#define IPMI_ACCESS_TYPE_IO    1
 
 #pragma pack(1)
 struct {
@@ -64,6 +60,7 @@ CreateIpmiSmbiosType38 (
   EFI_SMBIOS_HANDLE            SmbiosHandle;
   IPMI_GET_DEVICE_ID_RESPONSE  DeviceId;
   UINT8                        IPMISpecificationRevision;
+  UINT8                        IpmiRegisterSpacing;
 
   Status = gBS->LocateProtocol (
                   &gEfiSmbiosProtocolGuid,
@@ -84,18 +81,40 @@ CreateIpmiSmbiosType38 (
   IPMISpecificationRevision                           = (((DeviceId.SpecificationVersion & 0xF0)>>4) | ((DeviceId.SpecificationVersion & 0x0F)<<4));
   mSmbiosTableType38.Type38.IPMISpecificationRevision = IPMISpecificationRevision;
 
-  if (PcdGet8 (PcdSmbiosTablesIpmiAccessType) == IPMI_ACCESS_TYPE_IO) {
-    mSmbiosTableType38.Type38.BaseAddress                       = (PcdGet16 (PcdIpmiIoBaseAddress) | BIT0);
-    mSmbiosTableType38.Type38.BaseAddressModifier_InterruptInfo = ((PcdGet16 (PcdIpmiIoBaseAddress) & BIT0) << 4);
+  //
+  // SMBIOS Type38 Register Spacing
+  //
+  // 00b = interface registers are on successive byte boundaries
+  // 01b = interface registers are on successive 32-bit boundaries
+  // 10b = interface registers are on successive 16-bit boundaries
+  // 11b = reserved
+  //
+  if (PcdGet8 (PcdIpmiRegisterBitWidth) == 0x08) {
+    IpmiRegisterSpacing = 0;
+  } else if (PcdGet8 (PcdIpmiRegisterBitWidth) == 0x10) {
+    IpmiRegisterSpacing = BIT2;
+  } else if (PcdGet8 (PcdIpmiRegisterBitWidth) == 0x20) {
+    IpmiRegisterSpacing = BIT1;
   } else {
-    mSmbiosTableType38.Type38.BaseAddress                       = (PcdGet64 (PcdIpmiAddress) & ~BIT0);
-    mSmbiosTableType38.Type38.BaseAddressModifier_InterruptInfo = ((PcdGet64 (PcdIpmiAddress) & BIT0) << 4);
+    IpmiRegisterSpacing = BIT1 | BIT2;
   }
 
-  mSmbiosTableType38.Type38.BaseAddressModifier_InterruptInfo |= ((PcdGet8 (PcdSmbiosTablesIpmiRegisterSpacing) & 0x3) << 6) |
-                                                                 ((PcdGet8 (PcdSmbiosTablesIpmiInterruptInfo) & 1) << 3) |
-                                                                 ((PcdGet8 (PcdSmbiosTablesIpmiInterruptPolarity) & 1) << 1) |
-                                                                 (PcdGet8 (PcdSmbiosTablesIpmiInterruptTriggerMode) & 1);
+  if (PcdGet8 (PcdIpmiInterfaceType) != IPMIDeviceInfoInterfaceTypeSSIF) {
+    if (PcdGet8 (PcdIpmiAddressSpaceId) == EFI_ACPI_5_0_SYSTEM_IO) {
+      mSmbiosTableType38.Type38.BaseAddress                       = (PcdGet16 (PcdIpmiIoBaseAddress) | BIT0);
+      mSmbiosTableType38.Type38.BaseAddressModifier_InterruptInfo = ((PcdGet16 (PcdIpmiIoBaseAddress) & BIT0) << 4);
+    } else if (PcdGet8 (PcdIpmiAddressSpaceId) == EFI_ACPI_5_0_SYSTEM_MEMORY) {
+      mSmbiosTableType38.Type38.BaseAddress                       = (PcdGet64 (PcdIpmiAddress) & ~BIT0);
+      mSmbiosTableType38.Type38.BaseAddressModifier_InterruptInfo = ((PcdGet64 (PcdIpmiAddress) & BIT0) << 4);
+    }
+
+    mSmbiosTableType38.Type38.BaseAddressModifier_InterruptInfo |= ((IpmiRegisterSpacing & 0x3) << 6) |
+                                                                   ((PcdGet8 (PcdSmbiosTablesIpmiInterruptInfo) & 1) << 3) |
+                                                                   ((PcdGet8 (PcdSmbiosTablesIpmiInterruptPolarity) & 1) << 1) |
+                                                                   (PcdGet8 (PcdSmbiosTablesIpmiInterruptTriggerMode) & 1);
+  } else {
+    mSmbiosTableType38.Type38.BaseAddress = (PcdGet64 (PcdIpmiAddress));
+  }
 
   SmbiosHandle = SMBIOS_HANDLE_PI_RESERVED;
 

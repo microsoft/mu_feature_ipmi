@@ -131,44 +131,31 @@
   #
   # SMBIOS Type 38 - IPMI Device Information
   #
-    #
-  # IPMI Register spacing
-  #
-  # 0x00  - on successive byte boundaries
-  # 0x01  - on 32-bit boundaries
-  # 0x02  - on 16-bit boundaries
-  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiRegisterSpacing|0x00|UINT8|0xF0000016
   #
   # IPMI Interrupt Info
   #
   # 0  - not specified
   # 1  - specified
-  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiInterruptInfo|0x00|UINT8|0xF0000017
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiInterruptInfo|0x00|UINT8|0xF0000016
   #
   # IPMI Interrupt Polarity
   #
   # 0  - active low
   # 1  - active high
-  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiInterruptPolarity|0x00|UINT8|0xF0000018
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiInterruptPolarity|0x00|UINT8|0xF0000017
   #
   # IPMI Interrupt Trigger Mode
   #
   # 0  - edge
   # 1  - level
-  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiInterruptTriggerMode|0x00|UINT8|0xF0000019
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiInterruptTriggerMode|0x00|UINT8|0xF0000018
   #
   # IPMI Interrupt Number
   #
   # 0  - unspecified/unsupported
-  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiInterruptNumber|0x00|UINT8|0xF000001A
-  #
-  # IPMI Access Type
-  #
-  # 0x00  - MMIO
-  # 0x01  - IO
-  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiAccessType|0x01|UINT8|0xF000001B
-  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiI2CSlaveAddress|0x20|UINT8|0xF000001C
-  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiNVStorageDeviceAddress|0xff|UINT8|0xF000001D
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiInterruptNumber|0x00|UINT8|0xF0000019
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiI2CSlaveAddress|0x20|UINT8|0xF000001A
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiNVStorageDeviceAddress|0xff|UINT8|0xF000001B
 
 [PcdsDynamic, PcdsDynamicEx]
   gIpmiFeaturePkgTokenSpaceGuid.PcdOsWatchdogEnabled|FALSE|BOOLEAN|0xD0000001
