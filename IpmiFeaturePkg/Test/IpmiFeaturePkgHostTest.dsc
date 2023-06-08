@@ -49,6 +49,8 @@
       gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x06  # Disable Debug ASSERT for googletest
   }
 
+  IpmiFeaturePkg/IpmiSmbios/GoogleTest/IpmiSmbiosGoogleTest.inf
+
   #
   # Build HOST_APPLICATION Libraries
   #

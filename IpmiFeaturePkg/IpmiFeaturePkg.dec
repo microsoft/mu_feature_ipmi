@@ -128,6 +128,34 @@
   # if it is PCI device, then {PCI Segment Number, PCI Bus Number, PCI Device Number, PCI Function Number}
   # if it is non-PCI device, then {UID byte1, UID byte2, UID byte3, UID byte4}
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiDeviceId|{0x00, 0x00, 0x00, 0x00}|VOID*|0xF0000015
+  #
+  # SMBIOS Type 38 - IPMI Device Information
+  #
+  #
+  # IPMI Interrupt Info
+  #
+  # 0  - not specified
+  # 1  - specified
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiInterruptInfo|0x00|UINT8|0xF0000016
+  #
+  # IPMI Interrupt Polarity
+  #
+  # 0  - active low
+  # 1  - active high
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiInterruptPolarity|0x00|UINT8|0xF0000017
+  #
+  # IPMI Interrupt Trigger Mode
+  #
+  # 0  - edge
+  # 1  - level
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiInterruptTriggerMode|0x00|UINT8|0xF0000018
+  #
+  # IPMI Interrupt Number
+  #
+  # 0  - unspecified/unsupported
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiInterruptNumber|0x00|UINT8|0xF0000019
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiI2CSlaveAddress|0x20|UINT8|0xF000001A
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiNVStorageDeviceAddress|0xff|UINT8|0xF000001B
 
 [PcdsDynamic, PcdsDynamicEx]
   gIpmiFeaturePkgTokenSpaceGuid.PcdOsWatchdogEnabled|FALSE|BOOLEAN|0xD0000001
