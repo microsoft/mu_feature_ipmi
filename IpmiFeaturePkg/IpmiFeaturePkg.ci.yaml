@@ -8,6 +8,9 @@
 ##
 
 {
+    "PrEval": {
+        "DscPath": "IpmiFeaturePkg.dsc",
+    },
     "LicenseCheck": {
         "IgnoreFiles": []
     },
