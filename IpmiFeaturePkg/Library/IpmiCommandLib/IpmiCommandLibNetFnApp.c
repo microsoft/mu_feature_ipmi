@@ -252,10 +252,21 @@ IpmiSendMessage (
  * @param SystemGuid Pointer the the buffer to fill with System Guid
  * @return EFI_STATUS
  */
+
+/**
+  This function gets the system UUID.
+
+  @param[out] SystemGuid   The pointer to retrieve system UUID.
+
+  @retval EFI_SUCCESS            Command is sent successfully.
+  @retval EFI_NOT_AVAILABLE_YET  Transport interface is not ready yet.
+  @retval Others                 Other errors.
+
+**/
 EFI_STATUS
 EFIAPI
-IpmiGetSystemGuid (
-  OUT IPMI_GUID  *IpmiSystemGuid
+IpmiGetSystemUuid (
+  OUT EFI_GUID  *SystemGuid
   )
 {
   EFI_STATUS  Status;
@@ -266,7 +277,7 @@ IpmiGetSystemGuid (
   IPMI_GET_SYSTEM_GUID_RESPONSE  GuidResponse;
 
   Status = EFI_INVALID_PARAMETER;
-  if (IpmiSystemGuid != NULL) {
+  if (SystemGuid != NULL) {
     DataSize = sizeof (IPMI_GET_DEVICE_GUID_RESPONSE);
 
     Status = IpmiSubmitCommand (
@@ -278,7 +289,10 @@ IpmiGetSystemGuid (
                &DataSize
                );
     if (!EFI_ERROR (Status)) {
-      CopyMem ((VOID *)IpmiSystemGuid, (VOID *)(&GuidResponse.Guid), sizeof (IPMI_GUID));
+      SystemGuid->Data1 = GuidResponse.Guid.Data1;
+      SystemGuid->Data2 = GuidResponse.Guid.Data2;
+      SystemGuid->Data3 = GuidResponse.Guid.Data3;
+      CopyMem (SystemGuid->Data4, GuidResponse.Guid.Data4, sizeof (SystemGuid->Data4));
     }
   }
 
@@ -320,5 +334,48 @@ IpmiGetSystemInterfaceCapabilities (
                          );
   }
 
+  return Status;
+}
+
+/**
+  This function gets the channel information.
+
+  @param[in]   GetChannelInfoRequest          The get channel information request.
+  @param[out]  GetChannelInfoResponse         The get channel information response.
+  @param[out]  GetChannelInfoResponseSize     When input, the expected size of response.
+                                              When output, the exact size of the returned
+                                              response.
+
+  @retval EFI_SUCCESS            Get channel information successfully.
+  @retval EFI_INVALID_PARAMETER  One of the given input parameters is invalid.
+  @retval Others                 See the return values of IpmiSubmitCommand () function.
+
+**/
+EFI_STATUS
+EFIAPI
+IpmiGetChannelInfo (
+  IN  IPMI_GET_CHANNEL_INFO_REQUEST   *GetChannelInfoRequest,
+  OUT IPMI_GET_CHANNEL_INFO_RESPONSE  *GetChannelInfoResponse,
+  OUT UINT32                          *GetChannelInfoResponseSize
+  )
+{
+  EFI_STATUS  Status;
+
+  if ((GetChannelInfoRequest == NULL) ||
+      (GetChannelInfoResponse == NULL) ||
+      (GetChannelInfoResponseSize == NULL))
+  {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  *GetChannelInfoResponseSize = sizeof (IPMI_GET_CHANNEL_INFO_RESPONSE);
+  Status                      = IpmiSubmitCommand (
+                                  IPMI_NETFN_APP,
+                                  IPMI_APP_GET_CHANNEL_INFO,
+                                  (UINT8 *)GetChannelInfoRequest,
+                                  sizeof (IPMI_GET_CHANNEL_INFO_REQUEST),
+                                  (UINT8 *)GetChannelInfoResponse,
+                                  GetChannelInfoResponseSize
+                                  );
   return Status;
 }

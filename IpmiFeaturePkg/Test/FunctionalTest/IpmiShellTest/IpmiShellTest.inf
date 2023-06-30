@@ -18,6 +18,7 @@
 
 [Packages]
   MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
   UnitTestFrameworkPkg/UnitTestFrameworkPkg.dec
   IpmiFeaturePkg/IpmiFeaturePkg.dec
 

@@ -77,3 +77,44 @@ IpmiGetSolConfigurationParameters (
              );
   return Status;
 }
+
+/**
+  This function gets the LAN configuration parameter.
+
+  @param[in]      GetLanConfigurationParametersRequest   Request data
+  @param[out]     GetLanConfigurationParametersResponse  Response data
+  @param[in,out]  GetLanConfigurationParametersSize      When input, the expected size of response data.
+                                                         When out, the exact  size of response data.
+
+  @retval EFI_SUCCESS            Lan configuration parameter is returned in the response.
+  @retval EFI_INVALID_PARAMETER  One of the given input parameters is invalid.
+  @retval Others                 Other errors.
+
+**/
+EFI_STATUS
+EFIAPI
+IpmiGetLanConfigurationParameters (
+  IN     IPMI_GET_LAN_CONFIGURATION_PARAMETERS_REQUEST   *GetLanConfigurationParametersRequest,
+  OUT    IPMI_GET_LAN_CONFIGURATION_PARAMETERS_RESPONSE  *GetLanConfigurationParametersResponse,
+  IN OUT UINT32                                          *GetLanConfigurationParametersSize
+  )
+{
+  EFI_STATUS  Status;
+
+  if ((GetLanConfigurationParametersRequest == NULL) ||
+      (GetLanConfigurationParametersResponse == NULL) ||
+      (GetLanConfigurationParametersSize == NULL))
+  {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  Status = IpmiSubmitCommand (
+             IPMI_NETFN_TRANSPORT,
+             IPMI_TRANSPORT_GET_LAN_CONFIG_PARAMETERS,
+             (UINT8 *)GetLanConfigurationParametersRequest,
+             sizeof (*GetLanConfigurationParametersRequest),
+             (UINT8 *)GetLanConfigurationParametersResponse,
+             GetLanConfigurationParametersSize
+             );
+  return Status;
+}

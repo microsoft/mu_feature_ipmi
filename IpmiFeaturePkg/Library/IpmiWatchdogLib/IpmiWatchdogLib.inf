@@ -20,6 +20,7 @@
 
 [Packages]
   MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
   IpmiFeaturePkg/IpmiFeaturePkg.dec
 
 [LibraryClasses]
