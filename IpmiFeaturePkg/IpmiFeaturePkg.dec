@@ -23,7 +23,6 @@
   Include
 
 [LibraryClasses]
-  IpmiCommandLib|Include/Library/IpmiCommandLib.h
   IpmiBaseLib|Include/Library/IpmiBaseLib.h
   IpmiTransportLib|Include/Library/IpmiTransportLib.h
   BmcSmbusLib|Include/Library/BmcSmbusLib.h
