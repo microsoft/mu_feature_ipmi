@@ -13,12 +13,15 @@
 #include <Library/BaseMemoryLib.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/IpmiCommandLib.h>
+#include <Library/PolicyLib.h>
 
 #include <IndustryStandard/Ipmi.h>
 #include <Library/IpmiWatchdogLib.h>
+#include <Policy/IpmiWatchdogPolicy.h>
 
-EFI_EVENT  mExitBootServicesEvent;
-EFI_EVENT  mReadyToBootEvent;
+EFI_EVENT             mExitBootServicesEvent;
+EFI_EVENT             mReadyToBootEvent;
+IPMI_WATCHDOG_POLICY  mWatchdogPolicy;
 
 /**
   Disables the FRB2 watchdog timer if it is running. This is intended to be
@@ -65,14 +68,14 @@ EnableOsWatchdogTimer (
   IN VOID       *Context
   )
 {
-  if (PcdGetBool (PcdOsWatchdogEnabled)) {
+  if (mWatchdogPolicy.OsWatchdogEnabled) {
     DEBUG ((DEBUG_INFO, "Enabling IPMI OS watchdog timer.\n"));
 
     IpmiEnableWatchdogTimer (
       IPMI_WATCHDOG_TIMER_OS_LOADER,
-      PcdGet8 (PcdOsWatchdogAction),
+      mWatchdogPolicy.OsTimeoutAction,
       IPMI_WATCHDOG_TIMER_EXPIRATION_FLAG_OS_LOAD,
-      PcdGet16 (PcdOsWatchdogTimeoutSeconds)
+      mWatchdogPolicy.OsTimeoutSeconds
       );
   }
 
@@ -99,6 +102,14 @@ IpmiWatchdogDxeEntryPoint (
 {
   EFI_STATUS                        Status;
   IPMI_GET_WATCHDOG_TIMER_RESPONSE  WatchdogTimer;
+  UINT16                            PolicySize;
+
+  PolicySize = sizeof (IPMI_WATCHDOG_POLICY);
+  Status     = GetPolicy (&gIpmiWatchdogPolicyGuid, NULL, &mWatchdogPolicy, &PolicySize);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a: Failed to get watchdog policy! %r\n", __FUNCTION__, Status));
+    return Status;
+  }
 
   //
   // Report the current status of the watchdog timer.

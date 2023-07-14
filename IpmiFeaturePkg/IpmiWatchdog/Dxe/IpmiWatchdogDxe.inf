@@ -22,6 +22,7 @@
 [Packages]
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
+  PolicyServicePkg/PolicyServicePkg.dec
   IpmiFeaturePkg/IpmiFeaturePkg.dec
 
 [LibraryClasses]
@@ -31,13 +32,11 @@
   UefiLib
   DebugLib
   BaseMemoryLib
-  PcdLib
   IpmiWatchdogLib
+  PolicyLib
 
-[Pcd]
-  gIpmiFeaturePkgTokenSpaceGuid.PcdOsWatchdogEnabled
-  gIpmiFeaturePkgTokenSpaceGuid.PcdOsWatchdogTimeoutSeconds
-  gIpmiFeaturePkgTokenSpaceGuid.PcdOsWatchdogAction
+[Guids]
+  gIpmiWatchdogPolicyGuid
 
 [Depex]
-  gIpmiTransportProtocolGuid
+  gIpmiTransportProtocolGuid AND gIpmiWatchdogPolicyGuid

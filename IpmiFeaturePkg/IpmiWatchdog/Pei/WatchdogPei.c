@@ -9,10 +9,11 @@
 
 #include <PiPei.h>
 #include <Library/DebugLib.h>
-#include <Library/PcdLib.h>
+#include <Library/PolicyLib.h>
 
 #include <IndustryStandard/Ipmi.h>
 #include <Library/IpmiWatchdogLib.h>
+#include <Policy/IpmiWatchdogPolicy.h>
 
 /**
   Entry for the IPMI watchdog PEIM. Initialized the FRB2 watchdog timer if
@@ -30,12 +31,23 @@ InitializeWatchdogPei (
   IN CONST EFI_PEI_SERVICES     **PeiServices
   )
 {
-  if (PcdGetBool (PcdFrb2EnabledFlag)) {
+  EFI_STATUS            Status;
+  IPMI_WATCHDOG_POLICY  Policy;
+  UINT16                PolicySize;
+
+  PolicySize = sizeof (IPMI_WATCHDOG_POLICY);
+  Status     = GetPolicy (&gIpmiWatchdogPolicyGuid, NULL, &Policy, &PolicySize);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a: Failed to get watchdog policy! %r\n", __FUNCTION__, Status));
+    return Status;
+  }
+
+  if (Policy.Frb2Enabled) {
     IpmiEnableWatchdogTimer (
       IPMI_WATCHDOG_TIMER_BIOS_FRB2,
-      PcdGet8 (PcdFrb2TimeoutAction),
+      Policy.Frb2TimeoutAction,
       IPMI_WATCHDOG_TIMER_EXPIRATION_FLAG_BIOS_FRB2,
-      PcdGet16 (PcdFrb2TimeoutSeconds)
+      Policy.Frb2TimeoutSeconds
       );
   }
 
