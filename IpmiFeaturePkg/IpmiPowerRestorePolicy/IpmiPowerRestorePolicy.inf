@@ -1,0 +1,33 @@
+## @file
+#  IpmiPowerRestorePolicy.inf
+#
+#  Copyright (c) Microsoft Corporation. All rights reserved.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = IpmiPowerRestorePolicy
+  FILE_GUID                      = F417AA89-F059-4B3A-9533-2D7909B28347
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = IpmiPowerRestorePolicyEntry
+
+[Sources]
+  IpmiPowerRestorePolicy.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  PeimEntryPoint
+  DebugLib
+  BaseLib
+  IpmiCommandLib
+  PlatformPowerRestorePolicyConfigurationLib
+
+[Depex]
+  gPeiIpmiTransportPpiGuid
+
