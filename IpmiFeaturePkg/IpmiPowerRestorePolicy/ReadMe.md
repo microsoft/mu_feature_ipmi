@@ -15,7 +15,7 @@ according to Platform setting via IPMI Chassis command.
 
 To leverage this feature,
 
-1. Add the following to your platform DSC's PEI section:
+1. Add the following to your platform DSC:
 
     ```ini
 
@@ -23,7 +23,7 @@ To leverage this feature,
 
     ```
 
-2. Add the following to your platform FDF's PEI section:
+2. Add the following to your platform FDF:
 
     ```ini
 
