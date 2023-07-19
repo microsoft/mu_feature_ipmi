@@ -3,6 +3,7 @@
     PlatformPowerRestorePolicyConfigurationLib.h
 
     Copyright (c) Microsoft Corporation.
+    SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
 #ifndef PLATFORM_POWER_RESTORE_POLICY_CONFIGURATION_LIB_H_
