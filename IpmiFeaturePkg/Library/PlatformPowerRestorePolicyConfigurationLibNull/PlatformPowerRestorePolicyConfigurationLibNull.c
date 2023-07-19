@@ -2,6 +2,7 @@
   PlatformPowerRestorePolicyConfigurationLibNull.h
 
   Copyright (c) Microsoft Corporation.
+  PDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 #include <Uefi.h>
