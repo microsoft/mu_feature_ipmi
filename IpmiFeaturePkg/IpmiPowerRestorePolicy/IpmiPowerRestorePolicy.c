@@ -1,12 +1,12 @@
-/** @file
-    IpmiPowerRestorePolicy.c
+/** @file IpmiPowerRestorePolicy.c
 
-    Copyright (c) Microsoft Corporation.
+  This file implementing a driver entrypoint that configure Power Restore Policy via IPMI command
+
+  Copyright (c) Microsoft Corporation.
+  PDX-License-Identifier: BSD-2-Clause-Patent
+
 **/
 
-//
-// Common header files
-//
 #include <PiPei.h>
 #include <Library/DebugLib.h>
 #include <Library/IpmiCommandLib.h>

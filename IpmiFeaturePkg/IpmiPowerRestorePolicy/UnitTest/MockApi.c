@@ -1,6 +1,7 @@
-/** @file    MockApi.c
+/** @file MockApi.c
 
-  Copyright (c) Microsoft Corporation. All rights reserved.
+  Copyright (c) Microsoft Corporation.
+  PDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 

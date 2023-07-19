@@ -1,8 +1,7 @@
-## @file    TestIpmiPowerRestorePolicyHost.inf
+## @file TestIpmiPowerRestorePolicyHost.inf
 #
-#  Copyright (c) Microsoft Corporation. All rights reserved.
-#
-#  Description
+#  Copyright (c) Microsoft Corporation.
+#  PDX-License-Identifier: BSD-2-Clause-Patent
 #
 ##
 

@@ -1,7 +1,9 @@
-## @file
-#  IpmiPowerRestorePolicy.inf
+## @file IpmiPowerRestorePolicy.inf
 #
-#  Copyright (c) Microsoft Corporation. All rights reserved.
+#  This is a driver for configure Power Restore Policy via IPMI command
+#
+#  Copyright (c) Microsoft Corporation.
+#  PDX-License-Identifier: BSD-2-Clause-Patent
 #
 ##
 
