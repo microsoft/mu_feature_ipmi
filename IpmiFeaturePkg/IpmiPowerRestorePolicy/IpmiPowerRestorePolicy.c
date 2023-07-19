@@ -13,13 +13,13 @@
 #include <Library/PlatformPowerRestorePolicyConfigurationLib.h>
 
 /**
-  Synchronize BMC power restore policy setting with config data.
+  Configure Power Restore Policy via IPMI
 
   @param  FileHandle      Handle of the file
   @param  PeiServices     List of possible PEI Services.
 
-  @return EFI_SUCCESS     Synchronize successfully or policy is consistent between BMC and platform.
-  @return Others          Synchronize failed
+  @return EFI_SUCCESS     Power Restore Policy is configured to expected setting successfully.
+  @return Others          Failed to configure Power Restore Policy
 **/
 EFI_STATUS
 EFIAPI
@@ -36,7 +36,7 @@ IpmiPowerRestorePolicyEntry (
   IPMI_SET_POWER_RESTORE_POLICY_RESPONSE  SetRestorePolicyResponse;
 
   //
-  // Get current power restore policy
+  // Get current power restore policy setting
   //
   Status = IpmiGetChassisStatus (&ChassisStatusRespData);
 
@@ -50,7 +50,7 @@ IpmiPowerRestorePolicyEntry (
   DEBUG ((DEBUG_INFO, "[%a] - CurrentPowerRestorePolicy: 0x%x\n", __FUNCTION__, CurrentPowerRestorePolicy));
 
   //
-  // Get platform power restore policy
+  // Get platform power restore policy setting
   //
   Status = GetPowerRestorePolicy (&PlatformPowerRestorePolicy);
 
@@ -62,26 +62,24 @@ IpmiPowerRestorePolicyEntry (
   DEBUG ((DEBUG_INFO, "[%a] - PlatformPowerRestorePolicy: 0x%x\n", __FUNCTION__, PlatformPowerRestorePolicy));
 
   if ( PlatformPowerRestorePolicy == CurrentPowerRestorePolicy) {
-    // Just return if policy is consistent between BMC and platform.
+    // Just return if CurrentPowerRestorePolicy the same with PlatformPowerRestorePolicy
     DEBUG ((DEBUG_ERROR, "[%a] - Current Power Restore Policy is consistent with platform setting\n", __FUNCTION__));
     return EFI_SUCCESS;
   }
 
   //
-  // If platform setting is not POWER_RESTORE_POLICY_NO_CHANGE, then sync BMC
+  // If platform setting is not POWER_RESTORE_POLICY_NO_CHANGE, then configure the power restore policy based on PlatformPowerRestorePolicy
   //
   if (PlatformPowerRestorePolicy != POWER_RESTORE_POLICY_NO_CHANGE) {
     SetRestorePolicyRequest.PowerRestorePolicy.Bits.PowerRestorePolicy = PlatformPowerRestorePolicy;
-    // Set reserved bits to 0
-    SetRestorePolicyRequest.PowerRestorePolicy.Bits.Reserved = 0;
-    // Update IPMI power restore policy
-    Status = IpmiSetPowerRestorePolicy (&SetRestorePolicyRequest, &SetRestorePolicyResponse);
+    SetRestorePolicyRequest.PowerRestorePolicy.Bits.Reserved           = 0;
+    Status                                                             = IpmiSetPowerRestorePolicy (&SetRestorePolicyRequest, &SetRestorePolicyResponse);
     if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_ERROR, "[%a] - IpmiSetPowerRestorePolicy status: %r\n", __FUNCTION__, Status));
       return Status;
     } else if (SetRestorePolicyResponse.CompletionCode != 0) {
       DEBUG ((DEBUG_INFO, "[%a] - IpmiSetPowerRestorePolicy completion code: %r\n", __FUNCTION__, SetRestorePolicyResponse.CompletionCode));
-      return EFI_UNSUPPORTED; // per spec
+      return EFI_UNSUPPORTED;
     }
   }
 
