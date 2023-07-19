@@ -1,5 +1,4 @@
-/** @file
-  PlatformPowerRestorePolicyConfigurationLibNull.h
+/** @file PlatformPowerRestorePolicyConfigurationLibNull.c
 
   Copyright (c) Microsoft Corporation.
   PDX-License-Identifier: BSD-2-Clause-Patent
