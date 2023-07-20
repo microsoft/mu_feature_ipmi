@@ -3,7 +3,7 @@
   This file implementing a driver entrypoint that configure Power Restore Policy via IPMI command
 
   Copyright (c) Microsoft Corporation.
-  PDX-License-Identifier: BSD-2-Clause-Patent
+  SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
@@ -15,11 +15,11 @@
 /**
   Configure Power Restore Policy via IPMI
 
-  @param  FileHandle      Handle of the file
-  @param  PeiServices     List of possible PEI Services.
+  @param[in]  FileHandle      Handle of the file
+  @param[in]  PeiServices     List of possible PEI Services.
 
-  @return EFI_SUCCESS     Power Restore Policy is configured to expected setting successfully.
-  @return Others          Failed to configure Power Restore Policy
+  @return EFI_SUCCESS         Power Restore Policy is configured to expected setting successfully.
+  @return Others              Failed to configure Power Restore Policy
 **/
 EFI_STATUS
 EFIAPI
@@ -47,7 +47,7 @@ IpmiPowerRestorePolicyEntry (
     CurrentPowerRestorePolicy = (ChassisStatusRespData.CurrentPowerState >> 5) & 0x3; // [6:5] - power restore policy
   }
 
-  DEBUG ((DEBUG_INFO, "[%a] - CurrentPowerRestorePolicy: 0x%x\n", __FUNCTION__, CurrentPowerRestorePolicy));
+  DEBUG ((DEBUG_VERBOSE, "[%a] - CurrentPowerRestorePolicy: 0x%x\n", __FUNCTION__, CurrentPowerRestorePolicy));
 
   //
   // Get platform power restore policy setting
@@ -59,11 +59,11 @@ IpmiPowerRestorePolicyEntry (
     return Status;
   }
 
-  DEBUG ((DEBUG_INFO, "[%a] - PlatformPowerRestorePolicy: 0x%x\n", __FUNCTION__, PlatformPowerRestorePolicy));
+  DEBUG ((DEBUG_VERBOSE, "[%a] - PlatformPowerRestorePolicy: 0x%x\n", __FUNCTION__, PlatformPowerRestorePolicy));
 
   if ( PlatformPowerRestorePolicy == CurrentPowerRestorePolicy) {
     // Just return if CurrentPowerRestorePolicy the same with PlatformPowerRestorePolicy
-    DEBUG ((DEBUG_ERROR, "[%a] - Current Power Restore Policy is consistent with platform setting\n", __FUNCTION__));
+    DEBUG ((DEBUG_VERBOSE, "[%a] - Current Power Restore Policy is consistent with platform setting\n", __FUNCTION__));
     return EFI_SUCCESS;
   }
 
@@ -78,7 +78,7 @@ IpmiPowerRestorePolicyEntry (
       DEBUG ((DEBUG_ERROR, "[%a] - IpmiSetPowerRestorePolicy status: %r\n", __FUNCTION__, Status));
       return Status;
     } else if (SetRestorePolicyResponse.CompletionCode != 0) {
-      DEBUG ((DEBUG_INFO, "[%a] - IpmiSetPowerRestorePolicy completion code: %r\n", __FUNCTION__, SetRestorePolicyResponse.CompletionCode));
+      DEBUG ((DEBUG_VERBOSE, "[%a] - IpmiSetPowerRestorePolicy completion code: %r\n", __FUNCTION__, SetRestorePolicyResponse.CompletionCode));
       return EFI_UNSUPPORTED;
     }
   }

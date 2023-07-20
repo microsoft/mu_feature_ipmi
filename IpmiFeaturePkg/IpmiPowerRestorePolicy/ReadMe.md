@@ -2,8 +2,8 @@
 
 ## Introduction
 
-The IpmiPowerRestorePolicy configure the Power Restore Policy by IPMI Chassis Command, For command detail, please refer
-to [IPMI Specification 2nd Generation v2.0](https://www.intel.com/content/dam/www/public/us/en/documents/product-briefs/ipmi-second-gen-interface-spec-v2-rev1-1.pdf)
+The IpmiPowerRestorePolicy configures the Power Restore Policy by the IPMI Chassis Command. For command details, please
+refer to [IPMI Specification 2nd Generation v2.0](https://www.intel.com/content/dam/www/public/us/en/documents/product-briefs/ipmi-second-gen-interface-spec-v2-rev1-1.pdf)
 
 ## High Level Module Interaction Flow
 
@@ -19,6 +19,7 @@ To leverage this feature,
 
     ```ini
 
+    [Components.PEIM]
     IpmiFeaturePkg/IpmiPowerRestorePolicy/IpmiPowerRestorePolicy.inf
 
     ```

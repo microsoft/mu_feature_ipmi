@@ -1,7 +1,7 @@
 /** @file MockApi.c
 
   Copyright (c) Microsoft Corporation.
-  PDX-License-Identifier: BSD-2-Clause-Patent
+  SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
@@ -25,7 +25,7 @@
 /**
   @brief Mock this api locally in the test Get the Platform Power Restore Policy Setting Value object
 
-  @param PowerRestorePolicy
+  @param[out] PowerRestorePolicy
   @retval EFI_STATUS
 **/
 EFI_STATUS
