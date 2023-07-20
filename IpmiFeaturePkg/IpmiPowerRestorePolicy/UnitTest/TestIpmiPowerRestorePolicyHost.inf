@@ -1,0 +1,33 @@
+## @file TestIpmiPowerRestorePolicyHost.inf
+#
+#  Copyright (c) Microsoft Corporation.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+INF_VERSION    = 0x00010005
+BASE_NAME      = TestIpmiPowerRestorePolicyHost
+FILE_GUID      = B86C64E0-D547-4BF1-8692-4C52CB3DB946
+MODULE_TYPE    = HOST_APPLICATION
+VERSION_STRING = 1.0
+
+[Sources]
+  TestIpmiPowerRestorePolicyHost.c
+  MockApi.c
+  ../IpmiPowerRestorePolicy.c
+
+
+[Packages]
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  UnitTestFrameworkPkg/UnitTestFrameworkPkg.dec
+
+
+[LibraryClasses]
+  BaseLib
+  DebugLib
+  UnitTestLib
+
+[Pcd]
