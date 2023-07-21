@@ -21,19 +21,18 @@
 
 [Packages]
   MdePkg/MdePkg.dec
+  PolicyServicePkg/PolicyServicePkg.dec
   IpmiFeaturePkg/IpmiFeaturePkg.dec
 
 [LibraryClasses]
   PeimEntryPoint
   DebugLib
   BaseMemoryLib
-  PcdLib
   IpmiWatchdogLib
+  PolicyLib
 
-[Pcd]
-  gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2EnabledFlag
-  gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2TimeoutSeconds
-  gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2TimeoutAction
+[Guids]
+  gIpmiWatchdogPolicyGuid
 
 [Depex]
-  gPeiIpmiTransportPpiGuid
+  gPeiIpmiTransportPpiGuid AND gIpmiWatchdogPolicyGuid

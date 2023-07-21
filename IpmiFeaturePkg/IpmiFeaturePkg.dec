@@ -36,6 +36,7 @@
 [Guids]
   gIpmiFeaturePkgTokenSpaceGuid  =  {0xc05283f6, 0xd6a8, 0x48f3, {0x9b, 0x59, 0xfb, 0xca, 0x71, 0x32, 0x0f, 0x12}}
   gIpmiBmcHobGuid = {0x3d133ac1, 0x8565, 0x4a08, {0xac, 0x50, 0x9d, 0xff, 0x55, 0x29, 0xac, 0x12}}
+  gIpmiWatchdogPolicyGuid = {0x6b53a598, 0x4ff5, 0x43c5, {0x81, 0x83, 0x74, 0xd0, 0xe6, 0x34, 0xcd, 0x66}}
 
 [Ppis]
   gPeiIpmiTransportPpiGuid = {0x7bf5fecc, 0xc5b5, 0x4b25, {0x81, 0x1b, 0xb4, 0xb5, 0xb, 0x28, 0x79, 0xf7}}
@@ -156,11 +157,3 @@
   gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiInterruptNumber|0x00|UINT8|0xF0000019
   gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiI2CSlaveAddress|0x20|UINT8|0xF000001A
   gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiNVStorageDeviceAddress|0xff|UINT8|0xF000001B
-
-[PcdsDynamic, PcdsDynamicEx]
-  gIpmiFeaturePkgTokenSpaceGuid.PcdOsWatchdogEnabled|FALSE|BOOLEAN|0xD0000001
-  gIpmiFeaturePkgTokenSpaceGuid.PcdOsWatchdogTimeoutSeconds|600|UINT16|0xD0000002
-  gIpmiFeaturePkgTokenSpaceGuid.PcdOsWatchdogAction|0|UINT8|0xD0000003
-  gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2EnabledFlag|TRUE|BOOLEAN|0xD0000004
-  gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2TimeoutSeconds|600|UINT16|0xD0000005
-  gIpmiFeaturePkgTokenSpaceGuid.PcdFrb2TimeoutAction|0|UINT8|0xD0000006
