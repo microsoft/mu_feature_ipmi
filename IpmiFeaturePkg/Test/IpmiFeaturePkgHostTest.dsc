@@ -44,6 +44,7 @@
   IpmiFeaturePkg/GenericIpmi/Test/GenericIpmiUnitTest.inf
   IpmiFeaturePkg/Test/UnitTest/WatchdogUnitTest/WatchdogUnitTest.inf
   IpmiFeaturePkg/Test/UnitTest/BootOptionUnitTest/BootOptionUnitTest.inf
+  IpmiFeaturePkg/IpmiPowerRestorePolicy/UnitTest/TestIpmiPowerRestorePolicyHost.inf
   IpmiFeaturePkg/SpmiTable/GoogleTest/SpmiTableGoogleTest.inf {
     <PcdsFixedAtBuild>
       gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x06  # Disable Debug ASSERT for googletest
