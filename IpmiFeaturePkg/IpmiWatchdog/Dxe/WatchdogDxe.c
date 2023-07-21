@@ -17,7 +17,7 @@
 
 #include <IndustryStandard/Ipmi.h>
 #include <Library/IpmiWatchdogLib.h>
-#include <Policy/IpmiWatchdogPolicy.h>
+#include <Guid/IpmiWatchdogPolicy.h>
 
 EFI_EVENT             mExitBootServicesEvent;
 EFI_EVENT             mReadyToBootEvent;
@@ -108,6 +108,7 @@ IpmiWatchdogDxeEntryPoint (
   Status     = GetPolicy (&gIpmiWatchdogPolicyGuid, NULL, &mWatchdogPolicy, &PolicySize);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: Failed to get watchdog policy! %r\n", __FUNCTION__, Status));
+    ASSERT(FALSE);
     return Status;
   }
 

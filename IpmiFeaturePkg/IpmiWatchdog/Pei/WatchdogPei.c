@@ -13,7 +13,7 @@
 
 #include <IndustryStandard/Ipmi.h>
 #include <Library/IpmiWatchdogLib.h>
-#include <Policy/IpmiWatchdogPolicy.h>
+#include <Guid/IpmiWatchdogPolicy.h>
 
 /**
   Entry for the IPMI watchdog PEIM. Initialized the FRB2 watchdog timer if
