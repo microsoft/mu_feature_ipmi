@@ -108,7 +108,7 @@ IpmiWatchdogDxeEntryPoint (
   Status     = GetPolicy (&gIpmiWatchdogPolicyGuid, NULL, &mWatchdogPolicy, &PolicySize);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: Failed to get watchdog policy! %r\n", __FUNCTION__, Status));
-    ASSERT(FALSE);
+    ASSERT (FALSE);
     return Status;
   }
 
