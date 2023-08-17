@@ -17,7 +17,7 @@
 [LibraryClasses.common.PEI_CORE,LibraryClasses.common.PEIM]
   IpmiBaseLib|IpmiFeaturePkg/Library/IpmiBaseLibPei/IpmiBaseLibPei.inf
 
-[LibraryClasses.common.DXE_DRIVER,LibraryClasses.common.UEFI_DRIVER,LibraryClasses.common.DXE_RUNTIME_DRIVER]
+[LibraryClasses.common.DXE_DRIVER,LibraryClasses.common.UEFI_DRIVER,LibraryClasses.common.DXE_RUNTIME_DRIVER,LibraryClasses.common.UEFI_APPLICATION]
   IpmiBaseLib|IpmiFeaturePkg/Library/IpmiBaseLibDxe/IpmiBaseLibDxe.inf
 
 [LibraryClasses.common.DXE_SMM_DRIVER,LibraryClasses.common.SMM_CORE]
