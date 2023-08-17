@@ -70,7 +70,7 @@ IpmiSubmitCommand (
   @retval   EFI_NOT_AVAILABLE_YET   Ipmi interface is not installed yet.
 **/
 EFI_STATUS
-IpmiGetBmcStatus (
+GetBmcStatus (
   OUT BMC_STATUS      *BmcStatus,
   OUT SM_COM_ADDRESS  *ComAddress
   )
