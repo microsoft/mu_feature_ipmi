@@ -6,12 +6,10 @@
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
+#include <Uefi.h>
 #include <Library/BaseLib.h>
-#include <Library/UefiBootServicesTableLib.h>
-#include <Library/DxeServicesLib.h>
 #include <Library/DebugLib.h>
 #include <Library/IpmiBaseLib.h>
-#include <Ppi/IpmiTransportPpi.h>
 
 /**
   Sends a IPMI command to the BMC and returns the response.
