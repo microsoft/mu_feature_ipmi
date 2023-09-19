@@ -29,8 +29,8 @@
   @retval   EFI_SUCCESS             Successfully send IPMI command.
   @retval   EFI_NOT_FOUND           Ipmi interface is not installed yet.
 **/
-EFIAPI
 EFI_STATUS
+EFIAPI
 IpmiSubmitCommand (
   IN UINT8       NetFunction,
   IN UINT8       Command,
@@ -49,8 +49,8 @@ IpmiSubmitCommand (
   @retval   EFI_SUCCESS             Successfully retrieved BMC status
   @retval   EFI_NOT_AVAILABLE_YET   Ipmi interface is not installed yet.
 **/
-EFIAPI
 EFI_STATUS
+EFIAPI
 GetBmcStatus (
   OUT BMC_STATUS      *BmcStatus,
   OUT SM_COM_ADDRESS  *ComAddress
