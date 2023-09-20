@@ -29,6 +29,7 @@ STATIC UINT8  ResponseBuffer[MOCK_BASE_IPMI_BUFFER_SIZE];
   @retval   EFI_NOT_FOUND           Ipmi interface is not installed yet.
 **/
 EFI_STATUS
+EFIAPI
 IpmiSubmitCommand (
   IN UINT8       NetFunction,
   IN UINT8       Command,
@@ -82,6 +83,7 @@ IpmiSubmitCommand (
   @retval   EFI_NOT_AVAILABLE_YET   Ipmi interface is not installed yet.
 **/
 EFI_STATUS
+EFIAPI
 GetBmcStatus (
   OUT BMC_STATUS      *BmcStatus,
   OUT SM_COM_ADDRESS  *ComAddress
