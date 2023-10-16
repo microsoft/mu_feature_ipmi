@@ -55,7 +55,6 @@
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCommandTimeoutSeconds|5|UINT8|0xF0000003
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCommandMaxReties|3|UINT8|0xF0000004
   gIpmiFeaturePkgTokenSpaceGuid.PcdBmcTimeoutSeconds|30|UINT8|0xF0000005
-  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiBmcReadyDelayTimer|120|UINT8|0xF0000006
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiSelOemManufacturerId|{0, 0, 0}|VOID*|0xF0000007
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress|0xCA2|UINT16|0xF000000A
   #
@@ -157,3 +156,6 @@
   gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiInterruptNumber|0x00|UINT8|0xF0000019
   gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiI2CSlaveAddress|0x20|UINT8|0xF000001A
   gIpmiFeaturePkgTokenSpaceGuid.PcdSmbiosTablesIpmiNVStorageDeviceAddress|0xff|UINT8|0xF000001B
+
+[PcdsFixedAtBuild, PcdsDynamic, PcdsDynamicEx]
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiBmcReadyDelayTimer|120|UINT8|0xD0000001
