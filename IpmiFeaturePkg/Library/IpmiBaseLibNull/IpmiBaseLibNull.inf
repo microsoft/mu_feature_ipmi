@@ -2,6 +2,7 @@
 #
 # @copyright
 # Copyright 2011 - 2021 Intel Corporation. <BR>
+# Copyright (c) Microsoft Corporation
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
 
@@ -9,9 +10,9 @@
   INF_VERSION                   = 0x00010005
   BASE_NAME                     = IpmiBaseLibNull
   FILE_GUID                     = 3444CF4F-8B88-4579-9A95-2E7678C0E945
-  MODULE_TYPE                   = DXE_SMM_DRIVER
+  MODULE_TYPE                   = BASE
   VERSION_STRING                = 1.0
-  LIBRARY_CLASS                 = IpmiBaseLib|DXE_CORE DXE_DRIVER DXE_RUNTIME_DRIVER DXE_SMM_DRIVER UEFI_APPLICATION UEFI_DRIVER SMM_CORE
+  LIBRARY_CLASS                 = IpmiBaseLib
 
 #
 # The following information is for reference only and not required by the build tools.
@@ -28,8 +29,6 @@
 
 [LibraryClasses]
   BaseLib
-  UefiBootServicesTableLib
-  DxeServicesLib
   DebugLib
 
 [Guids]

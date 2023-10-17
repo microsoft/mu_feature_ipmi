@@ -6,12 +6,10 @@
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
+#include <Uefi.h>
 #include <Library/BaseLib.h>
-#include <Library/UefiBootServicesTableLib.h>
-#include <Library/DxeServicesLib.h>
 #include <Library/DebugLib.h>
 #include <Library/IpmiBaseLib.h>
-#include <Ppi/IpmiTransportPpi.h>
 
 /**
   Sends a IPMI command to the BMC and returns the response.
@@ -28,6 +26,7 @@
   @retval   EFI_NOT_FOUND           Ipmi interface is not installed yet.
 **/
 EFI_STATUS
+EFIAPI
 IpmiSubmitCommand (
   IN UINT8       NetFunction,
   IN UINT8       Command,
@@ -50,6 +49,7 @@ IpmiSubmitCommand (
   @retval   EFI_NOT_AVAILABLE_YET   Ipmi interface is not installed yet.
 **/
 EFI_STATUS
+EFIAPI
 GetBmcStatus (
   OUT BMC_STATUS      *BmcStatus,
   OUT SM_COM_ADDRESS  *ComAddress

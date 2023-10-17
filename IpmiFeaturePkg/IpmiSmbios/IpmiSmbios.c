@@ -171,7 +171,9 @@ IpmiSmbiosEntry (
                   &gEfiEventReadyToBootGuid,
                   &ReadyToBootEvent
                   );
-  DEBUG ((DEBUG_ERROR, "%a - CreateEventEx(%g): %r\n", __FUNCTION__, gEfiEventReadyToBootGuid, Status));
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a - CreateEventEx(%g): %r\n", __FUNCTION__, &gEfiEventReadyToBootGuid, Status));
+  }
 
   return Status;
 }
