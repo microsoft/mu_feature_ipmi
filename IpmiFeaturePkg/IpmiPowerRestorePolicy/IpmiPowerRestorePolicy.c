@@ -10,7 +10,8 @@
 #include <PiPei.h>
 #include <Library/DebugLib.h>
 #include <Library/IpmiCommandLib.h>
-#include <Library/PlatformPowerRestorePolicy.h>
+#include <Guid/PlatformPowerRestorePolicy.h>
+#include <Library/PolicyLib.h>
 
 #define  POWER_RESTORE_POLICY_UNKNOWN     0x03  // "Get Chassis Status"
 
@@ -36,7 +37,7 @@ IpmiPowerRestorePolicyEntry (
   PLATFORM_POWER_RESTORE_POLICY           PlatformPowerRestorePolicy;
   IPMI_SET_POWER_RESTORE_POLICY_REQUEST   SetRestorePolicyRequest;
   IPMI_SET_POWER_RESTORE_POLICY_RESPONSE  SetRestorePolicyResponse;
-
+  UINT16                                  PolicySize = sizeof (PLATFORM_POWER_RESTORE_POLICY);
   //
   // Get current power restore policy setting
   //
@@ -54,7 +55,7 @@ IpmiPowerRestorePolicyEntry (
   //
   // Get platform power restore policy setting
   //
-  Status     = GetPolicy (&gPlatformPowerRestorePolicy, NULL, &PlatformPowerRestorePolicy, &PolicySize);
+  Status     = GetPolicy (&gPlatformPowerRestorePolicyGuid, NULL, &PlatformPowerRestorePolicy, &PolicySize);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: Failed to get platform power restore policy! %r\n", __FUNCTION__, Status));
     ASSERT (FALSE);

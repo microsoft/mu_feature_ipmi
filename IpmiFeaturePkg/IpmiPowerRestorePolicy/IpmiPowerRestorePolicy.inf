@@ -22,17 +22,19 @@
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
   IpmiFeaturePkg/IpmiFeaturePkg.dec
+  PolicyServicePkg/PolicyServicePkg.dec
 
 [LibraryClasses]
   PeimEntryPoint
   DebugLib
   BaseLib
   IpmiCommandLib
+  PolicyLib
 
 [Guids]
-  gPlatformPowerRestorePolicy
+  gPlatformPowerRestorePolicyGuid
 
 [Depex]
   gPeiIpmiTransportPpiGuid AND
-  gPlatformPowerRestorePolicy
+  gPlatformPowerRestorePolicyGuid
 
