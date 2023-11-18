@@ -58,7 +58,6 @@ IpmiPowerRestorePolicyEntry (
   Status     = GetPolicy (&gPlatformPowerRestorePolicyGuid, NULL, &PlatformPowerRestorePolicy, &PolicySize);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: Failed to get platform power restore policy! %r\n", __FUNCTION__, Status));
-    ASSERT (FALSE);
     return Status;
   }
 

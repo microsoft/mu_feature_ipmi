@@ -23,7 +23,10 @@ VERSION_STRING = 1.0
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
   UnitTestFrameworkPkg/UnitTestFrameworkPkg.dec
+  PolicyServicePkg/PolicyServicePkg.dec
 
+[Guids]
+  gPlatformPowerRestorePolicyGuid
 
 [LibraryClasses]
   BaseLib
