@@ -13,7 +13,7 @@
 #include <Guid/PlatformPowerRestorePolicy.h>
 #include <Library/PolicyLib.h>
 
-#define  POWER_RESTORE_POLICY_UNKNOWN     0x03  // "Get Chassis Status"
+#define  POWER_RESTORE_POLICY_UNKNOWN  0x03     // "Get Chassis Status"
 
 /**
   Configure Power Restore Policy via IPMI
@@ -38,6 +38,7 @@ IpmiPowerRestorePolicyEntry (
   IPMI_SET_POWER_RESTORE_POLICY_REQUEST   SetRestorePolicyRequest;
   IPMI_SET_POWER_RESTORE_POLICY_RESPONSE  SetRestorePolicyResponse;
   UINT16                                  PolicySize = sizeof (PLATFORM_POWER_RESTORE_POLICY);
+
   //
   // Get current power restore policy setting
   //
@@ -55,7 +56,7 @@ IpmiPowerRestorePolicyEntry (
   //
   // Get platform power restore policy setting
   //
-  Status     = GetPolicy (&gPlatformPowerRestorePolicyGuid, NULL, &PlatformPowerRestorePolicy, &PolicySize);
+  Status = GetPolicy (&gPlatformPowerRestorePolicyGuid, NULL, &PlatformPowerRestorePolicy, &PolicySize);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: Failed to get platform power restore policy! %r\n", __FUNCTION__, Status));
     return Status;

@@ -67,7 +67,7 @@ TestNoUpdateToBmcWhenLocalInvalid (
   // IpmiGetChassisStatus returns current power state, restore power policy is bits [6:5] in current power state
   will_return (IpmiGetChassisStatus, PowerRestorePolicyPowerOn << 5);
   will_return (IpmiGetChassisStatus, EFI_DEVICE_ERROR);
-  
+
   expect_value (GetPolicy, PolicyGuid, &gPlatformPowerRestorePolicyGuid);
   will_return (GetPolicy, EFI_DEVICE_ERROR); // fail to retrieve local value will prevent update
 
@@ -101,10 +101,10 @@ TestNoUpdateToBmcWhenInSync (
   IN UNIT_TEST_CONTEXT  Context
   )
 {
-  EFI_PEI_FILE_HANDLE  FileHandle;
-  EFI_PEI_SERVICES     *PeiServices;
-  PLATFORM_POWER_RESTORE_POLICY RestorePolicy;
-  
+  EFI_PEI_FILE_HANDLE            FileHandle;
+  EFI_PEI_SERVICES               *PeiServices;
+  PLATFORM_POWER_RESTORE_POLICY  RestorePolicy;
+
   RestorePolicy.PolicyValue = PowerRestorePolicyPowerOff;
 
   ZeroMem (
@@ -122,7 +122,7 @@ TestNoUpdateToBmcWhenInSync (
 
   expect_value (GetPolicy, PolicyGuid, &gPlatformPowerRestorePolicyGuid);
   will_return (GetPolicy, EFI_SUCCESS);
-  will_return (GetPolicy, sizeof(RestorePolicy));
+  will_return (GetPolicy, sizeof (RestorePolicy));
   will_return (GetPolicy, &RestorePolicy);
 
   EFI_STATUS  status = IpmiPowerRestorePolicyEntry (
@@ -134,11 +134,11 @@ TestNoUpdateToBmcWhenInSync (
 
   will_return (IpmiGetChassisStatus, PowerRestorePolicyLastState << 5);
   will_return (IpmiGetChassisStatus, EFI_SUCCESS);
-  
+
   RestorePolicy.PolicyValue =  PowerRestorePolicyLastState;
   expect_value (GetPolicy, PolicyGuid, &gPlatformPowerRestorePolicyGuid);
   will_return (GetPolicy, EFI_SUCCESS);
-  will_return (GetPolicy, sizeof(RestorePolicy));
+  will_return (GetPolicy, sizeof (RestorePolicy));
   will_return (GetPolicy, &RestorePolicy);
 
   status = IpmiPowerRestorePolicyEntry (
@@ -166,10 +166,10 @@ TestNoUpdateToBmcWhenLocalValueIsNoChange (
   IN UNIT_TEST_CONTEXT  Context
   )
 {
-  EFI_PEI_FILE_HANDLE  FileHandle;
-  EFI_PEI_SERVICES     *PeiServices;
-  PLATFORM_POWER_RESTORE_POLICY RestorePolicy;
-  
+  EFI_PEI_FILE_HANDLE            FileHandle;
+  EFI_PEI_SERVICES               *PeiServices;
+  PLATFORM_POWER_RESTORE_POLICY  RestorePolicy;
+
   RestorePolicy.PolicyValue = PowerRestorePolicyNoChange;
 
   ZeroMem (
@@ -187,7 +187,7 @@ TestNoUpdateToBmcWhenLocalValueIsNoChange (
 
   expect_value (GetPolicy, PolicyGuid, &gPlatformPowerRestorePolicyGuid);
   will_return (GetPolicy, EFI_SUCCESS);
-  will_return (GetPolicy, sizeof(RestorePolicy));
+  will_return (GetPolicy, sizeof (RestorePolicy));
   will_return (GetPolicy, &RestorePolicy);
 
   EFI_STATUS  status = IpmiPowerRestorePolicyEntry (
@@ -215,10 +215,10 @@ TestFailReturnedIfBmcUpdateFails (
   IN UNIT_TEST_CONTEXT  Context
   )
 {
-  EFI_PEI_FILE_HANDLE  FileHandle;
-  EFI_PEI_SERVICES     *PeiServices;
-  PLATFORM_POWER_RESTORE_POLICY RestorePolicy;
-  
+  EFI_PEI_FILE_HANDLE            FileHandle;
+  EFI_PEI_SERVICES               *PeiServices;
+  PLATFORM_POWER_RESTORE_POLICY  RestorePolicy;
+
   RestorePolicy.PolicyValue = PowerRestorePolicyPowerOn;
 
   ZeroMem (
@@ -232,7 +232,7 @@ TestFailReturnedIfBmcUpdateFails (
 
   expect_value (GetPolicy, PolicyGuid, &gPlatformPowerRestorePolicyGuid);
   will_return (GetPolicy, EFI_SUCCESS);
-  will_return (GetPolicy, sizeof(RestorePolicy));
+  will_return (GetPolicy, sizeof (RestorePolicy));
   will_return (GetPolicy, &RestorePolicy);
 
   expect_function_calls (IpmiSetPowerRestorePolicy, 1);
@@ -255,7 +255,7 @@ TestFailReturnedIfBmcUpdateFails (
   RestorePolicy.PolicyValue = PowerRestorePolicyPowerOff;
   expect_value (GetPolicy, PolicyGuid, &gPlatformPowerRestorePolicyGuid);
   will_return (GetPolicy, EFI_SUCCESS);
-  will_return (GetPolicy, sizeof(RestorePolicy));
+  will_return (GetPolicy, sizeof (RestorePolicy));
   will_return (GetPolicy, &RestorePolicy);
 
   expect_function_calls (IpmiSetPowerRestorePolicy, 1);
@@ -289,10 +289,10 @@ TestValidBmcUpdate (
   IN UNIT_TEST_CONTEXT  Context
   )
 {
-  EFI_PEI_FILE_HANDLE  FileHandle;
-  EFI_PEI_SERVICES     *PeiServices;
-  PLATFORM_POWER_RESTORE_POLICY RestorePolicy;
-  
+  EFI_PEI_FILE_HANDLE            FileHandle;
+  EFI_PEI_SERVICES               *PeiServices;
+  PLATFORM_POWER_RESTORE_POLICY  RestorePolicy;
+
   RestorePolicy.PolicyValue = PowerRestorePolicyPowerOff;
 
   ZeroMem (
@@ -306,7 +306,7 @@ TestValidBmcUpdate (
 
   expect_value (GetPolicy, PolicyGuid, &gPlatformPowerRestorePolicyGuid);
   will_return (GetPolicy, EFI_SUCCESS);
-  will_return (GetPolicy, sizeof(RestorePolicy));
+  will_return (GetPolicy, sizeof (RestorePolicy));
   will_return (GetPolicy, &RestorePolicy);
 
   expect_function_calls (IpmiSetPowerRestorePolicy, 1);

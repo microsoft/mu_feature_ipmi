@@ -43,7 +43,7 @@ GetPolicy (
 
   Status = mock_type (EFI_STATUS);
 
-  if (!EFI_ERROR(Status)) {
+  if (!EFI_ERROR (Status)) {
     // Set Attributes, Policy and PolicySize
     *PolicySize = (UINT16)mock ();
     if (Policy != NULL) {
