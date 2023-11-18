@@ -54,7 +54,6 @@
   IpmiTransportLib|IpmiFeaturePkg/Library/IpmiTransportLibNull/IpmiTransportLibNull.inf
   IpmiPlatformLib|IpmiFeaturePkg/Library/IpmiPlatformLibNull/IpmiPlatformLibNull.inf
   PlatformCmosClearLib|IpmiFeaturePkg/Library/PlatformCmosClearLibNull/PlatformCmosClearLibNull.inf
-  PlatformPowerRestorePolicyConfigurationLib|IpmiFeaturePkg/Library/PlatformPowerRestorePolicyConfigurationLibNull/PlatformPowerRestorePolicyConfigurationLibNull.inf
 
 [LibraryClasses.common.PEI_CORE,LibraryClasses.common.PEIM]
   #######################################
@@ -122,7 +121,6 @@
   IpmiFeaturePkg/Library/IpmiBootOptionLib/IpmiBootOptionLib.inf
   IpmiFeaturePkg/IpmiCmosClear/IpmiCmosClear.inf
   IpmiFeaturePkg/Library/PlatformCmosClearLibNull/PlatformCmosClearLibNull.inf
-  IpmiFeaturePkg/Library/PlatformPowerRestorePolicyConfigurationLibNull/PlatformPowerRestorePolicyConfigurationLibNull.inf
 
   # Transport Libraries
   IpmiFeaturePkg/Library/IpmiTransportLibNull/IpmiTransportLibNull.inf
