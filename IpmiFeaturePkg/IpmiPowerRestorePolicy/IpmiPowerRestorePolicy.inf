@@ -28,8 +28,11 @@
   DebugLib
   BaseLib
   IpmiCommandLib
-  PlatformPowerRestorePolicyConfigurationLib
+
+[Guids]
+  gPlatformPowerRestorePolicy
 
 [Depex]
-  gPeiIpmiTransportPpiGuid
+  gPeiIpmiTransportPpiGuid AND
+  gPlatformPowerRestorePolicy
 
