@@ -30,13 +30,13 @@ PlatformPowerRestorePolicyDefaultEntry (
   IN CONST EFI_PEI_SERVICES     **PeiServices
   )
 {
-  PLATFORM_POWER_RESTORE_POLICY PlatformPowerRestorePolicy;
-  EFI_STATUS                    Status;
+  PLATFORM_POWER_RESTORE_POLICY  PlatformPowerRestorePolicy;
+  EFI_STATUS                     Status;
 
   //
   // Set PlatformConfigPolicy
   //
-  PlatformPowerRestorePolicy.PolicyValue = PowerRestorePolicyNoChange; 
+  PlatformPowerRestorePolicy.PolicyValue = PowerRestorePolicyNoChange;
 
   Status = SetPolicy (&gPlatformPowerRestorePolicyGuid, POLICY_ATTRIBUTE_FINALIZED, &PlatformPowerRestorePolicy, sizeof (PLATFORM_POWER_RESTORE_POLICY));
   ASSERT (Status == EFI_SUCCESS);
