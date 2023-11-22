@@ -55,6 +55,7 @@
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiBmcReadyDelayTimer
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCommandMaxReties
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCheckSelfTestResults
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCommandTimeoutSeconds
   gIpmiFeaturePkgTokenSpaceGuid.PcdBmcTimeoutSeconds
 
 [Depex]
