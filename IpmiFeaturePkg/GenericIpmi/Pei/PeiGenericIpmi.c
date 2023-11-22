@@ -32,9 +32,6 @@
 // Static definitions for the IPMI PEIM
 //
 
-#define BMC_IPMI_TIMEOUT_PEI  5         // [s] Single IPMI request timeout
-#define IPMI_DELAY_UNIT_PEI   1000      // [s] Each KSC IO delay
-
 /**
   The entry point of the Ipmi PEIM. Installs Ipmi PPI interface.
 
@@ -74,7 +71,7 @@ PeimIpmiInterfaceInit (
   // ticks in that period by 100 to get the number of ticks in a 1 second timeout
   //
   DEBUG ((DEBUG_INFO, "[IPMI] IPMI STACK Initialization\n"));
-  mIpmiInstance->IpmiTimeoutPeriod = (BMC_IPMI_TIMEOUT_PEI *1000*1000) / IPMI_DELAY_UNIT_PEI;
+  mIpmiInstance->IpmiTimeoutPeriod = (PcdGet8 (PcdIpmiCommandTimeoutSeconds) *1000*1000) / IPMI_DELAY_UNIT;
   DEBUG ((DEBUG_INFO, "[IPMI] IpmiTimeoutPeriod = 0x%x\n", mIpmiInstance->IpmiTimeoutPeriod));
 
   //
