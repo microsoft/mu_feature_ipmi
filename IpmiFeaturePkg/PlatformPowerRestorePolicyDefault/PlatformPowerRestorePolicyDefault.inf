@@ -1,0 +1,37 @@
+## @file PlatformPowerRestorePolicyDefault.inf
+#
+# This driver provides default implementation of platform power restore policy.
+#
+#  Copyright (c) Microsoft Corporation.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PlatformPowerRestorePolicyDefault
+  FILE_GUID                      = D723D6B8-D34A-4AB6-94E5-49F6F6EC79A0
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = PlatformPowerRestorePolicyDefaultEntry
+
+[Sources]
+  PlatformPowerRestorePolicyDefault.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+  PolicyServicePkg/PolicyServicePkg.dec
+
+[LibraryClasses]
+  PeimEntryPoint
+  DebugLib
+  BaseLib
+  PolicyLib
+
+[Guids]
+  gPlatformPowerRestorePolicyGuid
+
+[Depex]
+  gPeiPolicyPpiGuid
