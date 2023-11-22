@@ -20,22 +20,38 @@
 #include <PiPei.h>
 #include <Library/DebugLib.h>
 #include <Library/IpmiCommandLib.h>
-#include <Library/PlatformPowerRestorePolicyConfigurationLib.h>
+#include <Library/PolicyLib.h>
+#include <Library/BaseMemoryLib.h>
 
 /**
-  @brief Mock this api locally in the test Get the Platform Power Restore Policy Setting Value object
-
-  @param[out] PowerRestorePolicy
-  @retval EFI_STATUS
-**/
+ * @brief Mock version of GetPolicy
+ *
+ */
 EFI_STATUS
 EFIAPI
-GetPowerRestorePolicy (
-  OUT UINT8  *PowerRestorePolicy
+GetPolicy (
+  IN CONST EFI_GUID  *PolicyGuid,
+  OUT UINT64         *Attributes OPTIONAL,
+  OUT VOID           *Policy,
+  IN OUT UINT16      *PolicySize
   )
 {
-  *PowerRestorePolicy = mock_type (UINT8);
-  return mock_type (UINTN);
+  EFI_STATUS  Status;
+
+  // Check that this is the right guid being used
+  check_expected_ptr (PolicyGuid);
+
+  Status = mock_type (EFI_STATUS);
+
+  if (!EFI_ERROR (Status)) {
+    // Set Attributes, Policy and PolicySize
+    *PolicySize = (UINT16)mock ();
+    if (Policy != NULL) {
+      CopyMem ((VOID *)Policy, (VOID *)mock (), *PolicySize);
+    }
+  }
+
+  return Status;
 }
 
 EFI_STATUS

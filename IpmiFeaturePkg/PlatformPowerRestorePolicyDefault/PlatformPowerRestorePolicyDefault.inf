@@ -1,6 +1,6 @@
-## @file IpmiPowerRestorePolicy.inf
+## @file PlatformPowerRestorePolicyDefault.inf
 #
-#  This is a driver for configure Power Restore Policy via IPMI command
+# This driver provides default implementation of platform power restore policy.
 #
 #  Copyright (c) Microsoft Corporation.
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -9,14 +9,14 @@
 
 [Defines]
   INF_VERSION                    = 0x00010005
-  BASE_NAME                      = IpmiPowerRestorePolicy
-  FILE_GUID                      = F417AA89-F059-4B3A-9533-2D7909B28347
+  BASE_NAME                      = PlatformPowerRestorePolicyDefault
+  FILE_GUID                      = D723D6B8-D34A-4AB6-94E5-49F6F6EC79A0
   MODULE_TYPE                    = PEIM
   VERSION_STRING                 = 1.0
-  ENTRY_POINT                    = IpmiPowerRestorePolicyEntry
+  ENTRY_POINT                    = PlatformPowerRestorePolicyDefaultEntry
 
 [Sources]
-  IpmiPowerRestorePolicy.c
+  PlatformPowerRestorePolicyDefault.c
 
 [Packages]
   MdePkg/MdePkg.dec
@@ -28,13 +28,10 @@
   PeimEntryPoint
   DebugLib
   BaseLib
-  IpmiCommandLib
   PolicyLib
 
 [Guids]
   gPlatformPowerRestorePolicyGuid
 
 [Depex]
-  gPeiIpmiTransportPpiGuid AND
-  gPlatformPowerRestorePolicyGuid
-
+  gPeiPolicyPpiGuid
