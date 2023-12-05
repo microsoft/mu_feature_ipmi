@@ -186,13 +186,13 @@ ReceiveBmcDataFromPort (
       if (BlockBuffer[0] == 0xFF) {
         Done = TRUE;
       } else {
-        if (BlockBuffer[0] != BlockNumber + 1) {
-          DEBUG ((DEBUG_ERROR, "[SSIF] SMBus block out of order! Expected %d, Received %d.\n", BlockNumber + 1, BlockBuffer[0]));
+        if (BlockBuffer[0] != BlockNumber) {
+          DEBUG ((DEBUG_ERROR, "[SSIF] SMBus block out of order! Expected %d, Received %d.\n", BlockNumber, BlockBuffer[0]));
           Status = EFI_DEVICE_ERROR;
           goto Exit;
         }
 
-        BlockNumber = BlockBuffer[0];
+        BlockNumber = BlockBuffer[0] + 1;
       }
     }
 
