@@ -150,7 +150,7 @@ BmcSmbusBlockRead (
       ReadBlock[1] = 1;
       CopyMem (&ReadBlock[2], &RxBuffer[RxOffset], SSIF_MAX_READ_SIZE - 2);
       RxOffset    += SSIF_MAX_READ_SIZE - 2;
-      RxBlock      = 1;
+      RxBlock      = 0;
       *BlockLength = SSIF_MAX_READ_SIZE;
     } else {
       CopyMem (&ReadBlock[0], &RxBuffer[RxOffset], RxSize);
