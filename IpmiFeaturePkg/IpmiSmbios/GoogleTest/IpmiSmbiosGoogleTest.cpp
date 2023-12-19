@@ -8,22 +8,22 @@
 #include <Library/FunctionMockLib.h>
 
 extern "C" {
-#include <Uefi.h>
-#include <IndustryStandard/SmBios.h>
-#include <Library/UefiBootServicesTableLib.h>
-#include <Protocol/Smbios.h>
-#include <IpmiInterface.h>
+  #include <Uefi.h>
+  #include <IndustryStandard/SmBios.h>
+  #include <Library/UefiBootServicesTableLib.h>
+  #include <Protocol/Smbios.h>
+  #include <IpmiInterface.h>
 
-extern SMBIOS_TABLE_TYPE38  mSmbiosTableType38;
+  extern SMBIOS_TABLE_TYPE38  mSmbiosTableType38;
 
-//
-// Interfaces to be tested
-//
-EFI_STATUS
-EFIAPI
-CreateIpmiSmbiosType38 (
-  VOID
-  );
+  //
+  // Interfaces to be tested
+  //
+  EFI_STATUS
+  EFIAPI
+  CreateIpmiSmbiosType38 (
+    VOID
+    );
 }
 
 using namespace testing;
@@ -59,11 +59,11 @@ struct MockIpmiBaseLib {
     EFI_STATUS,
     IpmiSubmitCommand,
     (IN UINT8    NetFunction,
-    IN UINT8    Command,
-    IN UINT8    *CommandData,
-    IN UINT32   CommandDataSize,
-    OUT UINT8   *ResponseData,
-    OUT UINT32  *ResponseDataSize)
+     IN UINT8    Command,
+     IN UINT8    *CommandData,
+     IN UINT32   CommandDataSize,
+     OUT UINT8   *ResponseData,
+     OUT UINT32  *ResponseDataSize)
     );
 };
 
@@ -93,18 +93,18 @@ static EFI_SMBIOS_PROTOCOL  LocalSmbiosProtocol;
 
 class MockIpmiSmbios : public  Test {
 protected:
-BOOLEAN ReturnValue;
-EFI_STATUS Status;
-MockUefiBootServicesTableLib UefiBootServicesTableLib;
-MockIpmiBaseLib IpmiBaseLib;
-MockSmbiosProtocol EFI_SMBIOS_PROTOCOL;
-virtual void
-SetUp (
-  )
-{
-  LocalBs.LocateProtocol               = gBS_LocateProtocol;
-  LocalSmbiosProtocol.Add              = MockSmbiosAdd;
-}
+  BOOLEAN ReturnValue;
+  EFI_STATUS Status;
+  MockUefiBootServicesTableLib UefiBootServicesTableLib;
+  MockIpmiBaseLib IpmiBaseLib;
+  MockSmbiosProtocol EFI_SMBIOS_PROTOCOL;
+  virtual void
+  SetUp (
+    )
+  {
+    LocalBs.LocateProtocol  = gBS_LocateProtocol;
+    LocalSmbiosProtocol.Add = MockSmbiosAdd;
+  }
 };
 
 TEST_F (MockIpmiSmbios, VerifyCreateIpmiSmbiosType38TestCase) {
@@ -137,7 +137,7 @@ TEST_F (MockIpmiSmbios, VerifyCreateIpmiSmbiosType38TestCase) {
     ((PcdGet8 (PcdSmbiosTablesIpmiInterruptInfo) & 1) << 3) |
     ((PcdGet8 (PcdSmbiosTablesIpmiInterruptPolarity) & 1) << 1) |
     (PcdGet8 (PcdSmbiosTablesIpmiInterruptTriggerMode) & 1)
-  );
+    );
 }
 
 TEST_F (MockIpmiSmbios, VerifyCreateIpmiSmbiosType38LocateProtocolFailTestCase) {
