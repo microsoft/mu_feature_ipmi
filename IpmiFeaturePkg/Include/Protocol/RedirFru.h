@@ -6,8 +6,8 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
-#ifndef _REDIR_FRU_H_
-#define _REDIR_FRU_H_
+#ifndef REDIR_FRU_H_
+#define REDIR_FRU_H_
 
 typedef struct _EFI_SM_FRU_REDIR_PROTOCOL EFI_SM_FRU_REDIR_PROTOCOL;
 
