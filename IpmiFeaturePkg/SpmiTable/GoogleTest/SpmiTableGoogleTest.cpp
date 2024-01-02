@@ -8,23 +8,23 @@
 #include <Library/FunctionMockLib.h>
 
 extern "C" {
-#include <Uefi.h>
-#include <IndustryStandard/ServiceProcessorManagementInterfaceTable.h>
-#include <Library/UefiBootServicesTableLib.h>
-#include <IpmiInterface.h>
-#include <Protocol/AcpiTable.h>
+  #include <Uefi.h>
+  #include <IndustryStandard/ServiceProcessorManagementInterfaceTable.h>
+  #include <Library/UefiBootServicesTableLib.h>
+  #include <IpmiInterface.h>
+  #include <Protocol/AcpiTable.h>
 
-extern EFI_ACPI_SERVICE_PROCESSOR_MANAGEMENT_INTERFACE_TABLE  mSpmiTable;
+  extern EFI_ACPI_SERVICE_PROCESSOR_MANAGEMENT_INTERFACE_TABLE  mSpmiTable;
 
-//
-// Interfaces to be tested
-//
-EFI_STATUS
-EFIAPI
-SpmiTableEntryPoint (
-  IN EFI_HANDLE        ImageHandle,
-  IN EFI_SYSTEM_TABLE  *SystemTable
-  );
+  //
+  // Interfaces to be tested
+  //
+  EFI_STATUS
+  EFIAPI
+  SpmiTableEntryPoint (
+    IN EFI_HANDLE        ImageHandle,
+    IN EFI_SYSTEM_TABLE  *SystemTable
+    );
 }
 
 using namespace testing;
@@ -98,19 +98,19 @@ static EFI_ACPI_TABLE_PROTOCOL  LocalEfiAcpiTableProtocol;
 
 class MockSpmiTable : public  Test {
 protected:
-BOOLEAN ReturnValue;
-EFI_STATUS Status;
-MockUefiBootServicesTableLib UefiBootServicesTableLib;
-MockIpmiTransport IPMI_TRANSPORT;
-MockEfiAcpiTableProtocol EFI_ACPI_TABLE_PROTOCOL;
-virtual void
-SetUp (
-  )
-{
-  LocalBs.LocateProtocol                     = gBS_LocateProtocol;
-  LocalIpmiTransport.IpmiSubmitCommand       = IpmiSendCommand;
-  LocalEfiAcpiTableProtocol.InstallAcpiTable = InstallAcpiTable;
-}
+  BOOLEAN ReturnValue;
+  EFI_STATUS Status;
+  MockUefiBootServicesTableLib UefiBootServicesTableLib;
+  MockIpmiTransport IPMI_TRANSPORT;
+  MockEfiAcpiTableProtocol EFI_ACPI_TABLE_PROTOCOL;
+  virtual void
+  SetUp (
+    )
+  {
+    LocalBs.LocateProtocol                     = gBS_LocateProtocol;
+    LocalIpmiTransport.IpmiSubmitCommand       = IpmiSendCommand;
+    LocalEfiAcpiTableProtocol.InstallAcpiTable = InstallAcpiTable;
+  }
 };
 
 TEST_F (MockSpmiTable, VerifySpmiTableEntryPointPositiveTestCase) {
