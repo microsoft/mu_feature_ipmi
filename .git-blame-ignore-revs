@@ -1,0 +1,11 @@
+###################################################
+# Line Ending Only Changes                        #
+###################################################
+# Fix line endings in repo (LF -> CRLF)
+bf49184c69645826556277f4a49349cbb7366879
+
+###################################################
+# Code Formatting (Uncrustify) Only Changes       #
+###################################################
+# IpmiFeaturePkgPkg: apply cpp uncrustify changes
+6eac048d5e72d3cfcf18fb3a0f036728bc55bc47
