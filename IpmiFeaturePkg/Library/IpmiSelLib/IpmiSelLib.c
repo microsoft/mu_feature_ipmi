@@ -213,6 +213,58 @@ SelAddSystemEntry (
 /**
   Adds an OEM timestamped event to the SEL.
 
+  @param[in,out]  RecordId         If provided, receives the record ID of the entry.
+  @param[in]      RecordType       The record type code. But be between 0xC0-0xDF.
+  @param[in]      ManufacturerId   The manufacturer ID for the event. Must be 3 bytes.
+  @param[in]      Data             Array of OEM defined event data.
+
+  @retval   EFI_SUCCESS             Event was successfully added to the SEL.
+  @retval   EFI_INVALID_PARAMETER   Invalid RecordType was given.
+  @retval   Other                   And error was returned by IpmiAddSelEntry.
+**/
+EFI_STATUS
+EFIAPI
+SelAddOemEntryEx (
+  IN OUT UINT16  *RecordId OPTIONAL,
+  IN UINT8       RecordType,
+  IN UINT8       ManufacturerId[3],
+  IN UINT8       Data[6]
+  )
+
+{
+  SEL_RECORD  Entry;
+
+  if ((Data == NULL) || ((ManufacturerId == NULL))) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  if ((RecordType < IPMI_SEL_OEM_TIME_STAMP_RECORD_START) ||
+      (RecordType > IPMI_SEL_OEM_TIME_STAMP_RECORD_END))
+  {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a: Invalid Record ID for OEM entry! 0x%x\n",
+      __FUNCTION__,
+      RecordType
+      ));
+
+    return EFI_INVALID_PARAMETER;
+  }
+
+  Entry.RecordId                     = 0;
+  Entry.RecordType                   = RecordType;
+  Entry.Record.Oem.TimeStamp         = 0;
+  Entry.Record.Oem.ManufacturerId[0] = ManufacturerId[0];
+  Entry.Record.Oem.ManufacturerId[1] = ManufacturerId[1];
+  Entry.Record.Oem.ManufacturerId[2] = ManufacturerId[2];
+  CopyMem (&Entry.Record.Oem.Data[0], &Data[0], sizeof (Entry.Record.Oem.Data));
+
+  return IpmiAddSelEntry (&Entry, RecordId);
+}
+
+/**
+  Adds an OEM timestamped event to the SEL.
+
   @param[in,out]  RecordId      If provided, receives the record ID of the entry.
   @param[in]      RecordType    The record type code. But be between 0xC0-0xDF.
   @param[in]      Data          Array of OEM defined event data.
@@ -228,35 +280,11 @@ SelAddOemEntry (
   IN UINT8       RecordType,
   IN UINT8       Data[6]
   )
-
 {
-  SEL_RECORD  Entry;
-  UINT8       *ManufacturerId;
-
-  if ((RecordType < IPMI_SEL_OEM_TIME_STAMP_RECORD_START) ||
-      (RecordType > IPMI_SEL_OEM_TIME_STAMP_RECORD_END))
-  {
-    DEBUG ((
-      DEBUG_ERROR,
-      "%a: Invalid Record ID for OEM entry! 0x%x\n",
-      __FUNCTION__,
-      RecordType
-      ));
-
-    return EFI_INVALID_PARAMETER;
-  }
+  UINT8  *ManufacturerId;
 
   ManufacturerId = (UINT8 *)PcdGetPtr (PcdIpmiSelOemManufacturerId);
-
-  Entry.RecordId                     = 0;
-  Entry.RecordType                   = RecordType;
-  Entry.Record.Oem.TimeStamp         = 0;
-  Entry.Record.Oem.ManufacturerId[0] = ManufacturerId[0];
-  Entry.Record.Oem.ManufacturerId[1] = ManufacturerId[1];
-  Entry.Record.Oem.ManufacturerId[2] = ManufacturerId[2];
-  CopyMem (&Entry.Record.Oem.Data[0], &Data[0], sizeof (Entry.Record.Oem.Data));
-
-  return IpmiAddSelEntry (&Entry, RecordId);
+  return SelAddOemEntryEx (RecordId, RecordType, ManufacturerId, Data);
 }
 
 /**

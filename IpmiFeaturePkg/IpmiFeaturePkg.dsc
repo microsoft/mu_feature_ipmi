@@ -112,6 +112,7 @@
   IpmiFeaturePkg/IpmiCmosClear/IpmiCmosClear.inf
   IpmiFeaturePkg/Library/PlatformCmosClearLibNull/PlatformCmosClearLibNull.inf
   IpmiFeaturePkg/PlatformPowerRestorePolicyDefault/PlatformPowerRestorePolicyDefault.inf
+  IpmiFeaturePkg/IpmiSel/IpmiSel.inf
 
   # Transport Libraries
   IpmiFeaturePkg/Library/IpmiTransportLibNull/IpmiTransportLibNull.inf
