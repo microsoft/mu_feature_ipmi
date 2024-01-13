@@ -1,0 +1,38 @@
+### @file
+# Component description file for IPMI SEL module.
+#
+# Copyright (c) Microsoft Corporation.
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+###
+
+[defines]
+  INF_VERSION          = 1.26
+  BASE_NAME            = IpmiSel
+  FILE_GUID            = AEBF9838-96CE-484A-8A88-8C57AB7337C8
+  MODULE_TYPE          = DXE_DRIVER
+  VERSION_STRING       = 1.0
+  ENTRY_POINT          = IpmiSelEntryPoint
+
+[Sources]
+  IpmiSel.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  MemoryAllocationLib
+  UefiLib
+  DebugLib
+  BaseMemoryLib
+  IpmiSelLib
+
+[Protocols]
+  gIpmiSelProtocolGuid
+
+[Depex]
+  TRUE
