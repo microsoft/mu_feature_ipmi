@@ -6,8 +6,8 @@
 
 **/
 
-#ifndef _IPMI_SEL_LIB_H
-#define _IPMI_SEL_LIB_H
+#ifndef IPMI_SEL_LIB_H_
+#define IPMI_SEL_LIB_H_
 
 // This library is a superset of functionality from the protocol.
 #include "Protocol/IpmiSelProtocol.h"
@@ -67,7 +67,7 @@ SelAddSystemEntry (
   );
 
 /**
-  Adds an OEM timestamped event to the SEL.
+  Adds an OEM timestamped event to the SEL using the system manufacturer ID.
 
   @param[in,out]  RecordId      If provided, receives the record ID of the entry.
   @param[in]      RecordType    The record type code. Must be between 0xC0-0xDF.
@@ -75,7 +75,7 @@ SelAddSystemEntry (
 
   @retval   EFI_SUCCESS             Event was successfully added to the SEL.
   @retval   EFI_INVALID_PARAMETER   Invalid RecordType was given.
-  @retval   Other                   And error was returned by IpmiAddSelEntry.
+  @retval   Other                   And error was returned by a subroutine.
 **/
 EFI_STATUS
 EFIAPI
@@ -95,7 +95,7 @@ SelAddOemEntry (
 
   @retval   EFI_SUCCESS             Event was successfully added to the SEL.
   @retval   EFI_INVALID_PARAMETER   Invalid RecordType was given.
-  @retval   Other                   And error was returned by IpmiAddSelEntry.
+  @retval   Other                   And error was returned by a subroutine.
 **/
 EFI_STATUS
 EFIAPI
@@ -115,7 +115,7 @@ SelAddOemEntryEx (
 
   @retval   EFI_SUCCESS             Event was successfully added to the SEL.
   @retval   EFI_INVALID_PARAMETER   Invalid RecordType was given.
-  @retval   Other                   And error was returned by IpmiAddSelEntry.
+  @retval   Other                   And error was returned by a subroutine.
 **/
 EFI_STATUS
 EFIAPI
