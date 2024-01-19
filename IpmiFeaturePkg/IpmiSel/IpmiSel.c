@@ -9,9 +9,7 @@
 #include <Uefi.h>
 #include <Library/UefiLib.h>
 #include <Library/DebugLib.h>
-#include <Library/BaseMemoryLib.h>
 #include <Library/UefiBootServicesTableLib.h>
-#include <Library/UefiRuntimeServicesTableLib.h>
 
 #include <Protocol/IpmiSelProtocol.h>
 #include <Library/IpmiSelLib.h>

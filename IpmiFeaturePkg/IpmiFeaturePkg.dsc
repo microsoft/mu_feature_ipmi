@@ -137,6 +137,15 @@
       MemoryAllocationLib|MdePkg/Library/UefiMemoryAllocationLib/UefiMemoryAllocationLib.inf
   }
 
+  IpmiFeaturePkg/Test/FunctionalTest/SelProtocolShellTest/SelProtocolShellTest.inf {
+    <LibraryClasses>
+      UefiApplicationEntryPoint|MdePkg/Library/UefiApplicationEntryPoint/UefiApplicationEntryPoint.inf
+      UnitTestLib|UnitTestFrameworkPkg/Library/UnitTestLib/UnitTestLib.inf
+      UnitTestPersistenceLib|UnitTestFrameworkPkg/Library/UnitTestPersistenceLibNull/UnitTestPersistenceLibNull.inf
+      UnitTestResultReportLib|UnitTestFrameworkPkg/Library/UnitTestResultReportLib/UnitTestResultReportLibDebugLib.inf
+      MemoryAllocationLib|MdePkg/Library/UefiMemoryAllocationLib/UefiMemoryAllocationLib.inf
+  }
+
   # Sample modules
   IpmiFeaturePkg/Samples/IpmiStatusReporter/Dxe/IpmiStatusReporterDxe.inf
 

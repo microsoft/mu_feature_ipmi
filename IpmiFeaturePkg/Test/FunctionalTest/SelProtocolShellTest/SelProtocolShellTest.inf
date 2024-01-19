@@ -1,0 +1,33 @@
+## @file
+# Functional shell test for SEL protocol.
+#
+# Copyright (c) Microsoft Corporation.
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION    = 1.26
+  BASE_NAME      = SelProtocolShellTest
+  FILE_GUID      = 8E1CA4D7-78C9-444E-841E-C99BD3F3493C
+  MODULE_TYPE    = UEFI_APPLICATION
+  VERSION_STRING = 1.0
+  ENTRY_POINT    = SelProtocolTestEntryPoint
+
+[Sources]
+  SelProtocolShellTest.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  UnitTestFrameworkPkg/UnitTestFrameworkPkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[Protocols]
+  gIpmiSelProtocolGuid
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  UnitTestLib
+  UefiApplicationEntryPoint

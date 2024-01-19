@@ -25,10 +25,8 @@
 [LibraryClasses]
   UefiBootServicesTableLib
   UefiDriverEntryPoint
-  MemoryAllocationLib
   UefiLib
   DebugLib
-  BaseMemoryLib
   IpmiSelLib
 
 [Protocols]
