@@ -1,7 +1,7 @@
 /** @file
   The DXE implementation of the IPMI SEL Protocol.
 
-  Copyright (c) Microsoft Corporation
+  Copyright (c) Microsoft Corporation.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
