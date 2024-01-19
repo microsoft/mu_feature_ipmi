@@ -234,7 +234,7 @@ SelAddOemEntryEx (
 {
   SEL_RECORD  Entry;
 
-  if ((Data == NULL) || ((ManufacturerId == NULL))) {
+  if ((Data == NULL) || (ManufacturerId == NULL)) {
     return EFI_INVALID_PARAMETER;
   }
 
@@ -263,7 +263,7 @@ SelAddOemEntryEx (
 }
 
 /**
-  Adds an OEM timestamped event to the SEL.
+  Adds an OEM timestamped event to the SEL using the system manufacturer ID.
 
   @param[in,out]  RecordId      If provided, receives the record ID of the entry.
   @param[in]      RecordType    The record type code. But be between 0xC0-0xDF.
