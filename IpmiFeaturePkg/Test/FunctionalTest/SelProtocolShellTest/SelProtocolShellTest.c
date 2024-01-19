@@ -38,7 +38,7 @@ SelAddEntryTestBad (
 {
   IPMI_SEL_PROTOCOL  *SelProtocol;
   EFI_STATUS         Status;
-  CHAR8              ManId[] = { 'a', 'b', 'c' };
+  UINT8              ManId[] = { 'a', 'b', 'c' };
   UINT8              Data[]  = { 0, 1, 2, 3, 4, 5 };
 
   Status = gBS->LocateProtocol (
@@ -87,7 +87,7 @@ SelAddEntryTest (
 {
   IPMI_SEL_PROTOCOL  *SelProtocol;
   EFI_STATUS         Status;
-  CHAR8              ManId[]                    = { 'a', 'b', 'c' };
+  UINT8              ManId[]                    = { 'a', 'b', 'c' };
   UINT8              Data[]                     = { 's', 'e', 'l', 't', '-', 0xFF };
   UINT16             RecordIds[NUM_SEL_ENTRIES] = { 0 };
   UINT16             NextId;
