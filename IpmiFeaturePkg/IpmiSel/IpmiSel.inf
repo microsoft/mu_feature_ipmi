@@ -30,7 +30,7 @@
   IpmiSelLib
 
 [Protocols]
-  gIpmiSelProtocolGuid
+  gIpmiSelProtocolGuid  ## PRODUCES
 
 [Depex]
   TRUE
