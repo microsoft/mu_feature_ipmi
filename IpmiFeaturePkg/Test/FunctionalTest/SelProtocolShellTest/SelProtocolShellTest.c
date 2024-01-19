@@ -54,7 +54,7 @@ SelAddEntryTestBad (
   UT_ASSERT_STATUS_EQUAL (Status, EFI_INVALID_PARAMETER);
   Status = SelProtocol->AddRecordEntry (NULL, 0xBF, ManId, Data);
   UT_ASSERT_STATUS_EQUAL (Status, EFI_INVALID_PARAMETER);
-  Status = SelProtocol->AddRecordEntrySelAddEntryTest (NULL, 0xE0, ManId, Data);
+  Status = SelProtocol->AddRecordEntry (NULL, 0xE0, ManId, Data);
   UT_ASSERT_STATUS_EQUAL (Status, EFI_INVALID_PARAMETER);
   Status = SelProtocol->AddRecordEntry (NULL, 0xFF, ManId, Data);
   UT_ASSERT_STATUS_EQUAL (Status, EFI_INVALID_PARAMETER);
