@@ -6,8 +6,11 @@
 
 **/
 
-#ifndef _IPMI_SEL_LIB_H
-#define _IPMI_SEL_LIB_H
+#ifndef IPMI_SEL_LIB_H_
+#define IPMI_SEL_LIB_H_
+
+// This library is a superset of functionality from the protocol.
+#include "Protocol/IpmiSelProtocol.h"
 
 #pragma pack(1)
 
@@ -34,37 +37,6 @@ typedef struct _SEL_INFO {
     UINT8    AsUint8;
   } OperationSupported;
 } SEL_INFO;
-
-//
-// Generic structure for SEL events.
-//
-
-typedef struct _SEL_RECORD {
-  UINT16    RecordId;
-  UINT8     RecordType;
-
-  union {
-    struct {
-      UINT32    TimeStamp;
-      UINT16    GeneratorId;
-      UINT8     EvMRevision;
-      UINT8     SensorType;
-      UINT8     SensorNumber;
-      UINT8     EventDirType;
-      UINT8     Data[3];
-    } System;
-
-    struct {
-      UINT32    TimeStamp;
-      UINT8     ManufacturerId[3];
-      UINT8     Data[6];
-    } Oem;
-
-    struct {
-      UINT8    Data[13];
-    } OemNonTimestamped;
-  } Record;
-} SEL_RECORD;
 
 #pragma pack()
 
@@ -95,7 +67,7 @@ SelAddSystemEntry (
   );
 
 /**
-  Adds an OEM timestamped event to the SEL.
+  Adds an OEM timestamped event to the SEL using the system manufacturer ID.
 
   @param[in,out]  RecordId      If provided, receives the record ID of the entry.
   @param[in]      RecordType    The record type code. Must be between 0xC0-0xDF.
@@ -103,13 +75,34 @@ SelAddSystemEntry (
 
   @retval   EFI_SUCCESS             Event was successfully added to the SEL.
   @retval   EFI_INVALID_PARAMETER   Invalid RecordType was given.
-  @retval   Other                   And error was returned by IpmiAddSelEntry.
+  @retval   Other                   And error was returned by a subroutine.
 **/
 EFI_STATUS
 EFIAPI
 SelAddOemEntry (
   IN OUT UINT16  *RecordId OPTIONAL,
   IN UINT8       RecordType,
+  IN UINT8       Data[6]
+  );
+
+/**
+  Adds an OEM timestamped event to the SEL.
+
+  @param[in,out]  RecordId         If provided, receives the record ID of the entry.
+  @param[in]      RecordType       The record type code. But be between 0xC0-0xDF.
+  @param[in]      ManufacturerId   The manufacturer ID for the event. Must be 3 bytes.
+  @param[in]      Data             Array of OEM defined event data.
+
+  @retval   EFI_SUCCESS             Event was successfully added to the SEL.
+  @retval   EFI_INVALID_PARAMETER   Invalid RecordType was given.
+  @retval   Other                   And error was returned by a subroutine.
+**/
+EFI_STATUS
+EFIAPI
+SelAddOemEntryEx (
+  IN OUT UINT16  *RecordId OPTIONAL,
+  IN UINT8       RecordType,
+  IN UINT8       ManufacturerId[3],
   IN UINT8       Data[6]
   );
 
@@ -122,7 +115,7 @@ SelAddOemEntry (
 
   @retval   EFI_SUCCESS             Event was successfully added to the SEL.
   @retval   EFI_INVALID_PARAMETER   Invalid RecordType was given.
-  @retval   Other                   And error was returned by IpmiAddSelEntry.
+  @retval   Other                   And error was returned by a subroutine.
 **/
 EFI_STATUS
 EFIAPI

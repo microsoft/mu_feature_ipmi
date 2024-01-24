@@ -112,6 +112,7 @@
   IpmiFeaturePkg/IpmiCmosClear/IpmiCmosClear.inf
   IpmiFeaturePkg/Library/PlatformCmosClearLibNull/PlatformCmosClearLibNull.inf
   IpmiFeaturePkg/PlatformPowerRestorePolicyDefault/PlatformPowerRestorePolicyDefault.inf
+  IpmiFeaturePkg/IpmiSel/IpmiSel.inf
 
   # Transport Libraries
   IpmiFeaturePkg/Library/IpmiTransportLibNull/IpmiTransportLibNull.inf
@@ -133,6 +134,15 @@
       UnitTestPersistenceLib|UnitTestFrameworkPkg/Library/UnitTestPersistenceLibNull/UnitTestPersistenceLibNull.inf
       UnitTestResultReportLib|UnitTestFrameworkPkg/Library/UnitTestResultReportLib/UnitTestResultReportLibDebugLib.inf
       IpmiBaseLib|IpmiFeaturePkg/Library/IpmiBaseLibDxe/IpmiBaseLibDxe.inf
+      MemoryAllocationLib|MdePkg/Library/UefiMemoryAllocationLib/UefiMemoryAllocationLib.inf
+  }
+
+  IpmiFeaturePkg/Test/FunctionalTest/SelProtocolShellTest/SelProtocolShellTest.inf {
+    <LibraryClasses>
+      UefiApplicationEntryPoint|MdePkg/Library/UefiApplicationEntryPoint/UefiApplicationEntryPoint.inf
+      UnitTestLib|UnitTestFrameworkPkg/Library/UnitTestLib/UnitTestLib.inf
+      UnitTestPersistenceLib|UnitTestFrameworkPkg/Library/UnitTestPersistenceLibNull/UnitTestPersistenceLibNull.inf
+      UnitTestResultReportLib|UnitTestFrameworkPkg/Library/UnitTestResultReportLib/UnitTestResultReportLibDebugLib.inf
       MemoryAllocationLib|MdePkg/Library/UefiMemoryAllocationLib/UefiMemoryAllocationLib.inf
   }
 
