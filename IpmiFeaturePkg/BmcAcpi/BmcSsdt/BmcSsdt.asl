@@ -18,11 +18,6 @@ DefinitionBlock (
     )
 {
 
-  External(\_SB.PC00.LPC0, DeviceObj)
-
-  Scope (\_SB.PC00.LPC0)
-  {
-    #include "IpmiOprRegions.asi"
-  }
+  #include "IpmiOprRegions.asi"
 
 }
