@@ -8,22 +8,12 @@
 import glob
 import os
 import logging
-import sys
 from edk2toolext.environment import shell_environment
 from edk2toolext.invocables.edk2_ci_build import CiBuildSettingsManager
 from edk2toolext.invocables.edk2_update import UpdateSettingsManager
 from edk2toolext.invocables.edk2_pr_eval import PrEvalSettingsManager
 from edk2toolext.invocables.edk2_ci_setup import CiSetupSettingsManager
-from edk2toollib.utility_functions import GetHostInfo
-from pathlib import Path
-
-try:
-    # May not be present until submodules are populated
-    root = Path(__file__).parent.parent.resolve()
-    sys.path.append(str(root/'MU_BASECORE'/'.pytool'/'Plugin'/'CodeQL'/'integration'))
-    import stuart_codeql as codeql_helpers
-except ImportError:
-    pass
+from edk2toolext import codeql as codeql_helpers
 
 
 class Settings(CiBuildSettingsManager, UpdateSettingsManager, PrEvalSettingsManager, CiSetupSettingsManager):
@@ -33,7 +23,6 @@ class Settings(CiBuildSettingsManager, UpdateSettingsManager, PrEvalSettingsMana
         self.ActualTargets = []
         self.ActualArchitectures = []
         self.ActualToolChainTag = ""
-        self.UseBuiltInBaseTools = None
         self.ActualScopes = None
 
     # ####################################################################################### #
@@ -41,27 +30,16 @@ class Settings(CiBuildSettingsManager, UpdateSettingsManager, PrEvalSettingsMana
     # ####################################################################################### #
 
     def AddCommandLineOptions(self, parserObj):
-        group = parserObj.add_mutually_exclusive_group()
-        group.add_argument("-force_piptools", "--fpt", dest="force_piptools", action="store_true", default=False, help="Force the system to use pip tools")
-        group.add_argument("-no_piptools", "--npt", dest="no_piptools", action="store_true", default=False, help="Force the system to not use pip tools")
-
         try:
             codeql_helpers.add_command_line_option(parserObj)
         except NameError:
             pass
 
     def RetrieveCommandLineOptions(self, args):
-        super().RetrieveCommandLineOptions(args)
-
         try:
             self.codeql = codeql_helpers.is_codeql_enabled_on_command_line(args)
         except NameError:
             pass
-
-        if args.force_piptools:
-            self.UseBuiltInBaseTools = True
-        if args.no_piptools:
-            self.UseBuiltInBaseTools = False
 
     # ####################################################################################### #
     #                        Default Support for this Ci Build                                #
@@ -147,24 +125,6 @@ class Settings(CiBuildSettingsManager, UpdateSettingsManager, PrEvalSettingsMana
             scopes = ("feature-ipmi-ci", "cibuild", "edk2-build", "host-based-test")
 
             self.ActualToolChainTag = shell_environment.GetBuildVars().GetValue("TOOL_CHAIN_TAG", "")
-
-            is_linux = GetHostInfo().os.upper() == "LINUX"
-
-            if self.UseBuiltInBaseTools is None:
-                # MU_CHANGE - redundant is_linux = GetHostInfo().os.upper() == "LINUX"
-                # try and import the pip module for basetools
-                try:
-                    import edk2basetools
-                    self.UseBuiltInBaseTools = True
-                except ImportError:
-                    self.UseBuiltInBaseTools = False
-                    pass
-
-            if self.UseBuiltInBaseTools == True:
-                scopes += ('pipbuild-unix',) if is_linux else ('pipbuild-win',)
-                logging.warning("Using Pip Tools based BaseTools")
-            else:
-                logging.warning("Falling back to using in-tree BaseTools")
 
             try:
                 scopes += codeql_helpers.get_scopes(self.codeql)
