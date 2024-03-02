@@ -47,6 +47,7 @@
   UefiLib|MdePkg/Library/UefiLib/UefiLib.inf
   DevicePathLib|MdePkg/Library/UefiDevicePathLib/UefiDevicePathLib.inf
   UefiRuntimeServicesTableLib|MdePkg/Library/UefiRuntimeServicesTableLib/UefiRuntimeServicesTableLib.inf
+  NULL|MdePkg/Library/StackCheckLibNull/StackCheckLibNull.inf
 
   #####################################
   # IPMI Feature Package
