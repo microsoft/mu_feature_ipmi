@@ -26,6 +26,18 @@ typedef UINT32 BMC_STATUS;
 #define BMC_NOTREADY            4
 
 //
+// Structure to communicate BMC state from PEI to DXE.
+//
+
+#pragma pack(1)
+
+typedef struct _IPMI_BMC_HOB {
+  BMC_STATUS    BmcStatus;
+} IPMI_BMC_HOB;
+
+#pragma pack()
+
+//
 //  IPMI Function Prototypes
 //
 typedef

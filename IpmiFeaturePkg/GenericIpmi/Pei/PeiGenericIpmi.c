@@ -106,7 +106,6 @@ PeimIpmiInterfaceInit (
   Status = IpmiInitializeBmc (mIpmiInstance);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "[IPMI] Failed to initialize BMC state. %r\n", Status));
-    return Status;
   }
 
   //

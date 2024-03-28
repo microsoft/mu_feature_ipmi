@@ -372,7 +372,6 @@ IpmiInitializeBmc (
 
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: Failed to get device ID. %r\n", __FUNCTION__, Status));
-    return Status;
   }
 
   //
@@ -393,7 +392,6 @@ IpmiInitializeBmc (
 
     if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_ERROR, "%a: Failed to get self test results. %r\n", __FUNCTION__, Status));
-      return Status;
     }
   }
 

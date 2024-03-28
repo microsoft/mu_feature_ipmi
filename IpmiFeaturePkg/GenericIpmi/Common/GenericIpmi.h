@@ -85,14 +85,6 @@ typedef struct {
   UINT8    ResponseData[MAX_TEMP_DATA - IPMI_RESPONSE_HEADER_SIZE];
 } IPMI_RESPONSE;
 
-//
-// Structure to communicate BMC state from PEI to DXE.
-//
-
-typedef struct _IPMI_BMC_HOB {
-  BMC_STATUS    BmcStatus;
-} IPMI_BMC_HOB;
-
 #pragma pack()
 
 /**
