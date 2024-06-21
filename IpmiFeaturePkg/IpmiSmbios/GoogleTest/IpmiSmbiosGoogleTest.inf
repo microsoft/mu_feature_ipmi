@@ -34,7 +34,6 @@
   MemoryAllocationLib
   BaseMemoryLib
   DebugLib
-  IpmiCommandLib
   GoogleTestLib
 
 [Protocols]

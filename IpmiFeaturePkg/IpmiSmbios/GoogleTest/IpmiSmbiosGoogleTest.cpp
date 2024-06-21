@@ -6,6 +6,7 @@
 **/
 #include <Library/GoogleTestLib.h>
 #include <Library/FunctionMockLib.h>
+#include <GoogleTest/Library/MockUefiBootServicesTableLib.h>
 
 extern "C" {
   #include <Uefi.h>
@@ -13,6 +14,8 @@ extern "C" {
   #include <Library/UefiBootServicesTableLib.h>
   #include <Protocol/Smbios.h>
   #include <IpmiInterface.h>
+  #include <IndustryStandard/Ipmi.h>
+  #include <IndustryStandard/IpmiNetFnApp.h>
 
   extern SMBIOS_TABLE_TYPE38  mSmbiosTableType38;
 
@@ -27,27 +30,6 @@ extern "C" {
 }
 
 using namespace testing;
-
-//
-// Declarations to handle usage of the UefiBootServiceTableLib by creating mock
-//
-struct MockUefiBootServicesTableLib {
-  MOCK_INTERFACE_DECLARATION (MockUefiBootServicesTableLib);
-
-  MOCK_FUNCTION_DECLARATION (
-    EFI_STATUS,
-    gBS_LocateProtocol,
-    (IN  EFI_GUID  *Protocol,
-     IN  VOID      *Registration  OPTIONAL,
-     OUT VOID      **Interface)
-    );
-};
-
-MOCK_INTERFACE_DEFINITION (MockUefiBootServicesTableLib);
-MOCK_FUNCTION_DEFINITION (MockUefiBootServicesTableLib, gBS_LocateProtocol, 3, EFIAPI);
-
-static EFI_BOOT_SERVICES  LocalBs;
-EFI_BOOT_SERVICES         *gBS = &LocalBs;
 
 //
 // Declarations to handle usage of the IPMI_TRANSPORT by creating mock
@@ -68,7 +50,24 @@ struct MockIpmiBaseLib {
 };
 
 MOCK_INTERFACE_DEFINITION (MockIpmiBaseLib);
+
 MOCK_FUNCTION_DEFINITION (MockIpmiBaseLib, IpmiSubmitCommand, 6, EFIAPI);
+
+//
+// Declarations to handle Ipmi Command Lib
+//
+struct MockIpmiCommandLib {
+  MOCK_INTERFACE_DECLARATION (MockIpmiCommandLib);
+
+  MOCK_FUNCTION_DECLARATION (
+    EFI_STATUS,
+    IpmiGetDeviceId,
+    (OUT IPMI_GET_DEVICE_ID_RESPONSE  *DeviceId)
+    );
+};
+
+MOCK_INTERFACE_DEFINITION (MockIpmiCommandLib);
+MOCK_FUNCTION_DEFINITION (MockIpmiCommandLib, IpmiGetDeviceId, 1, EFIAPI);
 
 //
 // Declarations to handle usage of the EFI_SMBIOS_PROTOCOL by creating mock
@@ -89,7 +88,8 @@ struct MockSmbiosProtocol {
 MOCK_INTERFACE_DEFINITION (MockSmbiosProtocol);
 MOCK_FUNCTION_DEFINITION (MockSmbiosProtocol, MockSmbiosAdd, 4, EFIAPI);
 
-static EFI_SMBIOS_PROTOCOL  LocalSmbiosProtocol;
+static EFI_SMBIOS_PROTOCOL          LocalSmbiosProtocol;
+static IPMI_GET_DEVICE_ID_RESPONSE  DeviceIdResponse;
 
 class MockIpmiSmbios : public  Test {
 protected:
@@ -98,12 +98,24 @@ protected:
   MockUefiBootServicesTableLib UefiBootServicesTableLib;
   MockIpmiBaseLib IpmiBaseLib;
   MockSmbiosProtocol EFI_SMBIOS_PROTOCOL;
+  MockIpmiCommandLib IpmiCommandLib;
   virtual void
   SetUp (
     )
   {
-    LocalBs.LocateProtocol  = gBS_LocateProtocol;
-    LocalSmbiosProtocol.Add = MockSmbiosAdd;
+    LocalSmbiosProtocol.Add               = MockSmbiosAdd;
+    DeviceIdResponse.CompletionCode       = IPMI_COMP_CODE_NORMAL;
+    DeviceIdResponse.DeviceId             = 0xAB;
+    DeviceIdResponse.DeviceRevision.Uint8 = 0;
+    DeviceIdResponse.FirmwareRev1.Uint8   = 0x0;
+    DeviceIdResponse.MinorFirmwareRev     = 0;
+    DeviceIdResponse.SpecificationVersion = 2;
+    DeviceIdResponse.DeviceSupport.Uint8  = 0;
+    DeviceIdResponse.ManufacturerId[0]    = 0xB;
+    DeviceIdResponse.ManufacturerId[1]    = 0xA;
+    DeviceIdResponse.ManufacturerId[2]    = 0xD;
+    DeviceIdResponse.ProductId            = 1;
+    DeviceIdResponse.AuxFirmwareRevInfo   = 0;
   }
 };
 
@@ -115,7 +127,8 @@ TEST_F (MockIpmiSmbios, VerifyCreateIpmiSmbiosType38TestCase) {
          Return (EFI_SUCCESS)
          )
        );
-  EXPECT_CALL (IpmiBaseLib, IpmiSubmitCommand)
+
+  EXPECT_CALL (IpmiCommandLib, IpmiGetDeviceId (_))
     .WillOnce (Return (EFI_SUCCESS));
   EXPECT_CALL (EFI_SMBIOS_PROTOCOL, MockSmbiosAdd)
     .WillOnce (Return (EFI_SUCCESS));
@@ -156,7 +169,7 @@ TEST_F (MockIpmiSmbios, VerifyCreateIpmiSmbiosType38IpmiSubmitCommandFailTestCas
          Return (EFI_SUCCESS)
          )
        );
-  EXPECT_CALL (IpmiBaseLib, IpmiSubmitCommand)
+  EXPECT_CALL (IpmiCommandLib, IpmiGetDeviceId (_))
     .WillOnce (Return (EFI_NOT_READY));
 
   Status = CreateIpmiSmbiosType38 ();
@@ -171,8 +184,9 @@ TEST_F (MockIpmiSmbios, VerifyCreateIpmiSmbiosType38SmbiosAddFailTestCase) {
          Return (EFI_SUCCESS)
          )
        );
-  EXPECT_CALL (IpmiBaseLib, IpmiSubmitCommand)
+  EXPECT_CALL (IpmiCommandLib, IpmiGetDeviceId (_))
     .WillOnce (Return (EFI_SUCCESS));
+
   EXPECT_CALL (EFI_SMBIOS_PROTOCOL, MockSmbiosAdd)
     .WillOnce (Return (EFI_INVALID_PARAMETER));
 
