@@ -277,7 +277,7 @@ IpmiSendCommandInternal (
     //
     // Verify the response data buffer passed in is big enough.
     //
-    if ((DataSize - IPMI_RESPONSE_HEADER_SIZE) > *ResponseDataSize) {
+    if ((ResponseDataSize != NULL) && (DataSize - IPMI_RESPONSE_HEADER_SIZE) > *ResponseDataSize){
       //
       // Verify the response data matched with the cmd sent.
       //
@@ -301,26 +301,28 @@ IpmiSendCommandInternal (
     break;
   }
 
-  //
-  // Copy data over to the response data buffer.
-  //
-  *ResponseDataSize = DataSize - IPMI_RESPONSE_HEADER_SIZE;
-  CopyMem (
-    ResponseData,
-    IpmiResponse->ResponseData,
-    *ResponseDataSize
-    );
+  if (ResponseData != NULL && ResponseDataSize != NULL) {
+      //
+      // Copy data over to the response data buffer.
+      //
+      *ResponseDataSize = DataSize - IPMI_RESPONSE_HEADER_SIZE;
+      CopyMem (
+        ResponseData,
+        IpmiResponse->ResponseData,
+        *ResponseDataSize
+        );
 
-  //
-  // Add completion code in response data to meet the requirement of IPMI spec 2.0
-  //
-  *ResponseDataSize += 1; // Add one byte for Completion Code
-  for (Index = 1; Index < *ResponseDataSize; Index++) {
-    ResponseData[*ResponseDataSize - Index] = ResponseData[*ResponseDataSize - (Index + 1)];
+      //
+      // Add completion code in response data to meet the requirement of IPMI spec 2.0
+      //
+      *ResponseDataSize += 1; // Add one byte for Completion Code
+      for (Index = 1; Index < *ResponseDataSize; Index++) {
+        ResponseData[*ResponseDataSize - Index] = ResponseData[*ResponseDataSize - (Index + 1)];
+      }
+
+      ResponseData[0] = IpmiResponse->CompletionCode;
   }
-
-  ResponseData[0] = IpmiResponse->CompletionCode;
-
+  
   IpmiInstance->BmcStatus = BMC_OK;
   return EFI_SUCCESS;
 }
