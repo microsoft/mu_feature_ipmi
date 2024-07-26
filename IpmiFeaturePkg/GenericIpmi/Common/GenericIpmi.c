@@ -110,8 +110,8 @@ IpmiPrintCommand (
   @param[in]      Command           IPMI command to send.
   @param[in]      CommandData       Pointer to command data buffer, if needed.
   @param[in]      CommandDataSize   Size of command data buffer.
-  @param[in,out]  ResponseData      Pointer to response data buffer.
-  @param[in,out]  ResponseDataSize  Pointer to response data buffer size.
+  @param[in,out]  ResponseData      Pointer to response data buffer. Optional depending on command being sent.
+  @param[in,out]  ResponseDataSize  Pointer to response data buffer size. Optional depending on command being sent.
 
   @retval   EFI_INVALID_PARAMETER   One of the input values is bad.
   @retval   EFI_DEVICE_ERROR        IPMI command failed.
@@ -127,8 +127,8 @@ IpmiSendCommandInternal (
   IN      UINT8           Command,
   IN      UINT8           *CommandData,
   IN      UINT8           CommandDataSize,
-  IN OUT  UINT8           *ResponseData,
-  IN OUT  UINT8           *ResponseDataSize
+  IN OUT  UINT8           *ResponseData OPTIONAL,
+  IN OUT  UINT8           *ResponseDataSize OPTIONAL
   )
 {
   IPMI_BMC_INSTANCE_DATA  *IpmiInstance;
@@ -140,6 +140,15 @@ IpmiSendCommandInternal (
   UINT8                   Index;
 
   if ((CommandDataSize > 0) && (CommandData == NULL)) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  //
+  // ResponseData and ResponseDataSize cannot be mismatched.
+  // Either both NULL are NULL or both are Non-Null, depending
+  // on the command being sent.
+  //
+  if ((ResponseData != NULL) != (ResponseDataSize != NULL)) {
     return EFI_INVALID_PARAMETER;
   }
 
@@ -277,7 +286,7 @@ IpmiSendCommandInternal (
     //
     // Verify the response data buffer passed in is big enough.
     //
-    if ((DataSize - IPMI_RESPONSE_HEADER_SIZE) > *ResponseDataSize) {
+    if ((ResponseDataSize != NULL) && ((DataSize - IPMI_RESPONSE_HEADER_SIZE) > *ResponseDataSize)) {
       //
       // Verify the response data matched with the cmd sent.
       //
@@ -301,25 +310,27 @@ IpmiSendCommandInternal (
     break;
   }
 
-  //
-  // Copy data over to the response data buffer.
-  //
-  *ResponseDataSize = DataSize - IPMI_RESPONSE_HEADER_SIZE;
-  CopyMem (
-    ResponseData,
-    IpmiResponse->ResponseData,
-    *ResponseDataSize
-    );
+  if ((ResponseData != NULL) && (ResponseDataSize != NULL)) {
+    //
+    // Copy data over to the response data buffer.
+    //
+    *ResponseDataSize = DataSize - IPMI_RESPONSE_HEADER_SIZE;
+    CopyMem (
+      ResponseData,
+      IpmiResponse->ResponseData,
+      *ResponseDataSize
+      );
 
-  //
-  // Add completion code in response data to meet the requirement of IPMI spec 2.0
-  //
-  *ResponseDataSize += 1; // Add one byte for Completion Code
-  for (Index = 1; Index < *ResponseDataSize; Index++) {
-    ResponseData[*ResponseDataSize - Index] = ResponseData[*ResponseDataSize - (Index + 1)];
+    //
+    // Add completion code in response data to meet the requirement of IPMI spec 2.0
+    //
+    *ResponseDataSize += 1;   // Add one byte for Completion Code
+    for (Index = 1; Index < *ResponseDataSize; Index++) {
+      ResponseData[*ResponseDataSize - Index] = ResponseData[*ResponseDataSize - (Index + 1)];
+    }
+
+    ResponseData[0] = IpmiResponse->CompletionCode;
   }
-
-  ResponseData[0] = IpmiResponse->CompletionCode;
 
   IpmiInstance->BmcStatus = BMC_OK;
   return EFI_SUCCESS;
