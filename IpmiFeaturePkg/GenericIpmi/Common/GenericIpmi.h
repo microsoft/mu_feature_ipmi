@@ -111,8 +111,8 @@ IpmiInitializeBmc (
   @param[in]      Command           IPMI command to send.
   @param[in]      CommandData       Pointer to command data buffer, if needed.
   @param[in]      CommandDataSize   Size of command data buffer.
-  @param[in,out]  ResponseData      Pointer to response data buffer.
-  @param[in,out]  ResponseDataSize  Pointer to response data buffer size.
+  @param[in,out]  ResponseData      Pointer to response data buffer. Optional depending on command being sent.
+  @param[in,out]  ResponseDataSize  Pointer to response data buffer size. Optional depending on command being sent.
 
   @retval   EFI_INVALID_PARAMETER   One of the input values is bad.
   @retval   EFI_DEVICE_ERROR        IPMI command failed.
@@ -128,8 +128,8 @@ IpmiSendCommandInternal (
   IN      UINT8           Command,
   IN      UINT8           *CommandData,
   IN      UINT8           CommandDataSize,
-  IN OUT  UINT8           *ResponseData,
-  IN OUT  UINT8           *ResponseDataSize
+  IN OUT  UINT8           *ResponseData OPTIONAL,
+  IN OUT  UINT8           *ResponseDataSize OPTIONAL
   );
 
 /**

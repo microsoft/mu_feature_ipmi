@@ -164,10 +164,30 @@ TestIpmiBufferTooSmall (
   UINT32                       DataSize;
 
   //
-  // Test a 0 length buffer.
+  // Test a 0 length buffer while passing a Non-Null Response Buffer
   //
 
   DataSize = 0;
+  ZeroMem (&Response, sizeof (Response));
+
+  Status = mIpmiInstance.IpmiTransport.IpmiSubmitCommand (
+                                         &mIpmiInstance.IpmiTransport,
+                                         IPMI_NETFN_APP,
+                                         0,
+                                         IPMI_APP_GET_DEVICE_ID,
+                                         NULL,
+                                         0,
+                                         (UINT8 *)&Response,
+                                         &DataSize
+                                         );
+
+  UT_ASSERT_STATUS_EQUAL (Status, EFI_BUFFER_TOO_SMALL);
+
+  //
+  // Test a 4 byte length buffer while passing NULL
+  //
+
+  DataSize = 4;
 
   Status = mIpmiInstance.IpmiTransport.IpmiSubmitCommand (
                                          &mIpmiInstance.IpmiTransport,
@@ -180,8 +200,7 @@ TestIpmiBufferTooSmall (
                                          &DataSize
                                          );
 
-  UT_ASSERT_STATUS_EQUAL (Status, EFI_BUFFER_TOO_SMALL);
-  UT_ASSERT_EQUAL (DataSize, sizeof (IPMI_GET_DEVICE_ID_RESPONSE));
+  UT_ASSERT_STATUS_EQUAL (Status, EFI_INVALID_PARAMETER);
 
   //
   // Test an inadequate buffer size.
