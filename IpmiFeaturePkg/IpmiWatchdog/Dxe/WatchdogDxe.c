@@ -113,7 +113,34 @@ IpmiWatchdogDxeEntryPoint (
   }
 
   //
-  // Report the current status of the watchdog timer.
+  // Retrieve the current status of the watchdog timer.
+  //
+  Status = IpmiGetWatchdogTimer (&WatchdogTimer);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_INFO, "%a: Failed to get Watchdog Timer.\n", __FUNCTION__));
+    return Status;
+  }
+
+  DEBUG ((
+    DEBUG_INFO,
+    "IPMI Watchdog timer status: %a\n",
+    WatchdogTimer.TimerUse.Bits.TimerRunning ? "Running" : "Stopped"
+    ));
+
+  //
+  // For BIOS not having PEI phase, enable IPMI FRB2 watchdog timer here.
+  //
+  if (mWatchdogPolicy.Frb2Enabled && WatchdogTimer.TimerUse.Bits.TimerRunning == 0) {
+    IpmiEnableWatchdogTimer (
+      IPMI_WATCHDOG_TIMER_BIOS_FRB2,
+      mWatchdogPolicy.Frb2TimeoutAction,
+      IPMI_WATCHDOG_TIMER_EXPIRATION_FLAG_BIOS_FRB2,
+      mWatchdogPolicy.Frb2TimeoutSeconds
+      );
+  }
+
+  //
+  // Retrieve the current status of the watchdog timer again.
   //
   Status = IpmiGetWatchdogTimer (&WatchdogTimer);
   if (EFI_ERROR (Status)) {
