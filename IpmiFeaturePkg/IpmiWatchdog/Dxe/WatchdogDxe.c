@@ -130,7 +130,7 @@ IpmiWatchdogDxeEntryPoint (
   //
   // For BIOS not having PEI phase, enable IPMI FRB2 watchdog timer here.
   //
-  if (mWatchdogPolicy.Frb2Enabled && WatchdogTimer.TimerUse.Bits.TimerRunning == 0) {
+  if ((mWatchdogPolicy.Frb2Enabled) && (WatchdogTimer.TimerUse.Bits.TimerRunning == 0)) {
     IpmiEnableWatchdogTimer (
       IPMI_WATCHDOG_TIMER_BIOS_FRB2,
       mWatchdogPolicy.Frb2TimeoutAction,
