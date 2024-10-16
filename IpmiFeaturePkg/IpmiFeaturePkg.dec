@@ -21,6 +21,7 @@
 
 [Includes]
   Include
+  Test/Mock/Include
 
 [LibraryClasses]
   IpmiBaseLib|Include/Library/IpmiBaseLib.h

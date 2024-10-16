@@ -60,3 +60,8 @@
   #
 
   MdePkg/Library/BaseLib/UnitTestHostBaseLib.inf
+
+  #
+  # Build HOST_APPLICATION Libraries With GoogleTest
+  #
+  IpmiFeaturePkg/Test/Mock/Library/GoogleTest/MockIpmiSelLib/MockIpmiSelLib.inf
