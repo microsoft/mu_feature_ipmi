@@ -65,3 +65,4 @@
   # Build HOST_APPLICATION Libraries With GoogleTest
   #
   IpmiFeaturePkg/Test/Mock/Library/GoogleTest/MockIpmiSelLib/MockIpmiSelLib.inf
+  IpmiFeaturePkg/Test/Mock/Library/GoogleTest/MockIpmiCommandLib/MockIpmiCommandLib.inf

@@ -1,0 +1,36 @@
+## @file MockIpmiCommandLib.inf
+# Google Test mocks for IpmiCommandLib
+#
+# Copyright (c) Microsoft Corporation.
+# Your use of this software is governed by the terms of the Microsoft agreement under which you obtained the software.
+##
+
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = MockIpmiCommandLib
+  FILE_GUID                      = 9BF81764-BE7A-4FE8-9A13-E71551A5F257
+  MODULE_TYPE                    = HOST_APPLICATION
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = IpmiCommandLib
+  PI_SPECIFICATION_VERSION       = 0x0001000A
+
+#
+#  VALID_ARCHITECTURES           = IA32 X64
+#
+
+[Sources]
+  MockIpmiCommandLib.cpp
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  UnitTestFrameworkPkg/UnitTestFrameworkPkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  GoogleTestLib
+
+[BuildOptions]
+  MSFT:*_*_*_CC_FLAGS = /EHsc
+
