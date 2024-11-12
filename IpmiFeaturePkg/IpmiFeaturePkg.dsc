@@ -88,15 +88,22 @@
   ReportStatusCodeLib|MdeModulePkg/Library/SmmReportStatusCodeLib/SmmReportStatusCodeLib.inf
   HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
 
+[LibraryClasses.common.MM_STANDALONE]
+  MemoryAllocationLib|StandaloneMmPkg/Library/StandaloneMmMemoryAllocationLib/StandaloneMmMemoryAllocationLib.inf
+  ReportStatusCodeLib|MdeModulePkg/Library/SmmReportStatusCodeLib/StandaloneMmReportStatusCodeLib.inf
+  HobLib|StandaloneMmPkg/Library/StandaloneMmHobLib/StandaloneMmHobLib.inf
+
 [Components]
   IpmiFeaturePkg/Library/IpmiCommandLib/IpmiCommandLib.inf
   IpmiFeaturePkg/Library/IpmiBaseLibNull/IpmiBaseLibNull.inf
   IpmiFeaturePkg/Library/IpmiBaseLibDxe/IpmiBaseLibDxe.inf
   IpmiFeaturePkg/Library/IpmiBaseLibPei/IpmiBaseLibPei.inf
   IpmiFeaturePkg/Library/IpmiBaseLibSmm/IpmiBaseLibSmm.inf
+  IpmiFeaturePkg/Library/IpmiBaseLibMm/IpmiBaseLibMm.inf
   IpmiFeaturePkg/Library/BmcSmbusLibNull/BmcSmbusLibNull.inf
   IpmiFeaturePkg/GenericIpmi/Pei/PeiGenericIpmi.inf
   IpmiFeaturePkg/GenericIpmi/Dxe/DxeGenericIpmi.inf
+  IpmiFeaturePkg/GenericIpmi/StandaloneMm/StandaloneMmGenericIpmi.inf
   IpmiFeaturePkg/BmcAcpi/BmcAcpi.inf
   IpmiFeaturePkg/BmcAcpiPowerState/BmcAcpiPowerStateSmm.inf
   IpmiFeaturePkg/SpmiTable/SpmiTable.inf

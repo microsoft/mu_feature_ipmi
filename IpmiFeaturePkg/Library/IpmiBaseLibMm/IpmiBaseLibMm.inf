@@ -1,0 +1,33 @@
+## @file
+#
+# @copyright
+# Copyright 2010 - 2021 Intel Corporation. <BR>
+# Copyright (c) Microsoft Corporation
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 1.26
+  PI_SPECIFICATION_VERSION       = 0x00010032
+  BASE_NAME                      = IpmiBaseLibMm
+  FILE_GUID                      = 06C28B6D-F15F-42C3-8316-01BD3E93D2DE
+  MODULE_TYPE                    = MM_STANDALONE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = IpmiBaseLib|MM_STANDALONE MM_CORE_STANDALONE
+
+[sources]
+  IpmiBaseLibMm.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  DebugLib
+  MmServicesTableLib
+
+[Protocols]
+  gSmmIpmiTransportProtocolGuid
+
+[Depex]
+  TRUE
