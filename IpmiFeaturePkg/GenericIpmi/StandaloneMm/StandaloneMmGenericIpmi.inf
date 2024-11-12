@@ -1,0 +1,59 @@
+## @file
+# Generic IPMI StandaloneMm Driver.
+#
+# @copyright
+# Copyright 2010 - 2021 Intel Corporation. <BR>
+# Copyright (c) Microsoft Corporation.
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                         = 0x00010017
+  BASE_NAME                           = StandaloneMmGenericIpmi
+  FILE_GUID                           = CE919FB2-87DE-4583-A878-CEEAF6098A35
+  MODULE_TYPE                         = MM_STANDALONE
+  PI_SPECIFICATION_VERSION            = 0x00010032
+  VERSION_STRING                      = 1.0
+  ENTRY_POINT                         = InitializeStandaloneMmGenericIpmi
+
+[Sources]
+  ../Common/IpmiHooks.h
+  ../Common/IpmiHooks.c
+  ../Common/GenericIpmi.c
+  ../Common/IpmiInitialize.c
+  ../Common/GenericIpmi.h
+  StandaloneMmGenericIpmi.c          #GenericIpmi.c+IpmiBmcInitialize.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  MemoryAllocationLib
+  BaseLib
+  MmServicesTableLib
+  DebugLib
+  StandaloneMmDriverEntryPoint
+  IoLib
+  ReportStatusCodeLib
+  TimerLib
+  HobLib
+  IpmiTransportLib
+  IpmiPlatformLib
+
+[Protocols]
+  gSmmIpmiTransportProtocolGuid                     # PROTOCOL ALWAYS_PRODUCED
+
+[Guids]
+  gIpmiBmcHobGuid
+
+[Pcd]
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiBmcReadyDelayTimer
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCommandTimeoutSeconds
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCommandMaxReties
+  gIpmiFeaturePkgTokenSpaceGuid.PcdBmcTimeoutSeconds
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCheckSelfTestResults
+
+[Depex]
+  TRUE
