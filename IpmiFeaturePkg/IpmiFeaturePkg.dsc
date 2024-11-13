@@ -58,6 +58,9 @@
   IpmiPlatformLib|IpmiFeaturePkg/Library/IpmiPlatformLibNull/IpmiPlatformLibNull.inf
   PlatformCmosClearLib|IpmiFeaturePkg/Library/PlatformCmosClearLibNull/PlatformCmosClearLibNull.inf
 
+[LibraryClasses.AARCH64]
+  NULL|MdePkg/Library/CompilerIntrinsicsLib/ArmCompilerIntrinsicsLib.inf
+
 [LibraryClasses.common.PEI_CORE,LibraryClasses.common.PEIM]
   #######################################
   # BaseCore Packages
