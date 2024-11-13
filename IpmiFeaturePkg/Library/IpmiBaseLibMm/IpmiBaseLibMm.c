@@ -45,7 +45,7 @@ IpmiSubmitCommand (
   if (mIpmiTransport == NULL) {
     Status = gMmst->MmLocateProtocol (&gSmmIpmiTransportProtocolGuid, NULL, (VOID **)&mIpmiTransport);
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a: Failed to locate IPMI protocol. %r\n", __FUNCTION__, Status));
+      DEBUG ((DEBUG_ERROR, "%a: Failed to locate IPMI protocol. %r\n", __func__, Status));
       return Status;
     }
   }
@@ -84,7 +84,7 @@ GetBmcStatus (
   if (mIpmiTransport == NULL) {
     Status = gMmst->MmLocateProtocol (&gSmmIpmiTransportProtocolGuid, NULL, (VOID **)&mIpmiTransport);
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a: Failed to locate IPMI protocol. %r\n", __FUNCTION__, Status));
+      DEBUG ((DEBUG_ERROR, "%a: Failed to locate IPMI protocol. %r\n", __func__, Status));
       return Status;
     }
   }
