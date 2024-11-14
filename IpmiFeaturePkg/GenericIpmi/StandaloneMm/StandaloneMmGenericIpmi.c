@@ -13,11 +13,9 @@
 #include <Uefi.h>
 #include <Library/BaseLib.h>
 #include <Library/DebugLib.h>
-#include <Library/BaseMemoryLib.h>
 #include <Library/MmServicesTableLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/IpmiBaseLib.h>
-#include <Library/TimerLib.h>
 #include <Library/HobLib.h>
 
 #include <IndustryStandard/Ipmi.h>

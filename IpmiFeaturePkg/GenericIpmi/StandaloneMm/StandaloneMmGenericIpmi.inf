@@ -34,7 +34,6 @@
   MmServicesTableLib
   DebugLib
   StandaloneMmDriverEntryPoint
-  IoLib
   ReportStatusCodeLib
   TimerLib
   HobLib
