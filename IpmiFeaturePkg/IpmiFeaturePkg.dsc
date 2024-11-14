@@ -60,7 +60,6 @@
 
 [LibraryClasses.AARCH64]
   NULL|MdePkg/Library/CompilerIntrinsicsLib/ArmCompilerIntrinsicsLib.inf
-  NULL|MdePkg/Library/BaseStackCheckLib/BaseStackCheckLib.inf
 
 [LibraryClasses.common.PEI_CORE,LibraryClasses.common.PEIM]
   #######################################
@@ -107,18 +106,27 @@
   IpmiFeaturePkg/Library/IpmiBaseLibSmm/IpmiBaseLibSmm.inf
   IpmiFeaturePkg/Library/IpmiBaseLibMm/IpmiBaseLibMm.inf
   IpmiFeaturePkg/Library/BmcSmbusLibNull/BmcSmbusLibNull.inf
-  IpmiFeaturePkg/Library/IpmiCommandLib/IpmiCommandLib.inf
-  IpmiFeaturePkg/Library/IpmiBaseLibNull/IpmiBaseLibNull.inf
-  IpmiFeaturePkg/Library/IpmiBaseLibDxe/IpmiBaseLibDxe.inf
-  IpmiFeaturePkg/Library/IpmiBaseLibPei/IpmiBaseLibPei.inf
-  IpmiFeaturePkg/Library/IpmiBaseLibSmm/IpmiBaseLibSmm.inf
-  IpmiFeaturePkg/Library/IpmiBaseLibMm/IpmiBaseLibMm.inf
-  IpmiFeaturePkg/Library/BmcSmbusLibNull/BmcSmbusLibNull.inf
+  IpmiFeaturePkg/GenericIpmi/Pei/PeiGenericIpmi.inf
+  IpmiFeaturePkg/GenericIpmi/Dxe/DxeGenericIpmi.inf
+  IpmiFeaturePkg/GenericIpmi/StandaloneMm/StandaloneMmGenericIpmi.inf
+  IpmiFeaturePkg/BmcAcpi/BmcAcpi.inf
+  IpmiFeaturePkg/BmcAcpiPowerState/BmcAcpiPowerStateSmm.inf
+  IpmiFeaturePkg/SpmiTable/SpmiTable.inf
+  IpmiFeaturePkg/IpmiSmbios/IpmiSmbios.inf
+  IpmiFeaturePkg/IpmiFru/IpmiFru.inf
+  IpmiFeaturePkg/IpmiPowerRestorePolicy/IpmiPowerRestorePolicy.inf
+  IpmiFeaturePkg/SolStatus/SolStatus.inf
   IpmiFeaturePkg/Library/IpmiSelLib/IpmiSelLib.inf
+  IpmiFeaturePkg/IpmiWatchdog/Pei/IpmiWatchdogPei.inf
+  IpmiFeaturePkg/IpmiWatchdog/Dxe/IpmiWatchdogDxe.inf
   IpmiFeaturePkg/Library/IpmiPlatformLibNull/IpmiPlatformLibNull.inf
   IpmiFeaturePkg/Library/IpmiWatchdogLib/IpmiWatchdogLib.inf
   IpmiFeaturePkg/Library/IpmiBootOptionLib/IpmiBootOptionLib.inf
+  IpmiFeaturePkg/IpmiCmosClear/IpmiCmosClear.inf
   IpmiFeaturePkg/Library/PlatformCmosClearLibNull/PlatformCmosClearLibNull.inf
+  IpmiFeaturePkg/PlatformPowerRestorePolicyDefault/PlatformPowerRestorePolicyDefault.inf
+  IpmiFeaturePkg/IpmiSel/IpmiSel.inf
+
   # Transport Libraries
   IpmiFeaturePkg/Library/IpmiTransportLibNull/IpmiTransportLibNull.inf
   IpmiFeaturePkg/Library/IpmiTransportLibKcs/KcsIpmiTransportLib.inf
@@ -130,24 +138,6 @@
   # Mock Libraries
   IpmiFeaturePkg/Library/MockIpmi/IpmiTransportLibMock.inf
   IpmiFeaturePkg/Library/MockIpmi/IpmiBaseLibMock.inf
-
-[Components.IA32, Components.X64]
-  IpmiFeaturePkg/GenericIpmi/Pei/PeiGenericIpmi.inf
-  IpmiFeaturePkg/GenericIpmi/Dxe/DxeGenericIpmi.inf
-  IpmiFeaturePkg/GenericIpmi/Smm/SmmGenericIpmi.inf
-  IpmiFeaturePkg/GenericIpmi/StandaloneMm/StandaloneMmGenericIpmi.inf
-  IpmiFeaturePkg/BmcAcpi/BmcAcpi.inf
-  IpmiFeaturePkg/BmcAcpiPowerState/BmcAcpiPowerStateSmm.inf
-  IpmiFeaturePkg/SpmiTable/SpmiTable.inf
-  IpmiFeaturePkg/IpmiSmbios/IpmiSmbios.inf
-  IpmiFeaturePkg/IpmiFru/IpmiFru.inf
-  IpmiFeaturePkg/IpmiPowerRestorePolicy/IpmiPowerRestorePolicy.inf
-  IpmiFeaturePkg/SolStatus/SolStatus.inf
-  IpmiFeaturePkg/IpmiWatchdog/Pei/IpmiWatchdogPei.inf
-  IpmiFeaturePkg/IpmiWatchdog/Dxe/IpmiWatchdogDxe.inf
-  IpmiFeaturePkg/IpmiCmosClear/IpmiCmosClear.inf
-  IpmiFeaturePkg/PlatformPowerRestorePolicyDefault/PlatformPowerRestorePolicyDefault.inf
-  IpmiFeaturePkg/IpmiSel/IpmiSel.inf
 
   # Functional Tests
   IpmiFeaturePkg/Test/FunctionalTest/IpmiShellTest/IpmiShellTest.inf {
@@ -171,3 +161,10 @@
 
   # Sample modules
   IpmiFeaturePkg/Samples/IpmiStatusReporter/Dxe/IpmiStatusReporterDxe.inf
+
+[Components.IA32, Components.X64]
+  IpmiFeaturePkg/GenericIpmi/Smm/SmmGenericIpmi.inf
+
+[LibraryClasses.ARM, LibraryClasses.AARCH64]
+  NULL|MdePkg/Library/CompilerIntrinsicsLib/ArmCompilerIntrinsicsLib.inf
+  NULL|MdePkg/Library/BaseStackCheckLib/BaseStackCheckLib.inf
