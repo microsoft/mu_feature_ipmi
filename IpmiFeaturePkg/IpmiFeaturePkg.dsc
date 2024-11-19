@@ -41,7 +41,9 @@
   OemHookStatusCodeLib|MdeModulePkg/Library/OemHookStatusCodeLibNull/OemHookStatusCodeLibNull.inf
   UefiBootServicesTableLib|MdePkg/Library/UefiBootServicesTableLib/UefiBootServicesTableLib.inf
   SmmServicesTableLib|MdePkg/Library/SmmServicesTableLib/SmmServicesTableLib.inf
+  MmServicesTableLib|MdePkg/Library/StandaloneMmServicesTableLib/StandaloneMmServicesTableLib.inf
   UefiDriverEntryPoint|MdePkg/Library/UefiDriverEntryPoint/UefiDriverEntryPoint.inf
+  StandaloneMmDriverEntryPoint|MdePkg/Library/StandaloneMmDriverEntryPoint/StandaloneMmDriverEntryPoint.inf
   PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
   DxeServicesTableLib|MdePkg/Library/DxeServicesTableLib/DxeServicesTableLib.inf
   UefiLib|MdePkg/Library/UefiLib/UefiLib.inf
@@ -88,15 +90,22 @@
   ReportStatusCodeLib|MdeModulePkg/Library/SmmReportStatusCodeLib/SmmReportStatusCodeLib.inf
   HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
 
+[LibraryClasses.common.MM_STANDALONE]
+  MemoryAllocationLib|StandaloneMmPkg/Library/StandaloneMmMemoryAllocationLib/StandaloneMmMemoryAllocationLib.inf
+  ReportStatusCodeLib|MdeModulePkg/Library/SmmReportStatusCodeLib/StandaloneMmReportStatusCodeLib.inf
+  HobLib|StandaloneMmPkg/Library/StandaloneMmHobLib/StandaloneMmHobLib.inf
+
 [Components]
   IpmiFeaturePkg/Library/IpmiCommandLib/IpmiCommandLib.inf
   IpmiFeaturePkg/Library/IpmiBaseLibNull/IpmiBaseLibNull.inf
   IpmiFeaturePkg/Library/IpmiBaseLibDxe/IpmiBaseLibDxe.inf
   IpmiFeaturePkg/Library/IpmiBaseLibPei/IpmiBaseLibPei.inf
   IpmiFeaturePkg/Library/IpmiBaseLibSmm/IpmiBaseLibSmm.inf
+  IpmiFeaturePkg/Library/IpmiBaseLibMm/IpmiBaseLibMm.inf
   IpmiFeaturePkg/Library/BmcSmbusLibNull/BmcSmbusLibNull.inf
   IpmiFeaturePkg/GenericIpmi/Pei/PeiGenericIpmi.inf
   IpmiFeaturePkg/GenericIpmi/Dxe/DxeGenericIpmi.inf
+  IpmiFeaturePkg/GenericIpmi/StandaloneMm/StandaloneMmGenericIpmi.inf
   IpmiFeaturePkg/BmcAcpi/BmcAcpi.inf
   IpmiFeaturePkg/BmcAcpiPowerState/BmcAcpiPowerStateSmm.inf
   IpmiFeaturePkg/SpmiTable/SpmiTable.inf

@@ -22,3 +22,6 @@
 
 [LibraryClasses.common.DXE_SMM_DRIVER,LibraryClasses.common.SMM_CORE]
   IpmiBaseLib|IpmiFeaturePkg/Library/IpmiBaseLibSmm/IpmiBaseLibSmm.inf
+
+[LibraryClasses.common.MM_STANDALONE,LibraryClasses.common.MM_CORE_STANDALONE]
+  IpmiBaseLib|IpmiFeaturePkg/Library/IpmiBaseLibMm/IpmiBaseLibMm.inf
