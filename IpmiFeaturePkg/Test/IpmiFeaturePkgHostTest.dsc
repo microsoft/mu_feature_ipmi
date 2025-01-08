@@ -66,3 +66,4 @@
   #
   IpmiFeaturePkg/Test/Mock/Library/GoogleTest/MockIpmiSelLib/MockIpmiSelLib.inf
   IpmiFeaturePkg/Test/Mock/Library/GoogleTest/MockIpmiCommandLib/MockIpmiCommandLib.inf
+  IpmiFeaturePkg/Test/Mock/Library/GoogleTest/MockIpmiBaseLib/MockIpmiBaseLib.inf
