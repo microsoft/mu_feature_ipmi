@@ -44,3 +44,5 @@ MOCK_FUNCTION_DEFINITION (MockIpmiCommandLib, IpmiGetSelTime, 1, EFIAPI);
 MOCK_FUNCTION_DEFINITION (MockIpmiCommandLib, IpmiSetSelTime, 2, EFIAPI);
 MOCK_FUNCTION_DEFINITION (MockIpmiCommandLib, IpmiGetSdrRepositoryInfo, 1, EFIAPI);
 MOCK_FUNCTION_DEFINITION (MockIpmiCommandLib, IpmiGetSdr, 3, EFIAPI);
+MOCK_FUNCTION_DEFINITION (MockIpmiCommandLib, IpmiSetSensorThreshold, 2, EFIAPI);
+MOCK_FUNCTION_DEFINITION (MockIpmiCommandLib, IpmiGetSensorThreshold, 2, EFIAPI);
