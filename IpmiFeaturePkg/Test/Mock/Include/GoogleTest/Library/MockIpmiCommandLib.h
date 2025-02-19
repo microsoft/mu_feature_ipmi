@@ -340,6 +340,24 @@ struct MockIpmiCommandLib {
      IN OUT UINT32              *GetSdrResponseSize
     )
     );
+
+  MOCK_FUNCTION_DECLARATION (
+    EFI_STATUS,
+    IpmiSetSensorThreshold,
+    (
+     IN IPMI_SENSOR_SET_SENSOR_THRESHOLD_REQUEST_DATA  *SetSensorThresholdRequestData,
+     OUT UINT8                                         *CompletionCode
+    )
+    );
+
+  MOCK_FUNCTION_DECLARATION (
+    EFI_STATUS,
+    IpmiGetSensorThreshold,
+    (
+     IN UINT8                                            SensorNumber,
+     OUT IPMI_SENSOR_GET_SENSOR_THRESHOLD_RESPONSE_DATA  *GetSensorThresholdResponse
+    )
+    );
 };
 
 #endif
