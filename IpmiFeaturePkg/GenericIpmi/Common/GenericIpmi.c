@@ -152,7 +152,7 @@ IpmiSendCommandInternal (
     return EFI_INVALID_PARAMETER;
   }
 
-  RetryCnt     = PcdGet8 (PcdIpmiCommandMaxReties);
+  RetryCnt     = FixedPcdGet8 (PcdIpmiCommandMaxReties);
   IpmiInstance = INSTANCE_FROM_SM_IPMI_BMC_THIS (This);
 
   //

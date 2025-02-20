@@ -56,7 +56,7 @@ DxeGenericIpmiEntry (
   IPMI_BMC_HOB       *BmcHob;
   EFI_HOB_GUID_TYPE  *GuidHob;
 
-  mIpmiInstance = AllocateZeroPool (sizeof (*mIpmiInstance));
+  mIpmiInstance = AllocateRuntimeZeroPool (sizeof (*mIpmiInstance));
   if (mIpmiInstance == NULL) {
     DEBUG ((DEBUG_ERROR, "[IPMI] Failed to allocate IPMI instance data!\n"));
     ASSERT_EFI_ERROR (EFI_OUT_OF_RESOURCES);
@@ -69,7 +69,7 @@ DxeGenericIpmiEntry (
   //
 
   mIpmiInstance->IpmiTimeoutPeriod =
-    (PcdGet8 (PcdIpmiCommandTimeoutSeconds) * (1000*1000)) / IPMI_DELAY_UNIT;
+    (FixedPcdGet8 (PcdIpmiCommandTimeoutSeconds) * (1000*1000)) / IPMI_DELAY_UNIT;
 
   DEBUG ((DEBUG_INFO, "[IPMI] mIpmiInstance->IpmiTimeoutPeriod: 0x%llx\n", mIpmiInstance->IpmiTimeoutPeriod));
 

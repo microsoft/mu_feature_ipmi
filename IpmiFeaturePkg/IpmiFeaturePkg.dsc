@@ -99,6 +99,7 @@
   IpmiFeaturePkg/Library/IpmiCommandLib/IpmiCommandLib.inf
   IpmiFeaturePkg/Library/IpmiBaseLibNull/IpmiBaseLibNull.inf
   IpmiFeaturePkg/Library/IpmiBaseLibDxe/IpmiBaseLibDxe.inf
+  IpmiFeaturePkg/Library/IpmiBaseLibDxeRuntime/IpmiBaseLibDxeRuntime.inf
   IpmiFeaturePkg/Library/IpmiBaseLibPei/IpmiBaseLibPei.inf
   IpmiFeaturePkg/Library/IpmiBaseLibSmm/IpmiBaseLibSmm.inf
   IpmiFeaturePkg/Library/IpmiBaseLibMm/IpmiBaseLibMm.inf
