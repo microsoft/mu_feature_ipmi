@@ -10,7 +10,7 @@
   INF_VERSION                    = 0x00010005
   BASE_NAME                      = GenericIpmi
   FILE_GUID                      = 07A01ACF-46D5-48de-A63D-74FA92AA8450
-  MODULE_TYPE                    = DXE_DRIVER
+  MODULE_TYPE                    = DXE_RUNTIME_DRIVER
   VERSION_STRING                 = 1.0
   ENTRY_POINT                    = DxeGenericIpmiEntry
 
