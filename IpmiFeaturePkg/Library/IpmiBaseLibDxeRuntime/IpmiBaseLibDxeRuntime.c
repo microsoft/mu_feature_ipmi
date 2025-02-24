@@ -115,7 +115,7 @@ GetBmcStatus (
 }
 
 /**
-  Register callback to get IPMI transport
+  Register callback to get IPMI transport protocol.
 
   @param[in]  Event                 Event whose notification function is being invoked.
   @param[in]  Context               The pointer to the notification function's context, which is
