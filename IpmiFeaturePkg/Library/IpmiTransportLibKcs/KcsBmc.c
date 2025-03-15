@@ -72,17 +72,19 @@ Returns:
   UINT8       KcsData;
   KCS_STATUS  KcsStatus;
   UINT16      KcsPort;
+  UINT16      KcsCmdReg;
   UINT8       RetryCount;
   UINT64      TimeOut;
 
   KcsPort    = PcdGet16 (PcdIpmiIoBaseAddress);
+  KcsCmdReg  = PcdGet16 (PcdIpmiIoCmdRegister);
   TimeOut    = 0;
   RetryCount = 0;
   while (RetryCount < KCS_ABORT_RETRY_COUNT) {
     TimeOut = 0;
     do {
       MicroSecondDelay (IPMI_DELAY_UNIT);
-      KcsStatus.RawData = IoRead8 (KcsPort + 1);
+      KcsStatus.RawData = IoRead8 (KcsCmdReg);
       if ((KcsStatus.RawData == 0xFF) || (TimeOut >= IpmiTimeoutPeriod)) {
         RetryCount = KCS_ABORT_RETRY_COUNT;
         break;
@@ -96,12 +98,12 @@ Returns:
     }
 
     KcsData = KCS_ABORT;
-    IoWrite8 ((KcsPort + 1), KcsData);
+    IoWrite8 ((KcsCmdReg), KcsData);
 
     TimeOut = 0;
     do {
       MicroSecondDelay (IPMI_DELAY_UNIT);
-      KcsStatus.RawData = IoRead8 (KcsPort + 1);
+      KcsStatus.RawData = IoRead8 (KcsCmdReg);
       if ((KcsStatus.RawData == 0xFF) || (TimeOut >= IpmiTimeoutPeriod)) {
         Status = EFI_DEVICE_ERROR;
         goto LabelError;
@@ -118,7 +120,7 @@ Returns:
     TimeOut = 0;
     do {
       MicroSecondDelay (IPMI_DELAY_UNIT);
-      KcsStatus.RawData = IoRead8 (KcsPort + 1);
+      KcsStatus.RawData = IoRead8 (KcsCmdReg);
       if ((KcsStatus.RawData == 0xFF) || (TimeOut >= IpmiTimeoutPeriod)) {
         Status = EFI_DEVICE_ERROR;
         goto LabelError;
@@ -131,7 +133,7 @@ Returns:
       TimeOut = 0;
       do {
         MicroSecondDelay (IPMI_DELAY_UNIT);
-        KcsStatus.RawData = IoRead8 (KcsPort + 1);
+        KcsStatus.RawData = IoRead8 (KcsCmdReg);
         if ((KcsStatus.RawData == 0xFF) || (TimeOut >= IpmiTimeoutPeriod)) {
           Status = EFI_DEVICE_ERROR;
           goto LabelError;
@@ -149,7 +151,7 @@ Returns:
       TimeOut = 0;
       do {
         MicroSecondDelay (IPMI_DELAY_UNIT);
-        KcsStatus.RawData = IoRead8 (KcsPort + 1);
+        KcsStatus.RawData = IoRead8 (KcsCmdReg);
         if ((KcsStatus.RawData == 0xFF) || (TimeOut >= IpmiTimeoutPeriod)) {
           Status = EFI_DEVICE_ERROR;
           goto LabelError;
@@ -162,7 +164,7 @@ Returns:
         TimeOut = 0;
         do {
           MicroSecondDelay (IPMI_DELAY_UNIT);
-          KcsStatus.RawData = IoRead8 (KcsPort + 1);
+          KcsStatus.RawData = IoRead8 (KcsCmdReg);
           if ((KcsStatus.RawData == 0xFF) || (TimeOut >= IpmiTimeoutPeriod)) {
             Status = EFI_DEVICE_ERROR;
             goto LabelError;
@@ -222,6 +224,7 @@ Returns:
   EFI_STATUS  Status;
   KCS_STATUS  KcsStatus;
   UINT16      KcsPort;
+  UINT16      KcsCmdReg;
   UINT64      TimeOut;
 
   if (Idle == NULL) {
@@ -230,11 +233,12 @@ Returns:
 
   *Idle = FALSE;
 
-  TimeOut = 0;
-  KcsPort = PcdGet16 (PcdIpmiIoBaseAddress);
+  TimeOut   = 0;
+  KcsPort   = PcdGet16 (PcdIpmiIoBaseAddress);
+  KcsCmdReg = PcdGet16 (PcdIpmiIoCmdRegister);
   do {
     MicroSecondDelay (IPMI_DELAY_UNIT);
-    KcsStatus.RawData = IoRead8 (KcsPort + 1);
+    KcsStatus.RawData = IoRead8 (KcsCmdReg);
     if ((KcsStatus.RawData == 0xFF) || (TimeOut >= IpmiTimeoutPeriod)) {
       Status = EFI_DEVICE_ERROR;
       goto LabelError;
@@ -261,7 +265,7 @@ Returns:
     TimeOut = 0;
     do {
       MicroSecondDelay (IPMI_DELAY_UNIT);
-      KcsStatus.RawData = IoRead8 (KcsPort + 1);
+      KcsStatus.RawData = IoRead8 (KcsCmdReg);
       if ((KcsStatus.RawData == 0xFF) || (TimeOut >= IpmiTimeoutPeriod)) {
         Status = EFI_DEVICE_ERROR;
         goto LabelError;
@@ -310,18 +314,19 @@ Returns:
   KCS_STATUS  KcsStatus;
   UINT8       KcsData;
   UINT16      KcsIoBase;
+  UINT16      KcsCmdReg;
   EFI_STATUS  Status;
   UINT8       i;
   BOOLEAN     Idle;
   UINT64      TimeOut;
 
   KcsIoBase = PcdGet16 (PcdIpmiIoBaseAddress);
-
-  TimeOut = 0;
+  KcsCmdReg = PcdGet16 (PcdIpmiIoCmdRegister);
+  TimeOut   = 0;
 
   do {
     MicroSecondDelay (IPMI_DELAY_UNIT);
-    KcsStatus.RawData = IoRead8 (KcsIoBase + 1);
+    KcsStatus.RawData = IoRead8 (KcsCmdReg);
     if ((KcsStatus.RawData == 0xFF) || (TimeOut >= IpmiTimeoutPeriod)) {
       if ((Status = KcsErrorExit (IpmiTimeoutPeriod)) != EFI_SUCCESS) {
         return Status;
@@ -332,7 +337,7 @@ Returns:
   } while (KcsStatus.Status.Ibf);
 
   KcsData = KCS_WRITE_START;
-  IoWrite8 ((KcsIoBase + 1), KcsData);
+  IoWrite8 ((KcsCmdReg), KcsData);
   if ((Status = KcsCheckStatus (IpmiTimeoutPeriod, KcsWriteState, &Idle)) != EFI_SUCCESS) {
     return Status;
   }
@@ -344,7 +349,7 @@ Returns:
       }
 
       KcsData = KCS_WRITE_END;
-      IoWrite8 ((KcsIoBase + 1), KcsData);
+      IoWrite8 ((KcsCmdReg), KcsData);
     }
 
     Status = KcsCheckStatus (IpmiTimeoutPeriod, KcsWriteState, &Idle);
