@@ -37,6 +37,7 @@
 
 [Pcd]
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoCmdRegister
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemId
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemTableId
 
