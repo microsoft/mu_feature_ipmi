@@ -60,7 +60,13 @@
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiCommandMaxReties|3|UINT8|0xF0000004
   gIpmiFeaturePkgTokenSpaceGuid.PcdBmcTimeoutSeconds|30|UINT8|0xF0000005
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiSelOemManufacturerId|{0, 0, 0}|VOID*|0xF0000007
+  #
+  # KCS Status Register I/O Address (Normally CA2)
+  #
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress|0xCA2|UINT16|0xF0000009
+  #
+  # KCS Command Register I/O Address (Normally CA3)
+  #
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoCmdRegister|0xCA3|UINT16|0xF000000A
   #
   # IPMI Interface Type
