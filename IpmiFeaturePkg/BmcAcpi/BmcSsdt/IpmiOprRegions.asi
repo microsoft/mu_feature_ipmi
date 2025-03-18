@@ -43,7 +43,9 @@ Device(IPMC)
     Name(_CRS, ResourceTemplate()
     {
         // Uses 8-bit ports 0xCA2-0xCA5
-        IO(Decode16, 0xCA2, 0xCA2, 0, 2)
+        IO(Decode16, FixedPcdGet8 (PcdIpmiIoBaseAddress), FixedPcdGet8 (PcdIpmiIoBaseAddress), 0, 1)
+        IO(Decode16, FixedPcdGet8 (PcdIpmiIoCmdRegister), FixedPcdGet8 (PcdIpmiIoCmdRegister), 0, 1)
+        
     })
 
     Name(_HID, "IPI0001")           // IPMI device
