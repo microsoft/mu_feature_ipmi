@@ -49,7 +49,6 @@
   UefiLib|MdePkg/Library/UefiLib/UefiLib.inf
   DevicePathLib|MdePkg/Library/UefiDevicePathLib/UefiDevicePathLib.inf
   UefiRuntimeServicesTableLib|MdePkg/Library/UefiRuntimeServicesTableLib/UefiRuntimeServicesTableLib.inf
-  NULL|MdePkg/Library/StackCheckLibNull/StackCheckLibNull.inf
 
   #####################################
   # IPMI Feature Package
@@ -162,6 +161,3 @@
 [Components.IA32, Components.X64]
   IpmiFeaturePkg/GenericIpmi/Smm/SmmGenericIpmi.inf
 
-[LibraryClasses.ARM, LibraryClasses.AARCH64]
-  NULL|MdePkg/Library/CompilerIntrinsicsLib/ArmCompilerIntrinsicsLib.inf
-  NULL|MdePkg/Library/BaseStackCheckLib/BaseStackCheckLib.inf
