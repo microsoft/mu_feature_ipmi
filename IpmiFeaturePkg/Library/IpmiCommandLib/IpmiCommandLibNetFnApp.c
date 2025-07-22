@@ -276,6 +276,7 @@ IpmiGetSystemUuid (
   //   the response from Get System Guid is the same format. Reusing the structure here.
   IPMI_GET_SYSTEM_GUID_RESPONSE  GuidResponse;
 
+  ZeroMem (&GuidResponse, sizeof (GuidResponse));
   Status = EFI_INVALID_PARAMETER;
   if (SystemGuid != NULL) {
     DataSize = sizeof (IPMI_GET_DEVICE_GUID_RESPONSE);
