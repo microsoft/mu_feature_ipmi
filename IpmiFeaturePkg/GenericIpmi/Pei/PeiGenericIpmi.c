@@ -61,7 +61,7 @@ PeimIpmiInterfaceInit (
     //
     IpmiInstance = AllocateZeroPool (sizeof (IPMI_BMC_INSTANCE_DATA) + sizeof (EFI_PEI_PPI_DESCRIPTOR));
     if (IpmiInstance == NULL) {
-      DEBUG ((EFI_D_ERROR, "[IPMI] EFI_OUT_OF_RESOURCES of memory allocation\n"));
+      DEBUG ((DEBUG_ERROR, "[IPMI] EFI_OUT_OF_RESOURCES of memory allocation\n"));
       return EFI_OUT_OF_RESOURCES;
     }
 

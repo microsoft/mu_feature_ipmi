@@ -312,7 +312,7 @@ GetDeviceId (
 
         if (!EFI_ERROR (Status)) {
           pBmcInfo = (SM_CTRL_INFO *)&IpmiInstance->TempData[0];
-          DEBUG ((EFI_D_ERROR, "[IPMI] UpdateMode Retries: %d   pBmcInfo->UpdateMode:%x, Status: %r, Response Data: 0x%lx\n", Retries, pBmcInfo->UpdateMode, Status, IpmiInstance->TempData));
+          DEBUG ((DEBUG_ERROR, "[IPMI] UpdateMode Retries: %d   pBmcInfo->UpdateMode:%x, Status: %r, Response Data: 0x%lx\n", Retries, pBmcInfo->UpdateMode, Status, IpmiInstance->TempData));
           if (pBmcInfo->UpdateMode == BMC_READY) {
             IpmiInstance->BmcStatus = BMC_OK;
             return EFI_SUCCESS;

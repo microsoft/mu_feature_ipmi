@@ -144,7 +144,7 @@ IpmiWatchdogDxeEntryPoint (
   //
   Status = IpmiGetWatchdogTimer (&WatchdogTimer);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_INFO, "%a: Failed to get Watchdog Timer.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to get Watchdog Timer.\n", __FUNCTION__));
     return Status;
   } else if (WatchdogTimer.CompletionCode != IPMI_COMP_CODE_NORMAL) {
     DEBUG ((

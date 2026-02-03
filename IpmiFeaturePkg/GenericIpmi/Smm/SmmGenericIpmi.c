@@ -59,7 +59,7 @@ InitializeSmmGenericIpmi (
   mIpmiInstance = AllocateZeroPool (sizeof (IPMI_BMC_INSTANCE_DATA));
   ASSERT (mIpmiInstance != NULL);
   if (mIpmiInstance == NULL) {
-    DEBUG ((EFI_D_ERROR, "ERROR!! Null Pointer returned by AllocateZeroPool ()\n"));
+    DEBUG ((DEBUG_ERROR, "ERROR!! Null Pointer returned by AllocateZeroPool ()\n"));
     ASSERT_EFI_ERROR (EFI_OUT_OF_RESOURCES);
     return EFI_OUT_OF_RESOURCES;
   }
