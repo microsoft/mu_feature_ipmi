@@ -155,7 +155,7 @@ SolStatusEntryPoint (
   for (Channel = 1; Channel <= PcdGet8 (PcdMaxSOLChannels); Channel++) {
     Status = GetSOLStatus (Channel, IPMI_SOL_CONFIGURATION_PARAMETER_SOL_ENABLE, &SolEnabled);
     if (Status == EFI_SUCCESS) {
-      DEBUG ((DEBUG_ERROR, "SOL enabling status for channel %x is %x\n", Channel, SolEnabled));
+      DEBUG ((DEBUG_INFO, "SOL enabling status for channel %x is %x\n", Channel, SolEnabled));
     } else {
       DEBUG ((DEBUG_ERROR, "Failed to get channel %x SOL status from BMC!, status is %x\n", Channel, Status));
     }

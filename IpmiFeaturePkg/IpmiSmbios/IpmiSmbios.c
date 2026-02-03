@@ -74,7 +74,7 @@ CreateIpmiSmbiosType38 (
 
   Status = IpmiGetDeviceId (&DeviceId);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_INFO, "%a IpmiGetDeviceId Failed, %r\n", __FUNCTION__, Status));
+    DEBUG ((DEBUG_ERROR, "%a IpmiGetDeviceId Failed, %r\n", __FUNCTION__, Status));
     return Status;
   }
 
