@@ -46,6 +46,11 @@ IpmiSubmitCommand (
       DEBUG ((DEBUG_ERROR, "%a: Failed to locate IPMI protocol. %r\n", __FUNCTION__, Status));
       return Status;
     }
+
+    if (mIpmiTransport == NULL) {
+      DEBUG ((DEBUG_ERROR, "%a: ERROR - mIpmiTransport is NULL.\n", __FUNCTION__));
+      return EFI_ABORTED;
+    }
   }
 
   Status = mIpmiTransport->IpmiSubmitCommand (
@@ -84,6 +89,11 @@ GetBmcStatus (
     if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_ERROR, "%a: Failed to locate IPMI protocol. %r\n", __FUNCTION__, Status));
       return Status;
+    }
+
+    if (mIpmiTransport == NULL) {
+      DEBUG ((DEBUG_ERROR, "%a: ERROR - mIpmiTransport is NULL.\n", __FUNCTION__));
+      return EFI_ABORTED;
     }
   }
 
