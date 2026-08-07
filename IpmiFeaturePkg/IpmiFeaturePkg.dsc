@@ -106,7 +106,6 @@
   IpmiFeaturePkg/GenericIpmi/Dxe/DxeGenericIpmi.inf
   IpmiFeaturePkg/GenericIpmi/StandaloneMm/StandaloneMmGenericIpmi.inf
   IpmiFeaturePkg/BmcAcpi/BmcAcpi.inf
-  IpmiFeaturePkg/BmcAcpiPowerState/BmcAcpiPowerStateSmm.inf
   IpmiFeaturePkg/SpmiTable/SpmiTable.inf
   IpmiFeaturePkg/IpmiSmbios/IpmiSmbios.inf
   IpmiFeaturePkg/IpmiFru/IpmiFru.inf
