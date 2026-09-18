@@ -105,7 +105,7 @@ CreateIpmiSmbiosType38 (
       mSmbiosTableType38.Type38.BaseAddressModifier_InterruptInfo = ((PcdGet16 (PcdIpmiIoBaseAddress) & BIT0) << 4);
     } else if (PcdGet8 (PcdIpmiAddressSpaceId) == EFI_ACPI_5_0_SYSTEM_MEMORY) {
       mSmbiosTableType38.Type38.BaseAddress                       = (PcdGet64 (PcdIpmiAddress) & ~BIT0);
-      mSmbiosTableType38.Type38.BaseAddressModifier_InterruptInfo = ((PcdGet64 (PcdIpmiAddress) & BIT0) << 4);
+      mSmbiosTableType38.Type38.BaseAddressModifier_InterruptInfo = (UINT8)LShiftU64 (PcdGet64 (PcdIpmiAddress) & BIT0, 4);
     }
 
     mSmbiosTableType38.Type38.BaseAddressModifier_InterruptInfo |= ((IpmiRegisterSpacing & 0x3) << 6) |
